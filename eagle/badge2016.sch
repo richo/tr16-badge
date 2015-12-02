@@ -12087,7 +12087,7 @@ I2C</description>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
 <part name="U$11" library="ERNW_parts" deviceset="LTC3554" device=""/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0402" value="1.87k"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0402" value="750"/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
 <part name="C23" library="rcl" deviceset="C-EU" device="C0805" value="10µF"/>
 <part name="C24" library="rcl" deviceset="C-EU" device="C0805" value="10µF"/>
@@ -12160,6 +12160,7 @@ I2C</description>
 <part name="R18" library="rcl" deviceset="R-EU_" device="R0402" value="100k"/>
 <part name="JP4" library="pinhead" deviceset="PINHD-2X8" device=""/>
 <part name="GND51" library="supply1" deviceset="GND" device=""/>
+<part name="GND44" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -12298,6 +12299,7 @@ I2C</description>
 <instance part="R18" gate="G$1" x="132.08" y="33.02" rot="R180"/>
 <instance part="JP4" gate="A" x="-63.5" y="266.7"/>
 <instance part="GND51" gate="1" x="-93.98" y="266.7" rot="R270"/>
+<instance part="GND44" gate="1" x="50.8" y="-325.12" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -12451,11 +12453,6 @@ I2C</description>
 <pinref part="GND21" gate="1" pin="GND"/>
 <wire x1="-185.42" y1="27.94" x2="-185.42" y2="20.32" width="0.1524" layer="91"/>
 <junction x="-185.42" y="27.94"/>
-</segment>
-<segment>
-<pinref part="R2" gate="G$1" pin="2"/>
-<pinref part="GND22" gate="1" pin="GND"/>
-<wire x1="27.94" y1="-287.02" x2="27.94" y2="-281.94" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C23" gate="G$1" pin="1"/>
@@ -12672,6 +12669,16 @@ I2C</description>
 <junction x="-78.74" y="271.78"/>
 <pinref part="GND51" gate="1" pin="GND"/>
 <wire x1="-91.44" y1="266.7" x2="-78.74" y2="266.7" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND44" gate="1" pin="GND"/>
+<pinref part="U$11" gate="G$1" pin="NTC"/>
+<wire x1="48.26" y1="-325.12" x2="45.72" y2="-325.12" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND22" gate="1" pin="GND"/>
+<pinref part="R2" gate="G$1" pin="2"/>
+<wire x1="27.94" y1="-281.94" x2="27.94" y2="-287.02" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -13400,13 +13407,6 @@ I2C</description>
 <wire x1="60.96" y1="-327.66" x2="63.5" y2="-327.66" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$24" class="0">
-<segment>
-<pinref part="R11" gate="G$1" pin="1"/>
-<wire x1="25.4" y1="-378.46" x2="25.4" y2="-388.62" width="0.1524" layer="91"/>
-<label x="25.4" y="-388.62" size="1.778" layer="95" rot="R90"/>
-</segment>
-</net>
 <net name="FB1" class="0">
 <segment>
 <pinref part="U$11" gate="G$1" pin="FB1"/>
@@ -13483,6 +13483,10 @@ I2C</description>
 <junction x="63.5" y="-297.18"/>
 <junction x="55.88" y="-271.78"/>
 <label x="38.1" y="-271.78" size="1.778" layer="95"/>
+<pinref part="R11" gate="G$1" pin="1"/>
+<wire x1="25.4" y1="-378.46" x2="25.4" y2="-381" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="-381" x2="58.42" y2="-381" width="0.1524" layer="91"/>
+<wire x1="58.42" y1="-381" x2="58.42" y2="-332.74" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="VCC"/>

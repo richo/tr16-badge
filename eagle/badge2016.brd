@@ -2701,7 +2701,7 @@ design rules under a new name.</description>
 <element name="C22" library="rcl" package="C0402" value="1pF" x="101.5" y="38.9" rot="R270"/>
 <element name="U$10" library="ERNW_parts" package="SMA_CON_THT" value="SMA_CONNECTORTHT" x="107.83" y="57.5"/>
 <element name="U$11" library="ERNW_parts" package="QFN-20-3X3" value="LTC3554" x="30.1" y="63" rot="R270"/>
-<element name="R2" library="rcl" package="R0402" value="1.87k" x="33.6" y="61.3"/>
+<element name="R2" library="rcl" package="R0402" value="750" x="33.6" y="61.3"/>
 <element name="C23" library="rcl" package="C0805" value="10µF" x="33.2" y="66.5" rot="R270"/>
 <element name="C24" library="rcl" package="C0805" value="10µF" x="37.2" y="64.5" rot="R180"/>
 <element name="BAT" library="pinhead" package="1X02" value="" x="45.1" y="60.4" rot="R90"/>
@@ -2789,7 +2789,6 @@ design rules under a new name.</description>
 <wire x1="105.29" y1="54.96" x2="105.29" y2="60.04" width="0.4" layer="1"/>
 <wire x1="105.29" y1="60.04" x2="110.37" y2="60.04" width="0.4" layer="1"/>
 <wire x1="110.37" y1="60.04" x2="110.37" y2="54.96" width="0.4" layer="1"/>
-<contactref element="R2" pad="2"/>
 <contactref element="C23" pad="1"/>
 <contactref element="C24" pad="1"/>
 <contactref element="BAT" pad="1"/>
@@ -2903,9 +2902,7 @@ design rules under a new name.</description>
 <wire x1="57.3" y1="44.495" x2="54.4" y2="44.495" width="0.2" layer="1"/>
 <wire x1="54.4" y1="44.495" x2="54.4" y2="44.4" width="0.2" layer="1"/>
 <via x="68" y="47" extent="1-16" drill="0.3"/>
-<via x="27.6" y="61.3" extent="1-16" drill="0.3"/>
 <via x="26.3" y="61" extent="1-16" drill="0.3"/>
-<via x="28.1" y="58.9" extent="1-16" drill="0.3"/>
 <via x="32.2" y="60.4" extent="1-16" drill="0.3"/>
 <via x="27.8" y="65.1" extent="1-16" drill="0.3"/>
 <via x="31.6" y="66.2" extent="1-16" drill="0.3"/>
@@ -2994,7 +2991,6 @@ design rules under a new name.</description>
 <via x="24.5" y="55.2" extent="1-16" drill="0.3"/>
 <via x="24.5" y="53.8" extent="1-16" drill="0.3"/>
 <via x="24.5" y="52.4" extent="1-16" drill="0.3"/>
-<via x="24.5" y="58" extent="1-16" drill="0.3"/>
 <via x="78.2" y="53.6" extent="1-16" drill="0.3"/>
 <via x="39.6" y="42.6" extent="1-16" drill="0.3"/>
 <via x="39.6" y="41.5" extent="1-16" drill="0.3"/>
@@ -3200,7 +3196,6 @@ design rules under a new name.</description>
 <wire x1="68.8" y1="47" x2="68.8" y2="44" width="0.2" layer="1"/>
 <via x="51.6" y="76.6" extent="1-16" drill="0.3"/>
 <wire x1="26.3" y1="61" x2="26.3" y2="64.1" width="0.4" layer="16"/>
-<wire x1="26.3" y1="61" x2="26.3" y2="59.9" width="0.4" layer="16"/>
 <wire x1="26.3" y1="64.1" x2="26.3" y2="64.2" width="0.3" layer="16"/>
 <wire x1="26.3" y1="64.2" x2="26.7" y2="64.6" width="0.3" layer="16"/>
 <wire x1="34.5" y1="64.9" x2="35.8" y2="64.9" width="0.2" layer="16"/>
@@ -3210,6 +3205,9 @@ design rules under a new name.</description>
 <wire x1="35.1" y1="63.4" x2="34.1" y2="63.4" width="0.2" layer="16"/>
 <wire x1="34.1" y1="63.4" x2="34" y2="63.5" width="0.2" layer="16"/>
 <wire x1="34" y1="63.5" x2="28.3" y2="63.5" width="0.4" layer="16"/>
+<contactref element="U$11" pad="15"/>
+<contactref element="R2" pad="2"/>
+<wire x1="30.1" y1="63" x2="30.9" y2="61.6" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="3V3">
 <contactref element="U$1" pad="44"/>
@@ -3929,9 +3927,6 @@ design rules under a new name.</description>
 <wire x1="30.1" y1="60.7" x2="32.9" y2="57.9" width="0.2" layer="1"/>
 <wire x1="32.9" y1="57.9" x2="32.9" y2="56.65" width="0.2" layer="1"/>
 </signal>
-<signal name="N$24">
-<contactref element="R11" pad="1"/>
-</signal>
 <signal name="FB1">
 <contactref element="U$11" pad="6"/>
 <contactref element="R6" pad="2"/>
@@ -4029,6 +4024,13 @@ design rules under a new name.</description>
 <wire x1="29.1" y1="64" x2="29.6" y2="64" width="0.25" layer="16"/>
 <wire x1="29.2" y1="68.5" x2="29.2" y2="64.1" width="0.2" layer="16"/>
 <wire x1="29.2" y1="64.1" x2="29.1" y2="64" width="0.2" layer="16"/>
+<contactref element="R11" pad="1"/>
+<wire x1="25" y1="60.15" x2="25" y2="59.6" width="0.25" layer="1"/>
+<wire x1="25" y1="59.6" x2="26.3" y2="59.6" width="0.25" layer="1"/>
+<wire x1="25" y1="60.15" x2="25" y2="60.15" width="0" layer="19" extent="1-16"/>
+<via x="26.3" y="59.6" extent="1-16" drill="0.3"/>
+<wire x1="26.3" y1="59.6" x2="29.2" y2="59.6" width="0.25" layer="16"/>
+<wire x1="29.2" y1="59.6" x2="29.2" y2="60.1" width="0.25" layer="16"/>
 </signal>
 <signal name="CTS#">
 <contactref element="UART" pad="2"/>
@@ -4212,6 +4214,7 @@ design rules under a new name.</description>
 <wire x1="38" y1="22.1" x2="38" y2="22.9" width="0.15" layer="1"/>
 <wire x1="38" y1="22.9" x2="43.45" y2="22.9" width="0.15" layer="1"/>
 <wire x1="43.45" y1="22.9" x2="43.45" y2="22.5" width="0.15" layer="1"/>
+<wire x1="35.5925" y1="19.04848125" x2="35.592496875" y2="19.04848125" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="DM">
 <contactref element="R9" pad="2"/>

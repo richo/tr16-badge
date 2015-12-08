@@ -1,0 +1,2 @@
+- akku: bohrung oder steckverbinder an außenkante, bzw. rückseite
+- pullup (10k oder 100k, beides bereits in BOM) für touch-irq

@@ -2,3 +2,6 @@
 - pullup (10k oder 100k, beides bereits in BOM) für touch-irq
 - GND für touch weg von µC
 
+- vref und vbat an display
+- net d_busy evtl raus
+- uart-header ändern --- 5V!

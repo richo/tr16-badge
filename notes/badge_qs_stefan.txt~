@@ -1,7 +1,16 @@
 - akku: bohrung oder steckverbinder an außenkante, bzw. rückseite
-- pullup (10k oder 100k, beides bereits in BOM) für touch-irq
-- GND für touch weg von µC
+- pullup (10k oder 100k, beides bereits in BOM) für touch-irq - wohl bereits im µC vorhanden
+- GND für touch stück weg von µC
 
 - vref und vbat an display
 - net d_busy evtl raus
 - uart-header ändern --- 5V!
+- eeprom -- i2c zu teuer, spi hätte viele leitungen
+- sd-card: chipselect notwendig!
+- sd-card: Im SPI-Mode die nicht benutzten SD-Datenleitungen mit Pull-Ups versehen
+- sd-card: Ein Pullup-Widerstand am Ausgang der MMC/SD Karte (DO) ist für eine saubere Initialisierung per SPI notwendig --> http://www.mikrocontroller.net/articles/MMC-_und_SD-Karten
+http://elm-chan.org/docs/mmc/mmc_e.html
+- quartz U$2, evtl anderer footprint - datasheet?
+
+
+

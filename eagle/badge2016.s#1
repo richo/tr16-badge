@@ -13850,9 +13850,9 @@ I2C</description>
 <label x="254" y="-200.66" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="DIO_4"/>
-<wire x1="22.86" y1="35.56" x2="-2.54" y2="35.56" width="0.1524" layer="91"/>
-<label x="2.54" y="35.56" size="1.778" layer="95"/>
+<pinref part="U$1" gate="G$1" pin="DIO_8"/>
+<wire x1="45.72" y1="7.62" x2="45.72" y2="-7.62" width="0.1524" layer="91"/>
+<label x="45.72" y="-5.08" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="SD_SWITCH" class="0">

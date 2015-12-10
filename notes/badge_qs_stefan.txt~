@@ -2,15 +2,23 @@
 - pullup (10k oder 100k, beides bereits in BOM) für touch-irq - wohl bereits im µC vorhanden
 - GND für touch stück weg von µC
 
-- vref und vbat an display
-- net d_busy evtl raus
-- uart-header ändern --- 5V!
-- eeprom -- i2c zu teuer, spi hätte viele leitungen
-- sd-card: chipselect notwendig!
-- sd-card: Im SPI-Mode die nicht benutzten SD-Datenleitungen mit Pull-Ups versehen
-- sd-card: Ein Pullup-Widerstand am Ausgang der MMC/SD Karte (DO) ist für eine saubere Initialisierung per SPI notwendig --> http://www.mikrocontroller.net/articles/MMC-_und_SD-Karten
+- vref und vbat an display --- erledigt
+- net d_busy evtl raus --- erledigt, bleibt
+- uart-header ändern --- erledigt
+- eeprom -- i2c zu teuer, spi hätte viele leitungen --- spi-eeprom eingepflegt, abklären ob in größe >=1M verfügbar als 8-pinner
+- sd-card: chipselect notwendig! --- erledigt
+- sd-card: Im SPI-Mode die nicht benutzten SD-Datenleitungen mit Pull-Ups versehen -- erledigt
+- sd-card: Ein Pullup-Widerstand am Ausgang der MMC/SD Karte (DO) ist für eine saubere Initialisierung per SPI notwendig --- erledigt
+--> http://www.mikrocontroller.net/articles/MMC-_und_SD-Karten
 http://elm-chan.org/docs/mmc/mmc_e.html
-- quartz U$2, evtl anderer footprint - datasheet?
+- quarze, evtl unterschiedliche footprints - datasheet? abklären mit watterott!
+- vddr-leitung von dcdc_sw (cc1310) umverlegen? liegt unter spannungsversorgung. hochfreq?
+- werte zwischen usb-connector und ftdi-chip stimmen nicht mit datasheet von ftdi231x überein --- mit brian besprochen, so in ordnung
+- footprint von spi-eeprom prüfen, ob kompatibel unter herstellern
 
+antennenstrang auf datasheet geändert:
+- induktivitäten im antennenstrang bezeichnen --- erledigt
+- L1 zu nF, statt nF, ändern --- erledigt
+- U$5 und U$6 laut datasheet 7,5nH ---erledigt
 
-
+- quarzwerte angepasst, lasten prüfen!

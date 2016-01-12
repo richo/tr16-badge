@@ -1,0 +1,16 @@
+
+TI-libs in include/
+
+
+# to build
+
+make all
+
+# to clean
+
+make clean
+
+
+binary will be in bin/
+libs in /obj
+source in /source

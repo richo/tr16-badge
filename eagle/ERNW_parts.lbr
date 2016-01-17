@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -28,11 +28,11 @@
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
-<layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
+<layer number="31" name="tCream" color="7" fill="4" visible="yes" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
-<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
 <layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
@@ -632,10 +632,14 @@ Source: http://www.st.com/stonline/products/literature/ds/11020.pdf</description
 <smd name="9" x="-3.475" y="-1.25" dx="0.28" dy="0.85" layer="1" rot="R90"/>
 <smd name="11" x="-3.475" y="-2.25" dx="0.28" dy="0.85" layer="1" rot="R90"/>
 <pad name="PAD4" x="0" y="0" drill="0.3"/>
-<smd name="PAD1" x="0" y="1.5725" dx="5.15" dy="2" layer="1"/>
-<smd name="PAD2" x="0" y="-1.5725" dx="5.15" dy="2" layer="1"/>
+<smd name="PAD1" x="0" y="1.5725" dx="5.15" dy="2" layer="1" cream="no"/>
+<smd name="PAD2" x="0" y="-1.5725" dx="5.15" dy="2" layer="1" cream="no"/>
 <pad name="PAD5" x="1.5725" y="0" drill="0.3"/>
 <pad name="PAD3" x="-1.5725" y="0" drill="0.3"/>
+<rectangle x1="-2.1" y1="0.8" x2="-0.6" y2="2.3" layer="31"/>
+<rectangle x1="0.6" y1="0.8" x2="2.1" y2="2.3" layer="31"/>
+<rectangle x1="-2.1" y1="-2.3" x2="-0.6" y2="-0.8" layer="31"/>
+<rectangle x1="0.6" y1="-2.3" x2="2.1" y2="-0.8" layer="31"/>
 </package>
 <package name="QFN-20-3X3">
 <smd name="18" x="0" y="1.4" dx="0.7" dy="0.2" layer="1" rot="R90"/>
@@ -806,6 +810,183 @@ Source: http://www.st.com/stonline/products/literature/ds/11020.pdf</description
 <wire x1="-7.45" y1="-2.15" x2="-7.45" y2="2.3" width="0.127" layer="21"/>
 <wire x1="-7.45" y1="2.3" x2="1.65" y2="2.3" width="0.127" layer="21"/>
 <wire x1="1.65" y1="2.3" x2="1.65" y2="-2.15" width="0.127" layer="21"/>
+</package>
+<package name="BB_TEST">
+<smd name="P$9" x="0.3" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$10" x="2.1" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$11" x="0.3" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$12" x="1.8" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$13" x="1.5" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$14" x="1.2" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$15" x="0.3" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$16" x="1.2" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$17" x="1.8" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$18" x="0.3" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$19" x="2.1" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<wire x1="0" y1="0" x2="0" y2="-1.5" width="0.127" layer="1"/>
+<wire x1="0" y1="-1.5" x2="2.4" y2="-1.5" width="0.127" layer="1"/>
+<wire x1="2.4" y1="-1.5" x2="2.4" y2="0" width="0.127" layer="1"/>
+<wire x1="2.4" y1="0" x2="0" y2="0" width="0.127" layer="1"/>
+</package>
+<package name="MESSAGE">
+<smd name="P$26" x="0.3" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$34" x="0.3" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$35" x="0.3" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$36" x="0.3" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$37" x="0.3" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$38" x="0.3" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$39" x="0.3" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$40" x="0.6" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$41" x="0.9" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$42" x="1.2" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$43" x="2.1" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$44" x="2.1" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$45" x="1.8" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$46" x="1.5" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$47" x="1.2" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$48" x="2.1" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$49" x="2.1" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$50" x="1.5" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$51" x="1.5" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$52" x="2.1" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$53" x="1.8" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$54" x="1.5" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$55" x="1.2" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$56" x="1.2" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$57" x="1.8" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$58" x="3" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$59" x="3" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$60" x="3" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$61" x="3" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$62" x="3" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$63" x="3" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$64" x="3" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$65" x="3.3" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$66" x="4.5" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$67" x="4.2" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$68" x="4.8" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$69" x="4.2" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$70" x="3.6" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$71" x="4.5" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$72" x="4.2" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$73" x="3.9" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$74" x="4.8" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$75" x="3.9" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$76" x="3.9" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$77" x="4.2" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$78" x="4.8" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$79" x="4.8" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$80" x="4.5" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$81" x="4.2" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$82" x="3.9" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$83" x="3.9" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$84" x="4.2" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$85" x="4.5" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$86" x="4.8" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$87" x="6" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$88" x="6" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$89" x="6" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$90" x="5.7" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$91" x="5.7" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$92" x="6" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$93" x="5.7" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$94" x="5.7" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$95" x="6.9" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$96" x="6.6" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$97" x="7.5" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$98" x="6.9" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$99" x="7.2" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$100" x="8.4" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$101" x="8.4" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$102" x="8.4" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$103" x="8.4" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$104" x="8.4" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$105" x="10.2" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$106" x="9.3" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$107" x="9" y="-0.3" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$108" x="10.2" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$109" x="9.9" y="-0.6" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$110" x="9.9" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$111" x="9" y="-0.9" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$112" x="8.7" y="-1.2" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$114" x="8.7" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$113" x="8.7" y="-2.1" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$115" x="10.2" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$116" x="9.9" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$117" x="9" y="-1.5" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$118" x="10.2" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$119" x="9.9" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$120" x="9.6" y="-1.8" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<smd name="P$121" x="10.2" y="-2.4" dx="0.15" dy="0.15" layer="1" cream="no"/>
+<wire x1="0" y1="0" x2="0" y2="-2.7" width="0.127" layer="1"/>
+<wire x1="0" y1="-2.7" x2="10.5" y2="-2.7" width="0.127" layer="1"/>
+<wire x1="10.5" y1="-2.7" x2="10.5" y2="0" width="0.127" layer="1"/>
+<wire x1="10.5" y1="0" x2="0" y2="0" width="0.127" layer="1"/>
+</package>
+<package name="TR_BRAILLE">
+<smd name="P$17" x="0.3" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$18" x="0.3" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$19" x="0" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$20" x="0" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$21" x="0.9" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$22" x="0.9" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$23" x="0.9" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$24" x="1.2" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$25" x="1.65" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$26" x="1.95" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$27" x="1.65" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$28" x="2.7" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$29" x="2.4" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$30" x="2.4" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$31" x="2.4" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$32" x="3.45" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$33" x="3.15" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$34" x="3.15" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$35" x="3.15" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$36" x="4.05" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$37" x="4.35" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$38" x="4.95" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$39" x="4.95" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$40" x="4.95" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$41" x="5.25" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$42" x="6.15" y="-0.3" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$43" x="5.85" y="-0.6" dx="0.15" dy="0.15" layer="1"/>
+<smd name="P$44" x="5.85" y="-0.9" dx="0.15" dy="0.15" layer="1"/>
+<wire x1="-0.3" y1="0" x2="-0.3" y2="-1.2" width="0.127" layer="1"/>
+<wire x1="-0.3" y1="-1.2" x2="6.45" y2="-1.2" width="0.127" layer="1"/>
+<wire x1="6.45" y1="-1.2" x2="6.45" y2="0" width="0.127" layer="1"/>
+<wire x1="6.45" y1="0" x2="-0.3" y2="0" width="0.127" layer="1"/>
+</package>
+<package name="TR_PIGPEN">
+<wire x1="0" y1="0" x2="-0.45" y2="0.45" width="0.15" layer="1"/>
+<wire x1="0" y1="0" x2="-0.45" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="0.45" y1="0.45" x2="0.45" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="0.45" y1="0.45" x2="1.35" y2="0.45" width="0.15" layer="1"/>
+<wire x1="0.9" y1="0" x2="1.05" y2="0" width="0.15" layer="1"/>
+<wire x1="1.8" y1="-0.45" x2="1.8" y2="0.45" width="0.15" layer="1"/>
+<wire x1="1.8" y1="0.45" x2="2.7" y2="0.45" width="0.15" layer="1"/>
+<wire x1="1.8" y1="-0.45" x2="2.7" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="2.25" y1="0" x2="2.4" y2="0" width="0.15" layer="1"/>
+<wire x1="3.15" y1="0.45" x2="3.15" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="3.15" y1="0.45" x2="4.05" y2="0.45" width="0.15" layer="1"/>
+<wire x1="3.15" y1="-0.45" x2="4.05" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="3.6" y1="0" x2="3.75" y2="0" width="0.15" layer="1"/>
+<wire x1="4.5" y1="0.45" x2="5.4" y2="0.45" width="0.15" layer="1"/>
+<wire x1="4.95" y1="0" x2="4.8" y2="0" width="0.15" layer="1"/>
+<wire x1="5.85" y1="0.45" x2="5.85" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="5.4" y1="0.45" x2="5.4" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="5.85" y1="0.45" x2="6.75" y2="0.45" width="0.15" layer="1"/>
+<wire x1="6.75" y1="0.45" x2="6.75" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="6.75" y1="-0.45" x2="5.85" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="7.2" y1="0.45" x2="7.2" y2="-0.45" width="0.15" layer="1"/>
+<wire x1="7.2" y1="0.45" x2="8.1" y2="0.45" width="0.15" layer="1"/>
+<wire x1="7.65" y1="0" x2="7.8" y2="0" width="0.15" layer="1"/>
+<wire x1="8.55" y1="0.45" x2="9" y2="0" width="0.15" layer="1"/>
+<wire x1="9" y1="0" x2="9.45" y2="0.45" width="0.15" layer="1"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="-1.27" width="0.127" layer="1"/>
+<wire x1="-1.27" y1="-1.27" x2="10.16" y2="-1.27" width="0.127" layer="1"/>
+<wire x1="10.16" y1="-1.27" x2="10.16" y2="1.27" width="0.127" layer="1"/>
+<wire x1="10.16" y1="1.27" x2="-1.27" y2="1.27" width="0.127" layer="1"/>
 </package>
 </packages>
 <symbols>
@@ -1407,6 +1588,36 @@ PAD</text>
 <wire x1="5.08" y1="7.62" x2="5.08" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="5.08" y1="-7.62" x2="-5.08" y2="-7.62" width="0.254" layer="94"/>
 <wire x1="-5.08" y1="-7.62" x2="-5.08" y2="7.62" width="0.254" layer="94"/>
+</symbol>
+<symbol name="BB_TEST">
+<text x="-2.54" y="0" size="1.27" layer="94">TEST</text>
+<wire x1="-7.62" y1="5.08" x2="7.62" y2="5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="5.08" x2="7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-2.54" x2="-7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-2.54" x2="-7.62" y2="5.08" width="0.254" layer="94"/>
+</symbol>
+<symbol name="MESSAGE">
+<text x="-2.54" y="0" size="1.27" layer="94">MESSAGE</text>
+<wire x1="-7.62" y1="5.08" x2="10.16" y2="5.08" width="0.254" layer="94"/>
+<wire x1="10.16" y1="5.08" x2="10.16" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="-7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-5.08" x2="-7.62" y2="5.08" width="0.254" layer="94"/>
+</symbol>
+<symbol name="TR_BRAILLE">
+<text x="-2.54" y="-2.54" size="1.27" layer="94">TROOPERS
+BRAILLE</text>
+<wire x1="-5.08" y1="2.54" x2="10.16" y2="2.54" width="0.254" layer="94"/>
+<wire x1="10.16" y1="2.54" x2="10.16" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-5.08" x2="-5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-5.08" y1="-5.08" x2="-5.08" y2="2.54" width="0.254" layer="94"/>
+</symbol>
+<symbol name="TR_PIGPEN">
+<text x="-2.54" y="0" size="1.27" layer="94">TROOPERS
+PIGPEN</text>
+<wire x1="-7.62" y1="7.62" x2="-7.62" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-2.54" x2="10.16" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="10.16" y1="-2.54" x2="10.16" y2="7.62" width="0.254" layer="94"/>
+<wire x1="10.16" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -2098,6 +2309,54 @@ TE CONNECTIVITY SMA Str PCB Skt GZD
 <connect gate="G$1" pin="X1" pad="X1"/>
 <connect gate="G$1" pin="X2" pad="X2"/>
 </connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="BB_TEST">
+<gates>
+<gate name="G$1" symbol="BB_TEST" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="BB_TEST">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="MESSAGE">
+<gates>
+<gate name="G$1" symbol="MESSAGE" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="MESSAGE">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TR_BRAILLE">
+<gates>
+<gate name="G$1" symbol="TR_BRAILLE" x="-2.54" y="0"/>
+</gates>
+<devices>
+<device name="" package="TR_BRAILLE">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TR_PIGPEN">
+<gates>
+<gate name="G$1" symbol="TR_PIGPEN" x="0" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="TR_PIGPEN">
 <technologies>
 <technology name=""/>
 </technologies>

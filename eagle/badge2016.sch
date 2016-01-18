@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.3.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -177,12 +177,18 @@
 <smd name="6" x="-0.8" y="-1.4" dx="0.7" dy="0.2" layer="1" rot="R270"/>
 <smd name="10" x="0.8" y="-1.4" dx="0.7" dy="0.2" layer="1" rot="R270"/>
 <smd name="9" x="0.4" y="-1.4" dx="0.7" dy="0.2" layer="1" rot="R270"/>
-<smd name="GND" x="0" y="0" dx="1.65" dy="1.65" layer="1" rot="R270"/>
+<smd name="GND" x="0" y="0" dx="1.65" dy="1.65" layer="1" rot="R270" cream="no"/>
 <wire x1="-1.2" y1="1.6" x2="1.6" y2="1.6" width="0.127" layer="21"/>
 <wire x1="1.6" y1="1.6" x2="1.6" y2="-1.6" width="0.127" layer="21"/>
 <wire x1="1.6" y1="-1.6" x2="-1.6" y2="-1.6" width="0.127" layer="21"/>
 <wire x1="-1.6" y1="-1.6" x2="-1.6" y2="1.3" width="0.127" layer="21"/>
 <wire x1="-1.6" y1="1.3" x2="-1.2" y2="1.6" width="0.127" layer="21"/>
+<polygon width="0.127" layer="31">
+<vertex x="-0.5" y="0.5"/>
+<vertex x="0.5" y="0.5"/>
+<vertex x="0.5" y="-0.5"/>
+<vertex x="-0.5" y="-0.5"/>
+</polygon>
 </package>
 <package name="KSEM31G">
 <smd name="A2" x="4.45" y="2" dx="3.1" dy="1" layer="1"/>
@@ -15107,8 +15113,8 @@ all kinds in 0603 and 0402</description>
 <part name="C35" library="we-rcl" deviceset="CAPACITOR" device="-0603" value="2.2µF"/>
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
 <part name="X21" library="we-rcl" deviceset="PAD" device="-0.5"/>
-<part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
-<part name="R16" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
+<part name="NC_R18" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
+<part name="NC_R19" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
 </parts>
 <sheets>
 <sheet>
@@ -15291,8 +15297,8 @@ all kinds in 0603 and 0402</description>
 <instance part="C35" gate="C" x="12.7" y="-386.08"/>
 <instance part="GND28" gate="1" x="-7.62" y="-386.08" rot="R270"/>
 <instance part="X21" gate="X" x="45.72" y="-10.16" rot="R90"/>
-<instance part="R15" gate="R" x="-185.42" y="-436.88" rot="R180"/>
-<instance part="R16" gate="R" x="-177.8" y="-439.42" rot="R180"/>
+<instance part="NC_R18" gate="R" x="-185.42" y="-436.88" rot="R180"/>
+<instance part="NC_R19" gate="R" x="-177.8" y="-439.42" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -16340,19 +16346,6 @@ all kinds in 0603 and 0402</description>
 <label x="-55.88" y="-345.44" size="1.778" layer="95" rot="R270"/>
 </segment>
 </net>
-<net name="TXD" class="0">
-<segment>
-<pinref part="IC2" gate="IC" pin="TXD"/>
-<wire x1="-205.74" y1="-436.88" x2="-190.5" y2="-436.88" width="0.1524" layer="91"/>
-<label x="-200.66" y="-436.88" size="1.778" layer="95"/>
-<pinref part="R15" gate="R" pin="2"/>
-</segment>
-<segment>
-<pinref part="NC-UART" gate="A" pin="4"/>
-<wire x1="187.96" y1="251.46" x2="223.52" y2="251.46" width="0.1524" layer="91"/>
-<label x="193.04" y="251.46" size="1.778" layer="95"/>
-</segment>
-</net>
 <net name="I2C_SDA" class="0">
 <segment>
 <pinref part="NC-IC3" gate="G$1" pin="SDA"/>
@@ -16855,7 +16848,6 @@ all kinds in 0603 and 0402</description>
 <pinref part="U$1" gate="G$1" pin="DIO_22"/>
 <pinref part="X5" gate="X" pin="P"/>
 <wire x1="91.44" y1="45.72" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="45.72" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$36" class="0">
@@ -16905,39 +16897,50 @@ all kinds in 0603 and 0402</description>
 <pinref part="X21" gate="X" pin="P"/>
 </segment>
 </net>
-<net name="RXD" class="0">
+<net name="FTDI_RXD" class="0">
 <segment>
 <pinref part="IC2" gate="IC" pin="RXD"/>
 <wire x1="-205.74" y1="-439.42" x2="-182.88" y2="-439.42" width="0.1524" layer="91"/>
 <label x="-200.66" y="-439.42" size="1.778" layer="95"/>
-<pinref part="R16" gate="R" pin="2"/>
+<pinref part="NC_R19" gate="R" pin="2"/>
+<pinref part="NC_R19" gate="R" pin="1"/>
+<wire x1="-172.72" y1="-439.42" x2="-165.1" y2="-439.42" width="0.1524" layer="91"/>
+<wire x1="-182.88" y1="-439.42" x2="-172.72" y2="-439.42" width="0.1524" layer="91"/>
+<junction x="-182.88" y="-439.42"/>
+<junction x="-172.72" y="-439.42"/>
 </segment>
 <segment>
 <pinref part="NC-UART" gate="A" pin="5"/>
 <wire x1="187.96" y1="248.92" x2="223.52" y2="248.92" width="0.1524" layer="91"/>
 <label x="193.04" y="248.92" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="U$1" gate="G$1" pin="DIO_3"/>
+<wire x1="22.86" y1="38.1" x2="0" y2="38.1" width="0.1524" layer="91"/>
+<label x="2.54" y="38.1" size="1.778" layer="95"/>
+</segment>
 </net>
-<net name="UART_RXD" class="0">
+<net name="FTDI_TXD" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="DIO_2"/>
 <wire x1="22.86" y1="40.64" x2="0" y2="40.64" width="0.1524" layer="91"/>
 <label x="2.54" y="40.64" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="R15" gate="R" pin="1"/>
+<pinref part="IC2" gate="IC" pin="TXD"/>
+<wire x1="-205.74" y1="-436.88" x2="-190.5" y2="-436.88" width="0.1524" layer="91"/>
+<label x="-200.66" y="-436.88" size="1.778" layer="95"/>
+<pinref part="NC_R18" gate="R" pin="2"/>
+<pinref part="NC_R18" gate="R" pin="1"/>
 <wire x1="-180.34" y1="-436.88" x2="-165.1" y2="-436.88" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="UART_TXD" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="DIO_3"/>
-<wire x1="22.86" y1="38.1" x2="0" y2="38.1" width="0.1524" layer="91"/>
-<label x="2.54" y="38.1" size="1.778" layer="95"/>
+<wire x1="-190.5" y1="-436.88" x2="-180.34" y2="-436.88" width="0.1524" layer="91"/>
+<junction x="-190.5" y="-436.88"/>
+<junction x="-180.34" y="-436.88"/>
 </segment>
 <segment>
-<pinref part="R16" gate="R" pin="1"/>
-<wire x1="-172.72" y1="-439.42" x2="-165.1" y2="-439.42" width="0.1524" layer="91"/>
+<pinref part="NC-UART" gate="A" pin="4"/>
+<wire x1="187.96" y1="251.46" x2="223.52" y2="251.46" width="0.1524" layer="91"/>
+<label x="193.04" y="251.46" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.5.0">
+<eagle version="7.3.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="yes"/>
@@ -15106,6 +15106,9 @@ all kinds in 0603 and 0402</description>
 <part name="R3" library="we-rcl" deviceset="RESISTOR" device="-0402" value="100k"/>
 <part name="C35" library="we-rcl" deviceset="CAPACITOR" device="-0603" value="2.2µF"/>
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
+<part name="X21" library="we-rcl" deviceset="PAD" device="-0.5"/>
+<part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
+<part name="R16" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
 </parts>
 <sheets>
 <sheet>
@@ -15287,6 +15290,9 @@ all kinds in 0603 and 0402</description>
 <instance part="R3" gate="R" x="22.86" y="-393.7" rot="R90"/>
 <instance part="C35" gate="C" x="12.7" y="-386.08"/>
 <instance part="GND28" gate="1" x="-7.62" y="-386.08" rot="R270"/>
+<instance part="X21" gate="X" x="45.72" y="-10.16" rot="R90"/>
+<instance part="R15" gate="R" x="-185.42" y="-436.88" rot="R180"/>
+<instance part="R16" gate="R" x="-177.8" y="-439.42" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -16336,36 +16342,15 @@ all kinds in 0603 and 0402</description>
 </net>
 <net name="TXD" class="0">
 <segment>
-<pinref part="NC-UART" gate="A" pin="4"/>
-<wire x1="187.96" y1="251.46" x2="223.52" y2="251.46" width="0.1524" layer="91"/>
-<label x="193.04" y="251.46" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="IC2" gate="IC" pin="TXD"/>
 <wire x1="-205.74" y1="-436.88" x2="-190.5" y2="-436.88" width="0.1524" layer="91"/>
 <label x="-200.66" y="-436.88" size="1.778" layer="95"/>
+<pinref part="R15" gate="R" pin="2"/>
 </segment>
 <segment>
-<pinref part="U$1" gate="G$1" pin="DIO_3"/>
-<wire x1="22.86" y1="38.1" x2="0" y2="38.1" width="0.1524" layer="91"/>
-<label x="2.54" y="38.1" size="1.778" layer="95"/>
-</segment>
-</net>
-<net name="RXD" class="0">
-<segment>
-<pinref part="NC-UART" gate="A" pin="5"/>
-<wire x1="187.96" y1="248.92" x2="223.52" y2="248.92" width="0.1524" layer="91"/>
-<label x="193.04" y="248.92" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="IC2" gate="IC" pin="RXD"/>
-<wire x1="-205.74" y1="-439.42" x2="-190.5" y2="-439.42" width="0.1524" layer="91"/>
-<label x="-200.66" y="-439.42" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="U$1" gate="G$1" pin="DIO_2"/>
-<wire x1="22.86" y1="40.64" x2="0" y2="40.64" width="0.1524" layer="91"/>
-<label x="2.54" y="40.64" size="1.778" layer="95"/>
+<pinref part="NC-UART" gate="A" pin="4"/>
+<wire x1="187.96" y1="251.46" x2="223.52" y2="251.46" width="0.1524" layer="91"/>
+<label x="193.04" y="251.46" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="I2C_SDA" class="0">
@@ -16870,6 +16855,7 @@ all kinds in 0603 and 0402</description>
 <pinref part="U$1" gate="G$1" pin="DIO_22"/>
 <pinref part="X5" gate="X" pin="P"/>
 <wire x1="91.44" y1="45.72" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="45.72" x2="111.76" y2="45.72" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$36" class="0">
@@ -16910,6 +16896,48 @@ all kinds in 0603 and 0402</description>
 <pinref part="R3" gate="R" pin="2"/>
 <wire x1="22.86" y1="-388.62" x2="22.86" y2="-386.08" width="0.1524" layer="91"/>
 <junction x="22.86" y="-386.08"/>
+</segment>
+</net>
+<net name="N$53" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="DIO_8"/>
+<wire x1="45.72" y1="7.62" x2="45.72" y2="-7.62" width="0.1524" layer="91"/>
+<pinref part="X21" gate="X" pin="P"/>
+</segment>
+</net>
+<net name="RXD" class="0">
+<segment>
+<pinref part="IC2" gate="IC" pin="RXD"/>
+<wire x1="-205.74" y1="-439.42" x2="-182.88" y2="-439.42" width="0.1524" layer="91"/>
+<label x="-200.66" y="-439.42" size="1.778" layer="95"/>
+<pinref part="R16" gate="R" pin="2"/>
+</segment>
+<segment>
+<pinref part="NC-UART" gate="A" pin="5"/>
+<wire x1="187.96" y1="248.92" x2="223.52" y2="248.92" width="0.1524" layer="91"/>
+<label x="193.04" y="248.92" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="UART_RXD" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="DIO_2"/>
+<wire x1="22.86" y1="40.64" x2="0" y2="40.64" width="0.1524" layer="91"/>
+<label x="2.54" y="40.64" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R15" gate="R" pin="1"/>
+<wire x1="-180.34" y1="-436.88" x2="-165.1" y2="-436.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="UART_TXD" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="DIO_3"/>
+<wire x1="22.86" y1="38.1" x2="0" y2="38.1" width="0.1524" layer="91"/>
+<label x="2.54" y="38.1" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="R16" gate="R" pin="1"/>
+<wire x1="-172.72" y1="-439.42" x2="-165.1" y2="-439.42" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

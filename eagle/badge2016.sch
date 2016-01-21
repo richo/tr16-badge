@@ -14440,6 +14440,7 @@ all kinds in 0603 and 0402</description>
 </deviceset>
 <deviceset name="CAPACITOR" prefix="C" uservalue="yes">
 <description>Capacitors&lt;br&gt;
+&lt;br&gt;
 ...4.7uF @ 6.3V -&gt; 0402&lt;br&gt;
 ...10uF @ 16V -&gt; 0603&lt;br&gt;
 ...22uF @ 25V -&gt; 0805&lt;br&gt;</description>
@@ -15115,6 +15116,9 @@ all kinds in 0603 and 0402</description>
 <part name="X21" library="we-rcl" deviceset="PAD" device="-0.5"/>
 <part name="NC_R18" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
 <part name="NC_R19" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
+<part name="C36" library="we-rcl" deviceset="CAPACITOR" device="-1206" value="100µF"/>
+<part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R3"/>
+<part name="GND53" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15299,6 +15303,9 @@ all kinds in 0603 and 0402</description>
 <instance part="X21" gate="X" x="45.72" y="-10.16" rot="R90"/>
 <instance part="NC_R18" gate="R" x="-185.42" y="-436.88" rot="R180"/>
 <instance part="NC_R19" gate="R" x="-177.8" y="-439.42" rot="R180"/>
+<instance part="C36" gate="C" x="35.56" y="-264.16"/>
+<instance part="R15" gate="R" x="45.72" y="-264.16"/>
+<instance part="GND53" gate="1" x="55.88" y="-264.16" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -15682,6 +15689,11 @@ all kinds in 0603 and 0402</description>
 <pinref part="C35" gate="C" pin="1"/>
 <pinref part="GND28" gate="1" pin="GND"/>
 <wire x1="10.16" y1="-386.08" x2="-5.08" y2="-386.08" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND53" gate="1" pin="GND"/>
+<pinref part="R15" gate="R" pin="2"/>
+<wire x1="53.34" y1="-264.16" x2="50.8" y2="-264.16" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -16153,14 +16165,18 @@ all kinds in 0603 and 0402</description>
 <net name="N$20" class="0">
 <segment>
 <pinref part="U$11" gate="G$1" pin="BAT"/>
-<wire x1="25.4" y1="-307.34" x2="25.4" y2="-256.54" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="-307.34" x2="25.4" y2="-264.16" width="0.1524" layer="91"/>
 <pinref part="NC-JP2" gate="G$1" pin="1"/>
+<wire x1="25.4" y1="-264.16" x2="25.4" y2="-256.54" width="0.1524" layer="91"/>
 <wire x1="25.4" y1="-256.54" x2="45.72" y2="-256.54" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="-256.54" x2="45.72" y2="-246.38" width="0.1524" layer="91"/>
 <pinref part="U$15" gate="G$1" pin="P$1"/>
 <wire x1="25.4" y1="-256.54" x2="17.78" y2="-256.54" width="0.1524" layer="91"/>
 <wire x1="17.78" y1="-256.54" x2="17.78" y2="-248.92" width="0.1524" layer="91"/>
 <junction x="25.4" y="-256.54"/>
+<pinref part="C36" gate="C" pin="1"/>
+<wire x1="33.02" y1="-264.16" x2="25.4" y2="-264.16" width="0.1524" layer="91"/>
+<junction x="25.4" y="-264.16"/>
 </segment>
 </net>
 <net name="VUSB_IN" class="0">
@@ -16941,6 +16957,13 @@ all kinds in 0603 and 0402</description>
 <pinref part="NC-UART" gate="A" pin="4"/>
 <wire x1="187.96" y1="251.46" x2="223.52" y2="251.46" width="0.1524" layer="91"/>
 <label x="193.04" y="251.46" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$54" class="0">
+<segment>
+<pinref part="R15" gate="R" pin="1"/>
+<pinref part="C36" gate="C" pin="2"/>
+<wire x1="40.64" y1="-264.16" x2="38.1" y2="-264.16" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

@@ -1,0 +1,28 @@
+open in Codecomposer
+import files from ccs_tirtos/tesla
+
+build n flash
+
+what theoretically works:
+RF RCV
+
+-the first tests failed, because I'm not sure what parameters i really need
+what i conciously set was:
+freq: 868Mhz (both-sides)
+modulation: gfsk (both-sides: but here I'm not sure if they mean the same)
+Sync-word: YSO-default xd391
+packet-length: 30 (decimal)
+
+settings can be found in the smartrf.c-file
+
+One thing may be a problem:
+on the YardStick i am only able to set a 16bit sync-word
+the cc13xx _seems_ to need 32bit
+
+
+what works:
+TI-Display
+
+what should work:
+UART (tested on windows: comes up as COM, putty-connection spits out some values)
+

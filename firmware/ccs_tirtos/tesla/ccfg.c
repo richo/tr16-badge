@@ -49,5 +49,17 @@
 
 #include <startup_files/ccfg.c>
 
-#define BOOTLOADER_ENABLE 0xC5
-#define BL_ENABLE 0xC5
+//#####################################
+// Bootloader settings
+//#####################################
+
+#undef SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE
+#undef SET_CCFG_BL_CONFIG_BL_LEVEL
+#undef SET_CCFG_BL_CONFIG_BL_PIN_NUMBER
+#undef SET_CCFG_BL_CONFIG_BL_ENABLE
+
+#define SET_CCFG_BL_CONFIG_BOOTLOADER_ENABLE            0xC5       // Enable ROM boot loader
+#define SET_CCFG_BL_CONFIG_BL_LEVEL                     0x1        // Active high to open boot loader backdoor
+#define SET_CCFG_BL_CONFIG_BL_PIN_NUMBER                0x14       // DIO number for boot loader backdoor
+#define SET_CCFG_BL_CONFIG_BL_ENABLE                    0xC5       // Enabled boot loader backdoor
+

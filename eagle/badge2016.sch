@@ -15119,6 +15119,13 @@ all kinds in 0603 and 0402</description>
 <part name="C36" library="we-rcl" deviceset="CAPACITOR" device="-1206" value="100µF"/>
 <part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R3"/>
 <part name="GND53" library="supply1" deviceset="GND" device=""/>
+<part name="NC_BOOTLOADER_BTN" library="ERNW_parts" deviceset="KSEM31G" device=""/>
+<part name="NC_BLBD_PD" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
+<part name="NC_BLBD_PU" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
+<part name="NC_BLBD_GND" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
+<part name="NC_BLBD_3V3" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
+<part name="GND59" library="supply1" deviceset="GND" device=""/>
+<part name="GND60" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15279,7 +15286,7 @@ all kinds in 0603 and 0402</description>
 <instance part="X4" gate="X" x="15.24" y="43.18"/>
 <instance part="X5" gate="X" x="114.3" y="45.72" rot="R180"/>
 <instance part="X6" gate="X" x="114.3" y="43.18" rot="R180"/>
-<instance part="X7" gate="X" x="114.3" y="40.64" rot="R180"/>
+<instance part="X7" gate="X" x="129.54" y="43.18" rot="R270"/>
 <instance part="X8" gate="X" x="-142.24" y="-269.24" rot="R90"/>
 <instance part="X9" gate="X" x="-142.24" y="-261.62" rot="R270"/>
 <instance part="X10" gate="X" x="-5.08" y="-292.1"/>
@@ -15306,6 +15313,13 @@ all kinds in 0603 and 0402</description>
 <instance part="C36" gate="C" x="35.56" y="-264.16"/>
 <instance part="R15" gate="R" x="45.72" y="-264.16"/>
 <instance part="GND53" gate="1" x="55.88" y="-264.16" rot="R90"/>
+<instance part="NC_BOOTLOADER_BTN" gate="G$1" x="170.18" y="12.7" rot="R180"/>
+<instance part="NC_BLBD_PD" gate="R" x="137.16" y="2.54" rot="R90"/>
+<instance part="NC_BLBD_PU" gate="R" x="144.78" y="2.54" rot="R90"/>
+<instance part="NC_BLBD_GND" gate="R" x="190.5" y="2.54" rot="R90"/>
+<instance part="NC_BLBD_3V3" gate="R" x="198.12" y="2.54" rot="R90"/>
+<instance part="GND59" gate="1" x="137.16" y="-10.16"/>
+<instance part="GND60" gate="1" x="190.5" y="-10.16"/>
 </instances>
 <busses>
 </busses>
@@ -15695,6 +15709,16 @@ all kinds in 0603 and 0402</description>
 <pinref part="R15" gate="R" pin="2"/>
 <wire x1="53.34" y1="-264.16" x2="50.8" y2="-264.16" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="NC_BLBD_PD" gate="R" pin="1"/>
+<pinref part="GND59" gate="1" pin="GND"/>
+<wire x1="137.16" y1="-2.54" x2="137.16" y2="-7.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="NC_BLBD_GND" gate="R" pin="1"/>
+<pinref part="GND60" gate="1" pin="GND"/>
+<wire x1="190.5" y1="-2.54" x2="190.5" y2="-7.62" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="3V3" class="0">
 <segment>
@@ -15821,6 +15845,16 @@ all kinds in 0603 and 0402</description>
 <junction x="226.06" y="-185.42"/>
 <wire x1="218.44" y1="-187.96" x2="218.44" y2="-185.42" width="0.1524" layer="91"/>
 <junction x="218.44" y="-185.42"/>
+</segment>
+<segment>
+<pinref part="NC_BLBD_PU" gate="R" pin="1"/>
+<wire x1="144.78" y1="-2.54" x2="144.78" y2="-10.16" width="0.1524" layer="91"/>
+<label x="144.78" y="-7.62" size="1.778" layer="95" rot="R90"/>
+</segment>
+<segment>
+<pinref part="NC_BLBD_3V3" gate="R" pin="1"/>
+<wire x1="198.12" y1="-2.54" x2="198.12" y2="-10.16" width="0.1524" layer="91"/>
+<label x="198.12" y="-7.62" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -16873,11 +16907,27 @@ all kinds in 0603 and 0402</description>
 <wire x1="111.76" y1="43.18" x2="91.44" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$38" class="0">
+<net name="BOOTLOADER_BACKDOOR" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="DIO_20"/>
 <pinref part="X7" gate="X" pin="P"/>
-<wire x1="91.44" y1="40.64" x2="111.76" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="40.64" x2="129.54" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="129.54" y1="40.64" x2="137.16" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="40.64" x2="137.16" y2="15.24" width="0.1524" layer="91"/>
+<junction x="129.54" y="40.64"/>
+<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="B2"/>
+<wire x1="137.16" y1="15.24" x2="144.78" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="NC_BLBD_PD" gate="R" pin="2"/>
+<wire x1="144.78" y1="15.24" x2="157.48" y2="15.24" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="15.24" x2="137.16" y2="7.62" width="0.1524" layer="91"/>
+<junction x="137.16" y="15.24"/>
+<pinref part="NC_BLBD_PU" gate="R" pin="2"/>
+<wire x1="144.78" y1="15.24" x2="144.78" y2="7.62" width="0.1524" layer="91"/>
+<junction x="144.78" y="15.24"/>
+<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="B1"/>
+<wire x1="157.48" y1="15.24" x2="157.48" y2="10.16" width="0.1524" layer="91"/>
+<junction x="157.48" y="15.24"/>
+<label x="96.52" y="40.64" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$40" class="0">
@@ -16964,6 +17014,21 @@ all kinds in 0603 and 0402</description>
 <pinref part="R15" gate="R" pin="1"/>
 <pinref part="C36" gate="C" pin="2"/>
 <wire x1="40.64" y1="-264.16" x2="38.1" y2="-264.16" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$55" class="0">
+<segment>
+<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="A1"/>
+<pinref part="NC_BLBD_GND" gate="R" pin="2"/>
+<wire x1="182.88" y1="10.16" x2="190.5" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="10.16" x2="190.5" y2="7.62" width="0.1524" layer="91"/>
+<pinref part="NC_BLBD_3V3" gate="R" pin="2"/>
+<wire x1="190.5" y1="10.16" x2="198.12" y2="10.16" width="0.1524" layer="91"/>
+<wire x1="198.12" y1="10.16" x2="198.12" y2="7.62" width="0.1524" layer="91"/>
+<junction x="190.5" y="10.16"/>
+<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="A2"/>
+<wire x1="182.88" y1="15.24" x2="182.88" y2="10.16" width="0.1524" layer="91"/>
+<junction x="182.88" y="10.16"/>
 </segment>
 </net>
 </nets>

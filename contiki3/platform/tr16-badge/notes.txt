@@ -1,0 +1,2 @@
+button-sensor.c anpassen oder löschen
+flash-speicher...pins einpflegen

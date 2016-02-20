@@ -19,4 +19,29 @@ For more information, see the Contiki website:
 [http://contiki-os.org](http://contiki-os.org)
 
 
+
+#Setup Virtualenv
+
+virtualenv2 venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+
+#Build Hello world
+
+cd examples/hello-world/
+
 make TARGET=tr16-badge BOARD=badge/cc13xx
+
+
+#flash
+
+cd ../../
+./flasher.py -p /dev/ttyUSB0 -e -w -v examples/hello-world/hello-world.bin
+
+
+#connect to uart
+
+minicom -D /dev/ttyUSB0

@@ -201,35 +201,50 @@ main(void)
   printf(" RDC: ");
   printf("%s", NETSTACK_RDC.name);
 
+  printf("before rf-netstack\n");
+
   if(NETSTACK_RDC.channel_check_interval() != 0) {
     printf(", Channel Check Interval: %u ticks",
            NETSTACK_RDC.channel_check_interval());
   }
   printf("\n");
 
+  printf("before rf-netstack\n");
+
   netstack_init();
+
+  printf("before rf-params\n");
 
   set_rf_params();
 
 #if NETSTACK_CONF_WITH_IPV6
+  printf("before memcpy\n");
   memcpy(&uip_lladdr.addr, &linkaddr_node_addr, sizeof(uip_lladdr.addr));
+
   queuebuf_init();
   process_start(&tcpip_process, NULL);
 #endif /* NETSTACK_CONF_WITH_IPV6 */
 
 //  fade(LEDS_GREEN);
 
+  printf("before process_start\n");
   process_start(&sensors_process, NULL);
+
+  printf("before autostart\n");
 
   autostart_start(autostart_processes);
 
+  printf("before watchdog\n");
   watchdog_start();
 
 //  fade(LEDS_ORANGE);
+  printf("before loop\n");
 
   while(1) {
     uint8_t r;
+    printf("uart\n");
     do {
+      printf("check r uart\n");
       r = process_run();
       watchdog_periodic();
     } while(r > 0);

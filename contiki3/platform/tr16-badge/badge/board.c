@@ -41,6 +41,7 @@
 #include "lpm.h"
 #include "prcm.h"
 #include "hw_sysctl.h"
+#include "pwm.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -83,6 +84,9 @@ board_init()
   if(!int_disabled) {
     ti_lib_int_master_enable();
   }
+  
+  /* Init of PWM */
+  pwm_init();
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

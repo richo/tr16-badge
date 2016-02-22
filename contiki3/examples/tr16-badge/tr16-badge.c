@@ -41,6 +41,7 @@
 #include <stdio.h> /* For printf() */
 #include "button-sensor.h"
 #include "ti-lib.h"
+#include "pwm.h"
 
 #include "sys/clock.h"
 #include "sys/rtimer.h"
@@ -118,7 +119,7 @@ PROCESS_THREAD(clock_test_process, ev, data)
   ti_lib_gpio_pin_write(IOID_22, 1);
 
 
-  printf("set pwm\n");
+  //printf("set pwm\n");
   pwm_start(120); // 120 => 40mA
                   //  60 => 32mA
                   // without PWM =48mA

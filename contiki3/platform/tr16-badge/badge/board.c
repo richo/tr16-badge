@@ -33,7 +33,7 @@
  * @{
  *
  * \file
- *  Board-initialisation for the Srf06EB with a CC13xx/CC26xx EM.
+ *  Board-initialisation for the TR16 Badge.
  */
 /*---------------------------------------------------------------------------*/
 #include "contiki-conf.h"
@@ -42,6 +42,7 @@
 #include "prcm.h"
 #include "hw_sysctl.h"
 #include "pwm.h"
+#include "ext-flash.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -84,9 +85,13 @@ board_init()
   if(!int_disabled) {
     ti_lib_int_master_enable();
   }
-  
+
   /* Init of PWM */
   pwm_init();
+  
+  /* Make sure the external flash is in the lower power mode */
+  ext_flash_init();
+
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

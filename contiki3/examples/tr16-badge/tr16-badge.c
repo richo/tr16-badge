@@ -42,6 +42,7 @@
 #include "button-sensor.h"
 #include "ti-lib.h"
 #include "pwm.h"
+#include "ext-flash.h"
 
 #include "sys/clock.h"
 #include "sys/rtimer.h"
@@ -124,6 +125,8 @@ PROCESS_THREAD(clock_test_process, ev, data)
                   //  60 => 32mA
                   // without PWM =48mA
 
+  /* TEST */
+  ext_flash_open();
  
   PROCESS_YIELD();
 

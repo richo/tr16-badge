@@ -73,7 +73,7 @@ pwm_start(int freq)
   while(!ti_lib_prcm_load_get());
 
   /* Drive the I/O ID with GPT0 / Timer A */
-  ti_lib_ioc_port_configure_set(BOARD_IOID_PWM, IOC_PORT_MCU_PORT_EVENT0,
+  ti_lib_ioc_port_configure_set(BOARD_IOID_LCD_PWM, IOC_PORT_MCU_PORT_EVENT0,
                                 IOC_STD_OUTPUT);
 
   /* GPT0 / Timer A: PWM, Interrupt Enable */
@@ -136,8 +136,8 @@ pwm_stop()
   while(!ti_lib_prcm_load_get());
 
   /* Un-configure the pin */
-  ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_PWM);
-  ti_lib_ioc_io_input_set(BOARD_IOID_PWM, IOC_INPUT_DISABLE);
+  ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_LCD_PWM);
+  ti_lib_ioc_io_input_set(BOARD_IOID_LCD_PWM, IOC_INPUT_DISABLE);
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

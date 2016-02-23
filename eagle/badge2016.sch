@@ -11,6 +11,16 @@
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
 <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
+<layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+<layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+<layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+<layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+<layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+<layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+<layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
+<layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
+<layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
+<layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
 <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
 <layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -433,6 +443,42 @@
 <wire x1="10.16" y1="-1.27" x2="10.16" y2="1.27" width="0.127" layer="1"/>
 <wire x1="10.16" y1="1.27" x2="-1.27" y2="1.27" width="0.127" layer="1"/>
 </package>
+<package name="YELLOW_BUSH">
+<wire x1="0" y1="1" x2="-1" y2="0" width="0.127" layer="1"/>
+<wire x1="-1" y1="0" x2="0" y2="-1" width="0.127" layer="1"/>
+<wire x1="0" y1="0" x2="-0.25" y2="0" width="0.127" layer="1"/>
+<wire x1="0.5" y1="1" x2="0.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="0.5" y1="-1" x2="2.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="0.5" y1="1" x2="2.5" y2="1" width="0.127" layer="1"/>
+<wire x1="2.5" y1="1" x2="2.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="3" y1="1" x2="3" y2="-1" width="0.127" layer="1"/>
+<wire x1="3" y1="-1" x2="5" y2="-1" width="0.127" layer="1"/>
+<wire x1="5.5" y1="1" x2="5.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="5.5" y1="-1" x2="7.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="8" y1="-1" x2="8" y2="1" width="0.127" layer="1"/>
+<wire x1="8" y1="1" x2="10" y2="1" width="0.127" layer="1"/>
+<wire x1="8" y1="-1" x2="10" y2="-1" width="0.127" layer="1"/>
+<wire x1="4.75" y1="0" x2="4.25" y2="0" width="0.127" layer="1"/>
+<wire x1="7.25" y1="0" x2="6.75" y2="0" width="0.127" layer="1"/>
+<wire x1="9.75" y1="0" x2="9.25" y2="0" width="0.127" layer="1"/>
+<wire x1="10.5" y1="1" x2="11.5" y2="0" width="0.127" layer="1"/>
+<wire x1="11.5" y1="0" x2="12.5" y2="1" width="0.127" layer="1"/>
+<wire x1="11.5" y1="1" x2="11.5" y2="0.75" width="0.127" layer="1"/>
+<wire x1="13.5" y1="1" x2="13.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="13.5" y1="-1" x2="15.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="15.5" y1="-1" x2="15.5" y2="1" width="0.127" layer="1"/>
+<wire x1="16" y1="0" x2="17" y2="1" width="0.127" layer="1"/>
+<wire x1="16" y1="0" x2="17" y2="-1" width="0.127" layer="1"/>
+<wire x1="17.5" y1="1" x2="18.5" y2="0" width="0.127" layer="1"/>
+<wire x1="18.5" y1="0" x2="19.5" y2="1" width="0.127" layer="1"/>
+<wire x1="20" y1="1" x2="20" y2="-1" width="0.127" layer="1"/>
+<wire x1="20" y1="1" x2="22" y2="1" width="0.127" layer="1"/>
+<wire x1="22" y1="1" x2="22" y2="-1" width="0.127" layer="1"/>
+<wire x1="-1.75" y1="1.75" x2="23" y2="1.75" width="0.127" layer="1"/>
+<wire x1="23" y1="1.75" x2="23" y2="-1.75" width="0.127" layer="1"/>
+<wire x1="23" y1="-1.75" x2="-1.75" y2="-1.75" width="0.127" layer="1"/>
+<wire x1="-1.75" y1="-1.75" x2="-1.75" y2="1.75" width="0.127" layer="1"/>
+</package>
 </packages>
 <symbols>
 <symbol name="CC1310F128RGZ">
@@ -654,6 +700,13 @@ PIGPEN</text>
 <wire x1="-7.62" y1="-2.54" x2="10.16" y2="-2.54" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-2.54" x2="10.16" y2="7.62" width="0.254" layer="94"/>
 <wire x1="10.16" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+</symbol>
+<symbol name="YELLOW_BUSH">
+<text x="-5.08" y="0" size="1.27" layer="94">YELLOW BUSH</text>
+<wire x1="-10.16" y1="5.08" x2="-10.16" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="-5.08" x2="12.7" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-5.08" x2="12.7" y2="5.08" width="0.254" layer="94"/>
+<wire x1="12.7" y1="5.08" x2="-10.16" y2="5.08" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -931,6 +984,18 @@ TE CONNECTIVITY SMA Str PCB Skt GZD
 </gates>
 <devices>
 <device name="" package="TR_PIGPEN">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="YELLOW_BUSH">
+<gates>
+<gate name="G$1" symbol="YELLOW_BUSH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="YELLOW_BUSH">
 <technologies>
 <technology name=""/>
 </technologies>
@@ -14440,7 +14505,6 @@ all kinds in 0603 and 0402</description>
 </deviceset>
 <deviceset name="CAPACITOR" prefix="C" uservalue="yes">
 <description>Capacitors&lt;br&gt;
-&lt;br&gt;
 ...4.7uF @ 6.3V -&gt; 0402&lt;br&gt;
 ...10uF @ 16V -&gt; 0603&lt;br&gt;
 ...22uF @ 25V -&gt; 0805&lt;br&gt;</description>
@@ -14950,7 +15014,7 @@ all kinds in 0603 and 0402</description>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" deviceset="GND" device=""/>
-<part name="L1" library="we-rcl" deviceset="INDUCTOR" device="-0402" value="6.8µH"/>
+<part name="L1" library="we-rcl" deviceset="INDUCTOR" device="-0603" value="6.8µH"/>
 <part name="C6" library="we-rcl" deviceset="CAPACITOR" device="-0603" value="22µF"/>
 <part name="C7" library="we-rcl" deviceset="CAPACITOR" device="-0603" value="22µF"/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
@@ -15037,13 +15101,13 @@ all kinds in 0603 and 0402</description>
 <part name="GND43" library="supply1" deviceset="GND" device=""/>
 <part name="R11" library="we-rcl" deviceset="RESISTOR" device="-0402" value="100k"/>
 <part name="Q2" library="transistor-pnp" deviceset="BC857*" device="SMD" technology="ALT1"/>
-<part name="NC-U$13" library="ERNW_parts" deviceset="KSEM31G" device=""/>
+<part name="BTN_RESET" library="ERNW_parts" deviceset="KSEM31G" device=""/>
 <part name="GND31" library="supply1" deviceset="GND" device=""/>
 <part name="GND45" library="supply1" deviceset="GND" device=""/>
 <part name="R12" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R"/>
-<part name="R13" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
+<part name="NC_R13" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
 <part name="GND46" library="supply1" deviceset="GND" device=""/>
-<part name="R14" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R"/>
+<part name="NC_R14" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R"/>
 <part name="NC-IC3" library="microchip" deviceset="24*" device="SN" technology="AA01"/>
 <part name="GND47" library="supply1" deviceset="GND" device=""/>
 <part name="GND48" library="supply1" deviceset="GND" device=""/>
@@ -15093,11 +15157,7 @@ all kinds in 0603 and 0402</description>
 <part name="X5" library="we-rcl" deviceset="PAD" device="-0.5"/>
 <part name="X6" library="we-rcl" deviceset="PAD" device="-0.5"/>
 <part name="X7" library="we-rcl" deviceset="PAD" device="-0.5"/>
-<part name="X8" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
-<part name="X9" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="X10" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
-<part name="X11" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
-<part name="GND35" library="supply1" deviceset="GND" device=""/>
 <part name="X12" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="X13" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="X14" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
@@ -15119,13 +15179,10 @@ all kinds in 0603 and 0402</description>
 <part name="C36" library="we-rcl" deviceset="CAPACITOR" device="-1206" value="100µF"/>
 <part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R3"/>
 <part name="GND53" library="supply1" deviceset="GND" device=""/>
-<part name="NC_BOOTLOADER_BTN" library="ERNW_parts" deviceset="KSEM31G" device=""/>
-<part name="NC_BLBD_PD" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
-<part name="NC_BLBD_PU" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
-<part name="NC_BLBD_GND" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
-<part name="NC_BLBD_3V3" library="we-rcl" deviceset="RESISTOR" device="-0402"/>
+<part name="BOOTLOADER_BTN" library="ERNW_parts" deviceset="KSEM31G" device=""/>
+<part name="B_LOADER_PDWN" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
 <part name="GND59" library="supply1" deviceset="GND" device=""/>
-<part name="GND60" library="supply1" deviceset="GND" device=""/>
+<part name="U$7" library="ERNW_parts" deviceset="YELLOW_BUSH" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -15231,13 +15288,13 @@ all kinds in 0603 and 0402</description>
 <instance part="GND43" gate="1" x="-137.16" y="-284.48"/>
 <instance part="R11" gate="R" x="25.4" y="-373.38" rot="R90"/>
 <instance part="Q2" gate="G$1" x="279.4" y="50.8" rot="R90"/>
-<instance part="NC-U$13" gate="G$1" x="101.6" y="106.68" rot="R90"/>
+<instance part="BTN_RESET" gate="G$1" x="101.6" y="106.68" rot="R90"/>
 <instance part="GND31" gate="1" x="104.14" y="129.54" rot="R180"/>
 <instance part="GND45" gate="1" x="27.94" y="-358.14"/>
 <instance part="R12" gate="R" x="-53.34" y="-314.96" rot="R270"/>
-<instance part="R13" gate="R" x="-53.34" y="-337.82" rot="R270"/>
+<instance part="NC_R13" gate="R" x="-53.34" y="-337.82" rot="R270"/>
 <instance part="GND46" gate="1" x="-53.34" y="-299.72" rot="R180"/>
-<instance part="R14" gate="R" x="-17.78" y="-325.12"/>
+<instance part="NC_R14" gate="R" x="-17.78" y="-325.12"/>
 <instance part="NC-IC3" gate="G$1" x="279.4" y="-149.86"/>
 <instance part="GND47" gate="1" x="287.02" y="-170.18"/>
 <instance part="GND48" gate="1" x="243.84" y="-144.78" rot="R270"/>
@@ -15287,11 +15344,7 @@ all kinds in 0603 and 0402</description>
 <instance part="X5" gate="X" x="114.3" y="45.72" rot="R180"/>
 <instance part="X6" gate="X" x="114.3" y="43.18" rot="R180"/>
 <instance part="X7" gate="X" x="129.54" y="43.18" rot="R270"/>
-<instance part="X8" gate="X" x="-142.24" y="-269.24" rot="R90"/>
-<instance part="X9" gate="X" x="-142.24" y="-261.62" rot="R270"/>
 <instance part="X10" gate="X" x="-5.08" y="-292.1"/>
-<instance part="X11" gate="X" x="-111.76" y="-304.8" rot="R90"/>
-<instance part="GND35" gate="1" x="-111.76" y="-294.64" rot="R180"/>
 <instance part="X12" gate="X" x="127" y="-337.82" rot="R90"/>
 <instance part="X13" gate="X" x="127" y="-325.12" rot="R270"/>
 <instance part="X14" gate="X" x="177.8" y="50.8" rot="R270"/>
@@ -15313,13 +15366,10 @@ all kinds in 0603 and 0402</description>
 <instance part="C36" gate="C" x="35.56" y="-264.16"/>
 <instance part="R15" gate="R" x="45.72" y="-264.16"/>
 <instance part="GND53" gate="1" x="55.88" y="-264.16" rot="R90"/>
-<instance part="NC_BOOTLOADER_BTN" gate="G$1" x="170.18" y="12.7" rot="R180"/>
-<instance part="NC_BLBD_PD" gate="R" x="137.16" y="2.54" rot="R90"/>
-<instance part="NC_BLBD_PU" gate="R" x="144.78" y="2.54" rot="R90"/>
-<instance part="NC_BLBD_GND" gate="R" x="190.5" y="2.54" rot="R90"/>
-<instance part="NC_BLBD_3V3" gate="R" x="198.12" y="2.54" rot="R90"/>
+<instance part="BOOTLOADER_BTN" gate="G$1" x="170.18" y="12.7" rot="R180"/>
+<instance part="B_LOADER_PDWN" gate="R" x="137.16" y="2.54" rot="R90"/>
 <instance part="GND59" gate="1" x="137.16" y="-10.16"/>
-<instance part="GND60" gate="1" x="190.5" y="-10.16"/>
+<instance part="U$7" gate="G$1" x="-50.8" y="-149.86"/>
 </instances>
 <busses>
 </busses>
@@ -15528,8 +15578,8 @@ all kinds in 0603 and 0402</description>
 <wire x1="-137.16" y1="-251.46" x2="-137.16" y2="-248.92" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="NC-U$13" gate="G$1" pin="B2"/>
-<pinref part="NC-U$13" gate="G$1" pin="B1"/>
+<pinref part="BTN_RESET" gate="G$1" pin="B2"/>
+<pinref part="BTN_RESET" gate="G$1" pin="B1"/>
 <wire x1="104.14" y1="119.38" x2="99.06" y2="119.38" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="119.38" x2="104.14" y2="127" width="0.1524" layer="91"/>
 <junction x="104.14" y="119.38"/>
@@ -15541,9 +15591,9 @@ all kinds in 0603 and 0402</description>
 <wire x1="27.94" y1="-355.6" x2="27.94" y2="-353.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
+<pinref part="GND46" gate="1" pin="GND"/>
 <pinref part="R12" gate="R" pin="1"/>
 <wire x1="-53.34" y1="-309.88" x2="-53.34" y2="-302.26" width="0.1524" layer="91"/>
-<pinref part="GND46" gate="1" pin="GND"/>
 </segment>
 <segment>
 <pinref part="GND47" gate="1" pin="GND"/>
@@ -15690,11 +15740,6 @@ all kinds in 0603 and 0402</description>
 <wire x1="27.94" y1="-251.46" x2="27.94" y2="-248.92" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="GND35" gate="1" pin="GND"/>
-<pinref part="X11" gate="X" pin="P"/>
-<wire x1="-111.76" y1="-297.18" x2="-111.76" y2="-302.26" width="0.1524" layer="91"/>
-</segment>
-<segment>
 <pinref part="NC_LED2" gate="D" pin="C"/>
 <pinref part="GND52" gate="1" pin="GND"/>
 <wire x1="-193.04" y1="-497.84" x2="-193.04" y2="-502.92" width="0.1524" layer="91"/>
@@ -15710,14 +15755,9 @@ all kinds in 0603 and 0402</description>
 <wire x1="53.34" y1="-264.16" x2="50.8" y2="-264.16" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="NC_BLBD_PD" gate="R" pin="1"/>
+<pinref part="B_LOADER_PDWN" gate="R" pin="1"/>
 <pinref part="GND59" gate="1" pin="GND"/>
 <wire x1="137.16" y1="-2.54" x2="137.16" y2="-7.62" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="NC_BLBD_GND" gate="R" pin="1"/>
-<pinref part="GND60" gate="1" pin="GND"/>
-<wire x1="190.5" y1="-2.54" x2="190.5" y2="-7.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3V3" class="0">
@@ -15847,14 +15887,13 @@ all kinds in 0603 and 0402</description>
 <junction x="218.44" y="-185.42"/>
 </segment>
 <segment>
-<pinref part="NC_BLBD_PU" gate="R" pin="1"/>
-<wire x1="144.78" y1="-2.54" x2="144.78" y2="-10.16" width="0.1524" layer="91"/>
-<label x="144.78" y="-7.62" size="1.778" layer="95" rot="R90"/>
-</segment>
-<segment>
-<pinref part="NC_BLBD_3V3" gate="R" pin="1"/>
-<wire x1="198.12" y1="-2.54" x2="198.12" y2="-10.16" width="0.1524" layer="91"/>
 <label x="198.12" y="-7.62" size="1.778" layer="95" rot="R90"/>
+<pinref part="BOOTLOADER_BTN" gate="G$1" pin="A1"/>
+<wire x1="182.88" y1="10.16" x2="198.12" y2="10.16" width="0.1524" layer="91"/>
+<pinref part="BOOTLOADER_BTN" gate="G$1" pin="A2"/>
+<wire x1="182.88" y1="15.24" x2="182.88" y2="10.16" width="0.1524" layer="91"/>
+<junction x="182.88" y="10.16"/>
+<wire x1="198.12" y1="-10.16" x2="198.12" y2="10.16" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -16007,9 +16046,9 @@ all kinds in 0603 and 0402</description>
 <label x="93.98" y="53.34" size="1.778" layer="95"/>
 <label x="104.14" y="78.74" size="1.778" layer="95" rot="R90"/>
 <wire x1="104.14" y1="93.98" x2="104.14" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="NC-U$13" gate="G$1" pin="A2"/>
+<pinref part="BTN_RESET" gate="G$1" pin="A2"/>
 <junction x="104.14" y="93.98"/>
-<pinref part="NC-U$13" gate="G$1" pin="A1"/>
+<pinref part="BTN_RESET" gate="G$1" pin="A1"/>
 <wire x1="104.14" y1="93.98" x2="99.06" y2="93.98" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -16391,7 +16430,7 @@ all kinds in 0603 and 0402</description>
 <junction x="58.42" y="-332.74"/>
 </segment>
 <segment>
-<pinref part="R13" gate="R" pin="2"/>
+<pinref part="NC_R13" gate="R" pin="2"/>
 <wire x1="-53.34" y1="-342.9" x2="-53.34" y2="-353.06" width="0.1524" layer="91"/>
 <label x="-55.88" y="-345.44" size="1.778" layer="95" rot="R270"/>
 </segment>
@@ -16467,29 +16506,23 @@ all kinds in 0603 and 0402</description>
 <net name="N$32" class="0">
 <segment>
 <pinref part="J1" gate="J" pin="D-"/>
-<wire x1="-162.56" y1="-264.16" x2="-142.24" y2="-264.16" width="0.1524" layer="91"/>
+<wire x1="-162.56" y1="-264.16" x2="-137.16" y2="-264.16" width="0.1524" layer="91"/>
 <pinref part="R9" gate="R" pin="1"/>
 <pinref part="C33" gate="C" pin="2"/>
-<wire x1="-142.24" y1="-264.16" x2="-137.16" y2="-264.16" width="0.1524" layer="91"/>
 <wire x1="-137.16" y1="-264.16" x2="-129.54" y2="-264.16" width="0.1524" layer="91"/>
 <wire x1="-137.16" y1="-264.16" x2="-137.16" y2="-256.54" width="0.1524" layer="91"/>
 <junction x="-137.16" y="-264.16"/>
-<pinref part="X9" gate="X" pin="P"/>
-<junction x="-142.24" y="-264.16"/>
 </segment>
 </net>
 <net name="N$25" class="0">
 <segment>
 <pinref part="J1" gate="J" pin="D+"/>
-<wire x1="-162.56" y1="-266.7" x2="-142.24" y2="-266.7" width="0.1524" layer="91"/>
+<wire x1="-162.56" y1="-266.7" x2="-137.16" y2="-266.7" width="0.1524" layer="91"/>
 <pinref part="R10" gate="R" pin="1"/>
 <pinref part="C34" gate="C" pin="1"/>
-<wire x1="-142.24" y1="-266.7" x2="-137.16" y2="-266.7" width="0.1524" layer="91"/>
 <wire x1="-137.16" y1="-266.7" x2="-116.84" y2="-266.7" width="0.1524" layer="91"/>
 <wire x1="-137.16" y1="-271.78" x2="-137.16" y2="-266.7" width="0.1524" layer="91"/>
 <junction x="-137.16" y="-266.7"/>
-<pinref part="X8" gate="X" pin="P"/>
-<junction x="-142.24" y="-266.7"/>
 </segment>
 </net>
 <net name="DM" class="0">
@@ -16550,31 +16583,22 @@ all kinds in 0603 and 0402</description>
 <label x="63.5" y="-5.08" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="N$22" class="0">
-<segment>
-<pinref part="U$11" gate="G$1" pin="FSEL"/>
-<wire x1="0" y1="-327.66" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
-<pinref part="R12" gate="R" pin="2"/>
-<wire x1="-53.34" y1="-320.04" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
-<pinref part="R13" gate="R" pin="1"/>
-<wire x1="-53.34" y1="-332.74" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
-<junction x="-53.34" y="-327.66"/>
-</segment>
-</net>
 <net name="N$30" class="0">
 <segment>
 <pinref part="U$11" gate="G$1" pin="HPWR"/>
-<wire x1="-12.7" y1="-325.12" x2="0" y2="-325.12" width="0.1524" layer="91"/>
-<pinref part="R14" gate="R" pin="2"/>
-</segment>
-</net>
-<net name="N$33" class="0">
-<segment>
-<pinref part="R14" gate="R" pin="1"/>
+<wire x1="-12.7" y1="-325.12" x2="-10.16" y2="-325.12" width="0.1524" layer="91"/>
+<pinref part="NC_R14" gate="R" pin="2"/>
+<pinref part="NC_R14" gate="R" pin="1"/>
+<wire x1="-10.16" y1="-325.12" x2="0" y2="-325.12" width="0.1524" layer="91"/>
 <wire x1="-22.86" y1="-325.12" x2="-25.4" y2="-325.12" width="0.1524" layer="91"/>
 <pinref part="U$11" gate="G$1" pin="PGOOD"/>
 <wire x1="-25.4" y1="-325.12" x2="-25.4" y2="-332.74" width="0.1524" layer="91"/>
 <wire x1="-25.4" y1="-332.74" x2="0" y2="-332.74" width="0.1524" layer="91"/>
+<wire x1="-25.4" y1="-325.12" x2="-25.4" y2="-317.5" width="0.1524" layer="91"/>
+<junction x="-25.4" y="-325.12"/>
+<wire x1="-25.4" y1="-317.5" x2="-10.16" y2="-317.5" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="-325.12" x2="-10.16" y2="-317.5" width="0.1524" layer="91"/>
+<junction x="-10.16" y="-325.12"/>
 </segment>
 </net>
 <net name="D_IRQ" class="0">
@@ -16915,16 +16939,12 @@ all kinds in 0603 and 0402</description>
 <wire x1="129.54" y1="40.64" x2="137.16" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="40.64" x2="137.16" y2="15.24" width="0.1524" layer="91"/>
 <junction x="129.54" y="40.64"/>
-<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="B2"/>
-<wire x1="137.16" y1="15.24" x2="144.78" y2="15.24" width="0.1524" layer="91"/>
-<pinref part="NC_BLBD_PD" gate="R" pin="2"/>
-<wire x1="144.78" y1="15.24" x2="157.48" y2="15.24" width="0.1524" layer="91"/>
+<pinref part="BOOTLOADER_BTN" gate="G$1" pin="B2"/>
+<pinref part="B_LOADER_PDWN" gate="R" pin="2"/>
+<wire x1="137.16" y1="15.24" x2="157.48" y2="15.24" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="15.24" x2="137.16" y2="7.62" width="0.1524" layer="91"/>
 <junction x="137.16" y="15.24"/>
-<pinref part="NC_BLBD_PU" gate="R" pin="2"/>
-<wire x1="144.78" y1="15.24" x2="144.78" y2="7.62" width="0.1524" layer="91"/>
-<junction x="144.78" y="15.24"/>
-<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="B1"/>
+<pinref part="BOOTLOADER_BTN" gate="G$1" pin="B1"/>
 <wire x1="157.48" y1="15.24" x2="157.48" y2="10.16" width="0.1524" layer="91"/>
 <junction x="157.48" y="15.24"/>
 <label x="96.52" y="40.64" size="1.778" layer="95"/>
@@ -17016,19 +17036,15 @@ all kinds in 0603 and 0402</description>
 <wire x1="40.64" y1="-264.16" x2="38.1" y2="-264.16" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$55" class="0">
+<net name="N$22" class="0">
 <segment>
-<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="A1"/>
-<pinref part="NC_BLBD_GND" gate="R" pin="2"/>
-<wire x1="182.88" y1="10.16" x2="190.5" y2="10.16" width="0.1524" layer="91"/>
-<wire x1="190.5" y1="10.16" x2="190.5" y2="7.62" width="0.1524" layer="91"/>
-<pinref part="NC_BLBD_3V3" gate="R" pin="2"/>
-<wire x1="190.5" y1="10.16" x2="198.12" y2="10.16" width="0.1524" layer="91"/>
-<wire x1="198.12" y1="10.16" x2="198.12" y2="7.62" width="0.1524" layer="91"/>
-<junction x="190.5" y="10.16"/>
-<pinref part="NC_BOOTLOADER_BTN" gate="G$1" pin="A2"/>
-<wire x1="182.88" y1="15.24" x2="182.88" y2="10.16" width="0.1524" layer="91"/>
-<junction x="182.88" y="10.16"/>
+<pinref part="U$11" gate="G$1" pin="FSEL"/>
+<wire x1="0" y1="-327.66" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
+<pinref part="R12" gate="R" pin="2"/>
+<pinref part="NC_R13" gate="R" pin="1"/>
+<wire x1="-53.34" y1="-320.04" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="-332.74" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
+<junction x="-53.34" y="-327.66"/>
 </segment>
 </net>
 </nets>

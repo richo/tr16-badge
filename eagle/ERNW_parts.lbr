@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="mm" unit="mm" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
@@ -964,8 +964,6 @@ Source: http://www.st.com/stonline/products/literature/ds/11020.pdf</description
 <wire x1="6.45" y1="0" x2="-0.3" y2="0" width="0.127" layer="1"/>
 </package>
 <package name="TR_PIGPEN">
-<wire x1="0" y1="0" x2="-0.45" y2="0.45" width="0.15" layer="1"/>
-<wire x1="0" y1="0" x2="-0.45" y2="-0.45" width="0.15" layer="1"/>
 <wire x1="0.45" y1="0.45" x2="0.45" y2="-0.45" width="0.15" layer="1"/>
 <wire x1="0.45" y1="0.45" x2="1.35" y2="0.45" width="0.15" layer="1"/>
 <wire x1="0.9" y1="0" x2="1.05" y2="0" width="0.15" layer="1"/>
@@ -993,6 +991,45 @@ Source: http://www.st.com/stonline/products/literature/ds/11020.pdf</description
 <wire x1="-1.27" y1="-1.27" x2="10.16" y2="-1.27" width="0.127" layer="1"/>
 <wire x1="10.16" y1="-1.27" x2="10.16" y2="1.27" width="0.127" layer="1"/>
 <wire x1="10.16" y1="1.27" x2="-1.27" y2="1.27" width="0.127" layer="1"/>
+<wire x1="0" y1="0.5" x2="-0.5" y2="0" width="0.127" layer="1"/>
+<wire x1="-0.5" y1="0" x2="0" y2="-0.5" width="0.127" layer="1"/>
+<wire x1="0" y1="0" x2="-0.25" y2="0" width="0.127" layer="1"/>
+</package>
+<package name="YELLOW_BUSH">
+<wire x1="0" y1="1" x2="-1" y2="0" width="0.127" layer="1"/>
+<wire x1="-1" y1="0" x2="0" y2="-1" width="0.127" layer="1"/>
+<wire x1="0" y1="0" x2="-0.25" y2="0" width="0.127" layer="1"/>
+<wire x1="0.5" y1="1" x2="0.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="0.5" y1="-1" x2="2.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="0.5" y1="1" x2="2.5" y2="1" width="0.127" layer="1"/>
+<wire x1="2.5" y1="1" x2="2.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="3" y1="1" x2="3" y2="-1" width="0.127" layer="1"/>
+<wire x1="3" y1="-1" x2="5" y2="-1" width="0.127" layer="1"/>
+<wire x1="5.5" y1="1" x2="5.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="5.5" y1="-1" x2="7.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="8" y1="-1" x2="8" y2="1" width="0.127" layer="1"/>
+<wire x1="8" y1="1" x2="10" y2="1" width="0.127" layer="1"/>
+<wire x1="8" y1="-1" x2="10" y2="-1" width="0.127" layer="1"/>
+<wire x1="4.75" y1="0" x2="4.25" y2="0" width="0.127" layer="1"/>
+<wire x1="7.25" y1="0" x2="6.75" y2="0" width="0.127" layer="1"/>
+<wire x1="9.75" y1="0" x2="9.25" y2="0" width="0.127" layer="1"/>
+<wire x1="10.5" y1="1" x2="11.5" y2="0" width="0.127" layer="1"/>
+<wire x1="11.5" y1="0" x2="12.5" y2="1" width="0.127" layer="1"/>
+<wire x1="11.5" y1="1" x2="11.5" y2="0.75" width="0.127" layer="1"/>
+<wire x1="13.5" y1="1" x2="13.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="13.5" y1="-1" x2="15.5" y2="-1" width="0.127" layer="1"/>
+<wire x1="15.5" y1="-1" x2="15.5" y2="1" width="0.127" layer="1"/>
+<wire x1="16" y1="0" x2="17" y2="1" width="0.127" layer="1"/>
+<wire x1="16" y1="0" x2="17" y2="-1" width="0.127" layer="1"/>
+<wire x1="17.5" y1="1" x2="18.5" y2="0" width="0.127" layer="1"/>
+<wire x1="18.5" y1="0" x2="19.5" y2="1" width="0.127" layer="1"/>
+<wire x1="20" y1="1" x2="20" y2="-1" width="0.127" layer="1"/>
+<wire x1="20" y1="1" x2="22" y2="1" width="0.127" layer="1"/>
+<wire x1="22" y1="1" x2="22" y2="-1" width="0.127" layer="1"/>
+<wire x1="-1.75" y1="1.75" x2="23" y2="1.75" width="0.127" layer="1"/>
+<wire x1="23" y1="1.75" x2="23" y2="-1.75" width="0.127" layer="1"/>
+<wire x1="23" y1="-1.75" x2="-1.75" y2="-1.75" width="0.127" layer="1"/>
+<wire x1="-1.75" y1="-1.75" x2="-1.75" y2="1.75" width="0.127" layer="1"/>
 </package>
 </packages>
 <symbols>
@@ -1624,6 +1661,13 @@ PIGPEN</text>
 <wire x1="-7.62" y1="-2.54" x2="10.16" y2="-2.54" width="0.254" layer="94"/>
 <wire x1="10.16" y1="-2.54" x2="10.16" y2="7.62" width="0.254" layer="94"/>
 <wire x1="10.16" y1="7.62" x2="-7.62" y2="7.62" width="0.254" layer="94"/>
+</symbol>
+<symbol name="YELLOW_BUSH">
+<text x="-5.08" y="0" size="1.27" layer="94">YELLOW BUSH</text>
+<wire x1="-10.16" y1="5.08" x2="-10.16" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-10.16" y1="-5.08" x2="12.7" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-5.08" x2="12.7" y2="5.08" width="0.254" layer="94"/>
+<wire x1="12.7" y1="5.08" x2="-10.16" y2="5.08" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -2363,6 +2407,18 @@ TE CONNECTIVITY SMA Str PCB Skt GZD
 </gates>
 <devices>
 <device name="" package="TR_PIGPEN">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="YELLOW_BUSH">
+<gates>
+<gate name="G$1" symbol="YELLOW_BUSH" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="YELLOW_BUSH">
 <technologies>
 <technology name=""/>
 </technologies>

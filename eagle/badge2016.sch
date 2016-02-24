@@ -15183,6 +15183,8 @@ all kinds in 0603 and 0402</description>
 <part name="B_LOADER_PDWN" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
 <part name="GND59" library="supply1" deviceset="GND" device=""/>
 <part name="U$7" library="ERNW_parts" deviceset="YELLOW_BUSH" device=""/>
+<part name="R13" library="we-rcl" deviceset="RESISTOR" device="-0402" value="100k"/>
+<part name="R14" library="we-rcl" deviceset="RESISTOR" device="-0402" value="100k"/>
 </parts>
 <sheets>
 <sheet>
@@ -15370,6 +15372,8 @@ all kinds in 0603 and 0402</description>
 <instance part="B_LOADER_PDWN" gate="R" x="137.16" y="2.54" rot="R90"/>
 <instance part="GND59" gate="1" x="137.16" y="-10.16"/>
 <instance part="U$7" gate="G$1" x="-50.8" y="-149.86"/>
+<instance part="R13" gate="R" x="264.16" y="-66.04" rot="R270"/>
+<instance part="R14" gate="R" x="256.54" y="-66.04" rot="R270"/>
 </instances>
 <busses>
 </busses>
@@ -15869,8 +15873,15 @@ all kinds in 0603 and 0402</description>
 </segment>
 <segment>
 <pinref part="IC1" gate="G$1" pin="VCC"/>
-<wire x1="287.02" y1="-68.58" x2="287.02" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="287.02" y1="-68.58" x2="287.02" y2="-60.96" width="0.1524" layer="91"/>
 <label x="287.02" y="-66.04" size="1.778" layer="95" rot="R90"/>
+<wire x1="287.02" y1="-60.96" x2="287.02" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="256.54" y1="-60.96" x2="264.16" y2="-60.96" width="0.1524" layer="91"/>
+<junction x="287.02" y="-60.96"/>
+<pinref part="R13" gate="R" pin="1"/>
+<wire x1="264.16" y1="-60.96" x2="287.02" y2="-60.96" width="0.1524" layer="91"/>
+<junction x="264.16" y="-60.96"/>
+<pinref part="R14" gate="R" pin="1"/>
 </segment>
 <segment>
 <pinref part="NC-R15" gate="R" pin="1"/>
@@ -17045,6 +17056,22 @@ all kinds in 0603 and 0402</description>
 <wire x1="-53.34" y1="-320.04" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
 <wire x1="-53.34" y1="-332.74" x2="-53.34" y2="-327.66" width="0.1524" layer="91"/>
 <junction x="-53.34" y="-327.66"/>
+</segment>
+</net>
+<net name="N$33" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="!HOLD"/>
+<wire x1="266.7" y1="-86.36" x2="256.54" y2="-86.36" width="0.1524" layer="91"/>
+<wire x1="256.54" y1="-86.36" x2="256.54" y2="-71.12" width="0.1524" layer="91"/>
+<pinref part="R14" gate="R" pin="2"/>
+</segment>
+</net>
+<net name="N$38" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="!WP"/>
+<wire x1="266.7" y1="-73.66" x2="264.16" y2="-73.66" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="-73.66" x2="264.16" y2="-71.12" width="0.1524" layer="91"/>
+<pinref part="R13" gate="R" pin="2"/>
 </segment>
 </net>
 </nets>

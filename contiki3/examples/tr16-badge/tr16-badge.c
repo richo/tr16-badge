@@ -101,23 +101,23 @@ PROCESS_THREAD(clock_test_process, ev, data)
   etimer_set(&et, 2 * CLOCK_SECOND);
 
   /* set ip pin type */
-  //ti_lib_ioc_pin_type_gpio_input(IOID_20);
+  //ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_KEY_BACKDOOR);
   ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_LCD_BL);
-  ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_LCD_PWM);
+  ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_LCD_BL_PWR_ON);
 
   printf("clear test pins\n");
   /* Clear everything */
-  //ti_lib_gpio_pin_write(IOID_20, 0);
+  //ti_lib_gpio_pin_write(BOARD_IOID_KEY_BACKDOOR, 0);
   ti_lib_gpio_pin_write(BOARD_LCD_BL, 0);
-  ti_lib_gpio_pin_write(BOARD_LCD_BL, 0);
+  ti_lib_gpio_pin_write(BOARD_LCD_BL_PWR_ON, 0);
 
   printf("set pins on\n");
   /* Test display on */
   ti_lib_gpio_pin_write(BOARD_LCD_BL, 1);
-  ti_lib_gpio_pin_write(BOARD_LCD_BL, 1);
+  ti_lib_gpio_pin_write(BOARD_LCD_BL_PWR_ON, 1);
 
-  ti_lib_gpio_pin_write(IOID_21, 1);
-  ti_lib_gpio_pin_write(IOID_22, 1);
+  //ti_lib_gpio_pin_write(IOID_21, 1);
+  //ti_lib_gpio_pin_write(IOID_22, 1);
 
 
   //printf("set pwm\n");
@@ -125,9 +125,12 @@ PROCESS_THREAD(clock_test_process, ev, data)
                   //  60 => 32mA
                   // without PWM =48mA
 
-  /* TEST */
+  /* TEST Flash*/
   ext_flash_open();
- 
+  printf("Flashtest result: %u\n", ext_flash_test());
+  ext_flash_close();
+
+
   PROCESS_YIELD();
 
 #if TEST_CLOCK_DELAY_USEC

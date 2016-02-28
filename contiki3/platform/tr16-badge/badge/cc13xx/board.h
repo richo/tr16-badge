@@ -113,9 +113,9 @@
  * Those values are not meant to be modified by the user
  * @{
  */
-#define BOARD_IOID_FLASH_CS       IOID_8
+#define BOARD_IOID_FLASH_CS       IOID_9
 #define BOARD_FLASH_CS            (1 << BOARD_IOID_FLASH_CS)
-#define BOARD_IOID_SPI_CLK_FLASH  IOID_6
+#define BOARD_IOID_SPI_CLK_FLASH  BOARD_IOID_SPI_SCK
 /** @} */
 /*---------------------------------------------------------------------------*/
 /**
@@ -124,12 +124,14 @@
  * /ski
  * @{
  */
-#define BOARD_IOID_LCD_BL         IOID_15                     // backlight
+#define BOARD_IOID_LCD_BL         IOID_15                     // backlight sw
+#define BOARD_IOID_LCD_BL_PWR_ON  IOID_23                     // PWR ON BL
 #define BOARD_IOID_LCD_RST        IOID_14
 #define BOARD_IOID_LCD_CS         IOID_13
 #define BOARD_IOID_LCD_SCK        BOARD_IOID_SPI_SCK
 #define BOARD_IOID_LCD_MOSI       BOARD_IOID_SPI_MOSI
 #define BOARD_LCD_BL              (1 << BOARD_IOID_LCD_BL)
+#define BOARD_LCD_BL_PWR_ON       (1 << BOARD_IOID_LCD_BL_PWR_ON)
 #define BOARD_LCD_RST             (1 << BOARD_IOID_LCD_RST)
 #define BOARD_LCD_CS              (1 << BOARD_IOID_LCD_CS)
 #define BOARD_LCD_SCK             BOARD_SPI_SCK
@@ -140,7 +142,8 @@
  * \name pwm configuration
  * @{
  */
-#define BOARD_IOID_LCD_PWM        BOARD_IOID_LCD_BL /**< pwm Pin => BOARD_IOID_LCD_PWM */
+#define BOARD_IOID_LCD_PWM        BOARD_IOID_LCD_BL  // pwm Pin
+ 	                                                 // => BOARD_IOID_LCD_PWM
 /** @} */
 /*---------------------------------------------------------------------------*/
 /**

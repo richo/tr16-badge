@@ -3658,7 +3658,6 @@ design rules under a new name.</description>
 <via x="84.85" y="73.82" extent="1-16" drill="0.3"/>
 <via x="86.33" y="74.13" extent="1-16" drill="0.3"/>
 <via x="87.51" y="74.04" extent="1-16" drill="0.3"/>
-<via x="88.07" y="72.46" extent="1-16" drill="0.3"/>
 <via x="87.85" y="71.05" extent="1-16" drill="0.3"/>
 <via x="57.3" y="72" extent="1-16" drill="0.3"/>
 <via x="59.17" y="76.77" extent="1-16" drill="0.3"/>
@@ -3913,12 +3912,8 @@ design rules under a new name.</description>
 <via x="17.365" y="67.06" extent="1-16" drill="0.3"/>
 <via x="77.84" y="95.305" extent="1-16" drill="0.3"/>
 <via x="79.71" y="95.295" extent="1-16" drill="0.3"/>
-<wire x1="82.2" y1="51" x2="82.2" y2="52.73" width="0.2" layer="1"/>
 <via x="77" y="50.5" extent="1-16" drill="0.3"/>
 <via x="89.575" y="49.23" extent="1-16" drill="0.3"/>
-<wire x1="81.14" y1="51.03" x2="77.85" y2="49.65" width="0.2" layer="1"/>
-<wire x1="77.85" y1="49.65" x2="77" y2="50.5" width="0.2" layer="1"/>
-<wire x1="77.45" y1="50.5" x2="77" y2="50.5" width="0.2" layer="1"/>
 <via x="73.1" y="1.2" extent="1-16" drill="0.3"/>
 <via x="81.6" y="0.7" extent="1-16" drill="0.3"/>
 <via x="60.1" y="10.7" extent="1-16" drill="0.3"/>

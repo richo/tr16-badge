@@ -15136,7 +15136,7 @@ all kinds in 0603 and 0402</description>
 <part name="R19" library="we-rcl" deviceset="RESISTOR" device="-0402" value="4k32"/>
 <part name="R20" library="we-rcl" deviceset="RESISTOR" device="-0402" value="1k5"/>
 <part name="U$15" library="ERNW_parts" deviceset="JST-2" device=""/>
-<part name="IC1" library="microchip" deviceset="25*" device="SN" technology="AA080"/>
+<part name="25AA1024T" library="microchip" deviceset="25*" device="SN" technology="AA080" value="25AA1024T"/>
 <part name="GND56" library="supply1" deviceset="GND" device=""/>
 <part name="NC-R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC"/>
 <part name="NC-R18" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC"/>
@@ -15325,7 +15325,7 @@ all kinds in 0603 and 0402</description>
 <instance part="R19" gate="R" x="-180.34" y="-462.28"/>
 <instance part="R20" gate="R" x="-167.64" y="-459.74" rot="R180"/>
 <instance part="U$15" gate="G$1" x="22.86" y="-238.76"/>
-<instance part="IC1" gate="G$1" x="279.4" y="-81.28"/>
+<instance part="25AA1024T" gate="G$1" x="279.4" y="-81.28"/>
 <instance part="GND56" gate="1" x="287.02" y="-99.06"/>
 <instance part="NC-R15" gate="R" x="218.44" y="-193.04" rot="R270"/>
 <instance part="NC-R18" gate="R" x="226.06" y="-193.04" rot="R270"/>
@@ -15712,7 +15712,7 @@ all kinds in 0603 and 0402</description>
 <pinref part="GND55" gate="1" pin="GND"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="GND"/>
+<pinref part="25AA1024T" gate="G$1" pin="GND"/>
 <pinref part="GND56" gate="1" pin="GND"/>
 <wire x1="287.02" y1="-91.44" x2="287.02" y2="-96.52" width="0.1524" layer="91"/>
 </segment>
@@ -15872,7 +15872,7 @@ all kinds in 0603 and 0402</description>
 <label x="185.42" y="-220.98" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="VCC"/>
+<pinref part="25AA1024T" gate="G$1" pin="VCC"/>
 <wire x1="287.02" y1="-68.58" x2="287.02" y2="-60.96" width="0.1524" layer="91"/>
 <label x="287.02" y="-66.04" size="1.778" layer="95" rot="R90"/>
 <wire x1="287.02" y1="-60.96" x2="287.02" y2="-58.42" width="0.1524" layer="91"/>
@@ -16236,12 +16236,12 @@ all kinds in 0603 and 0402</description>
 <label x="2.54" y="27.94" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SI"/>
+<pinref part="25AA1024T" gate="G$1" pin="SI"/>
 <wire x1="266.7" y1="-81.28" x2="248.92" y2="-81.28" width="0.1524" layer="91"/>
 <label x="251.46" y="-81.28" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SO"/>
+<pinref part="25AA1024T" gate="G$1" pin="SO"/>
 <wire x1="294.64" y1="-81.28" x2="309.88" y2="-81.28" width="0.1524" layer="91"/>
 <label x="297.18" y="-81.28" size="1.778" layer="95"/>
 </segment>
@@ -16689,7 +16689,7 @@ all kinds in 0603 and 0402</description>
 <label x="2.54" y="30.48" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="SCK"/>
+<pinref part="25AA1024T" gate="G$1" pin="SCK"/>
 <wire x1="266.7" y1="-83.82" x2="248.92" y2="-83.82" width="0.1524" layer="91"/>
 <label x="251.46" y="-83.82" size="1.778" layer="95"/>
 </segment>
@@ -16835,7 +16835,7 @@ all kinds in 0603 and 0402</description>
 </net>
 <net name="EEPROM_!CS" class="0">
 <segment>
-<pinref part="IC1" gate="G$1" pin="!CS"/>
+<pinref part="25AA1024T" gate="G$1" pin="!CS"/>
 <wire x1="266.7" y1="-78.74" x2="248.92" y2="-78.74" width="0.1524" layer="91"/>
 <label x="251.46" y="-78.74" size="1.778" layer="95"/>
 </segment>
@@ -17060,7 +17060,7 @@ all kinds in 0603 and 0402</description>
 </net>
 <net name="N$33" class="0">
 <segment>
-<pinref part="IC1" gate="G$1" pin="!HOLD"/>
+<pinref part="25AA1024T" gate="G$1" pin="!HOLD"/>
 <wire x1="266.7" y1="-86.36" x2="256.54" y2="-86.36" width="0.1524" layer="91"/>
 <wire x1="256.54" y1="-86.36" x2="256.54" y2="-71.12" width="0.1524" layer="91"/>
 <pinref part="R14" gate="R" pin="2"/>
@@ -17068,7 +17068,7 @@ all kinds in 0603 and 0402</description>
 </net>
 <net name="N$38" class="0">
 <segment>
-<pinref part="IC1" gate="G$1" pin="!WP"/>
+<pinref part="25AA1024T" gate="G$1" pin="!WP"/>
 <wire x1="266.7" y1="-73.66" x2="264.16" y2="-73.66" width="0.1524" layer="91"/>
 <wire x1="264.16" y1="-73.66" x2="264.16" y2="-71.12" width="0.1524" layer="91"/>
 <pinref part="R13" gate="R" pin="2"/>

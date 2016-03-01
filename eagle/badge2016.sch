@@ -15052,8 +15052,8 @@ all kinds in 0603 and 0402</description>
 <part name="C21" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="100pF"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="GND19" library="supply1" deviceset="GND" device=""/>
-<part name="NC_R2" library="we-rcl" deviceset="RESISTOR" device="-0603" value="0"/>
-<part name="NC_R3" library="we-rcl" deviceset="RESISTOR" device="-0603" value="0"/>
+<part name="NC_R2" library="we-rcl" deviceset="RESISTOR" device="-0603" value="NC_0R"/>
+<part name="NC_R3" library="we-rcl" deviceset="RESISTOR" device="-0603" value="NC_0R"/>
 <part name="L9" library="we-rcl" deviceset="INDUCTOR" device="-0402" value="12nH"/>
 <part name="C22" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="1pF"/>
 <part name="NC-U$10" library="ERNW_parts" deviceset="SMA_CONNECTOR" device="THT"/>
@@ -15105,16 +15105,16 @@ all kinds in 0603 and 0402</description>
 <part name="GND31" library="supply1" deviceset="GND" device=""/>
 <part name="GND45" library="supply1" deviceset="GND" device=""/>
 <part name="R12" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R"/>
-<part name="NC_R13" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
+<part name="NC_R13" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_10k"/>
 <part name="GND46" library="supply1" deviceset="GND" device=""/>
-<part name="NC_R14" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R"/>
+<part name="NC_R14" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_0R"/>
 <part name="NC-IC3" library="microchip" deviceset="24*" device="SN" technology="AA01"/>
 <part name="GND47" library="supply1" deviceset="GND" device=""/>
 <part name="GND48" library="supply1" deviceset="GND" device=""/>
 <part name="GND49" library="supply1" deviceset="GND" device=""/>
 <part name="GND50" library="supply1" deviceset="GND" device=""/>
-<part name="NC-R16" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
-<part name="NC-R17" library="we-rcl" deviceset="RESISTOR" device="-0402" value="10k"/>
+<part name="NC-R16" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_10k"/>
+<part name="NC-R17" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_10k"/>
 <part name="NC-JP4" library="pinhead" deviceset="PINHD-2X8" device=""/>
 <part name="GND51" library="supply1" deviceset="GND" device=""/>
 <part name="GND44" library="supply1" deviceset="GND" device=""/>
@@ -15128,8 +15128,8 @@ all kinds in 0603 and 0402</description>
 <part name="GND39" library="supply1" deviceset="GND" device=""/>
 <part name="NC-SD1" library="we-con" deviceset="SD-CARD" device="-MSD50"/>
 <part name="GND40" library="supply1" deviceset="GND" device=""/>
-<part name="NC_C35" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="100nF"/>
-<part name="NC_C36" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="4.7µF"/>
+<part name="NC_C35" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="NC_100nF"/>
+<part name="NC_C36" library="we-rcl" deviceset="CAPACITOR" device="-0402" value="NC_4.7µF"/>
 <part name="GND41" library="supply1" deviceset="GND" device=""/>
 <part name="GND54" library="supply1" deviceset="GND" device=""/>
 <part name="GND55" library="supply1" deviceset="GND" device=""/>
@@ -15151,8 +15151,8 @@ all kinds in 0603 and 0402</description>
 <part name="U$5" library="ERNW_parts" deviceset="TR_BRAILLE" device=""/>
 <part name="U$6" library="ERNW_parts" deviceset="TR_PIGPEN" device=""/>
 <part name="LOGO1" library="we-symbol" deviceset="LOGO" device="-S_LAYER"/>
-<part name="NC_R15" library="we-rcl" deviceset="RESISTOR" device="-0603" value="0"/>
-<part name="NC_R16" library="we-rcl" deviceset="RESISTOR" device="-0603" value="0"/>
+<part name="NC_R15" library="we-rcl" deviceset="RESISTOR" device="-0603" value="NC_0R"/>
+<part name="NC_R16" library="we-rcl" deviceset="RESISTOR" device="-0603" value="NC_0R"/>
 <part name="X4" library="we-rcl" deviceset="PAD" device="-0.5"/>
 <part name="X5" library="we-rcl" deviceset="PAD" device="-0.5"/>
 <part name="X6" library="we-rcl" deviceset="PAD" device="-0.5"/>
@@ -15165,7 +15165,7 @@ all kinds in 0603 and 0402</description>
 <part name="X16" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="X17" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="NC_LED2" library="we-opto" deviceset="LED" device="-0603"/>
-<part name="NC_R5" library="we-rcl" deviceset="RESISTOR" device="-0402" value="1k5"/>
+<part name="NC_R5" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_1k5"/>
 <part name="GND52" library="supply1" deviceset="GND" device=""/>
 <part name="X18" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
 <part name="X19" library="we-rcl" deviceset="PAD" device="-1.27X1.27"/>
@@ -15174,8 +15174,8 @@ all kinds in 0603 and 0402</description>
 <part name="C35" library="we-rcl" deviceset="CAPACITOR" device="-0603" value="2.2µF"/>
 <part name="GND28" library="supply1" deviceset="GND" device=""/>
 <part name="X21" library="we-rcl" deviceset="PAD" device="-0.5"/>
-<part name="NC_R18" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
-<part name="NC_R19" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0"/>
+<part name="NC_R18" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_0"/>
+<part name="NC_R19" library="we-rcl" deviceset="RESISTOR" device="-0402" value="NC_0"/>
 <part name="C36" library="we-rcl" deviceset="CAPACITOR" device="-1206" value="100µF"/>
 <part name="R15" library="we-rcl" deviceset="RESISTOR" device="-0402" value="0R3"/>
 <part name="GND53" library="supply1" deviceset="GND" device=""/>

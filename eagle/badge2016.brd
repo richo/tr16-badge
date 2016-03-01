@@ -3396,8 +3396,8 @@ design rules under a new name.</description>
 <element name="L8" library="we-rcl" package="C0402" value="6.8nH" x="96.244309375" y="51.2494375" rot="R225"/>
 <element name="C20" library="we-rcl" package="C0402" value="3.3pF" x="98.280665625" y="49.895390625" rot="R135"/>
 <element name="C21" library="we-rcl" package="C0402" value="100pF" x="99.8540625" y="47.60894375" rot="R225"/>
-<element name="NC_R2" library="we-rcl" package="C0603" value="0" x="102.16" y="47.26" rot="R270"/>
-<element name="NC_R3" library="we-rcl" package="C0603" value="0" x="100.2" y="45.23"/>
+<element name="NC_R2" library="we-rcl" package="C0603" value="NC_0R" x="102.16" y="47.26" rot="R270"/>
+<element name="NC_R3" library="we-rcl" package="C0603" value="NC_0R" x="100.2" y="45.23"/>
 <element name="L9" library="we-rcl" package="C0402" value="12nH" x="99.69" y="39.7" rot="R90"/>
 <element name="C22" library="we-rcl" package="C0402" value="1pF" x="100.2" y="42.18"/>
 <element name="NC-U$10" library="ERNW_parts" package="SMA_CON_THT" value="SMA_CONNECTORTHT" x="107.83" y="57.5"/>
@@ -3434,16 +3434,16 @@ design rules under a new name.</description>
 <element name="Q2" library="transistor-pnp" package="SOT23-BEC" value="BC857ALT1SMD" x="72.7" y="77.7" rot="R180"/>
 <element name="BTN_RESET" library="ERNW_parts" package="KSEM31G" value="KSEM31G" x="41.05" y="79.24" rot="R270"/>
 <element name="R12" library="we-rcl" package="C0402" value="0R" x="34.53" y="59.45" rot="R270"/>
-<element name="NC_R13" library="we-rcl" package="C0402" value="10k" x="31.66" y="59.45" rot="R270"/>
-<element name="NC_R14" library="we-rcl" package="C0402" value="0R" x="32.37" y="55.51" rot="R180"/>
+<element name="NC_R13" library="we-rcl" package="C0402" value="NC_10k" x="31.66" y="59.45" rot="R270"/>
+<element name="NC_R14" library="we-rcl" package="C0402" value="NC_0R" x="32.37" y="55.51" rot="R180"/>
 <element name="NC-IC3" library="microchip" package="SO-08" value="24AA01SN" x="59.4" y="65.995" rot="R270">
 <attribute name="OC_FARNELL" value="1331268" x="59.4" y="65.995" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="OC_NEWARK" value="89C9792" x="59.4" y="65.995" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MPN" value="24AA01/SN" x="59.4" y="65.995" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="MF" value="MICROCHIP" x="59.4" y="65.995" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="NC-R16" library="we-rcl" package="C0402" value="10k" x="64.085" y="63.595" rot="R180"/>
-<element name="NC-R17" library="we-rcl" package="C0402" value="10k" x="64.09" y="66.035"/>
+<element name="NC-R16" library="we-rcl" package="C0402" value="NC_10k" x="64.085" y="63.595" rot="R180"/>
+<element name="NC-R17" library="we-rcl" package="C0402" value="NC_10k" x="64.09" y="66.035"/>
 <element name="NC-JP4" library="pinhead" package="2X08" value="" x="11.97" y="47" rot="R270"/>
 <element name="U$14" library="ERNW_parts" package="MI0283QT" value="MI0283QT" x="76.5" y="47" rot="R180"/>
 <element name="C30" library="we-rcl" package="C0402" value="100nF" x="20.345" y="72.41" rot="R270"/>
@@ -3452,8 +3452,8 @@ design rules under a new name.</description>
 <element name="NC-SD1" library="we-con" package="SD_5031821853" value="SD-CARD-MSD50" x="110.77" y="74.85" rot="R90">
 <attribute name="DIGIKEY" value="WM9750TR-ND" x="110.77" y="74.85" size="1.778" layer="27" rot="R90" display="off"/>
 </element>
-<element name="NC_C35" library="we-rcl" package="C0402" value="100nF" x="90.55" y="72.28"/>
-<element name="NC_C36" library="we-rcl" package="C0402" value="4.7µF" x="92.65" y="69.46" rot="R180"/>
+<element name="NC_C35" library="we-rcl" package="C0402" value="NC_100nF" x="90.55" y="72.28"/>
+<element name="NC_C36" library="we-rcl" package="C0402" value="NC_4.7µF" x="92.65" y="69.46" rot="R180"/>
 <element name="R19" library="we-rcl" package="C0402" value="4k32" x="18.25" y="71.4" rot="R270"/>
 <element name="R20" library="we-rcl" package="C0402" value="1k5" x="18.265" y="70.39" rot="R90"/>
 <element name="U$15" library="ERNW_parts" package="JST-2" value="JST-2" x="47.2" y="39" rot="R180"/>
@@ -3476,8 +3476,8 @@ design rules under a new name.</description>
 <element name="U$5" library="ERNW_parts" package="TR_BRAILLE" value="TR_BRAILLE" x="47.01" y="13.89" rot="R270"/>
 <element name="U$6" library="ERNW_parts" package="TR_PIGPEN" value="TR_PIGPEN" x="79.215" y="42.495" rot="R270"/>
 <element name="LOGO1" library="we-symbol" package="SPARK_TOP" value="LOGO-S_LAYER" x="38.57" y="12.895" rot="R270"/>
-<element name="NC_R15" library="we-rcl" package="C0603" value="0" x="29.94" y="30.75"/>
-<element name="NC_R16" library="we-rcl" package="C0603" value="0" x="35.025" y="30.735"/>
+<element name="NC_R15" library="we-rcl" package="C0603" value="NC_0R" x="29.94" y="30.75"/>
+<element name="NC_R16" library="we-rcl" package="C0603" value="NC_0R" x="35.025" y="30.735"/>
 <element name="X4" library="we-rcl" package="PAD-0.5" value="PAD-0.5" x="90.8" y="62.9"/>
 <element name="X5" library="we-rcl" package="PAD-0.5" value="PAD-0.5" x="76.005" y="62.41"/>
 <element name="X6" library="we-rcl" package="PAD-0.5" value="PAD-0.5" x="76.595" y="62.87"/>
@@ -3490,15 +3490,15 @@ design rules under a new name.</description>
 <element name="X16" library="we-rcl" package="PAD-1.27X1.27" value="PAD-1.27X1.27" x="38.05" y="66.605" rot="R90"/>
 <element name="X17" library="we-rcl" package="PAD-1.27X1.27" value="PAD-1.27X1.27" x="16.265" y="69.065"/>
 <element name="NC_LED2" library="we-opto" package="C0603" value="" x="14.44" y="64.2" rot="R180"/>
-<element name="NC_R5" library="we-rcl" package="C0402" value="1k5" x="14.59" y="67.12"/>
+<element name="NC_R5" library="we-rcl" package="C0402" value="NC_1k5" x="14.59" y="67.12"/>
 <element name="X18" library="we-rcl" package="PAD-1.27X1.27" value="PAD-1.27X1.27" x="72.815" y="74.67"/>
 <element name="X19" library="we-rcl" package="PAD-1.27X1.27" value="PAD-1.27X1.27" x="75.415" y="74.67"/>
 <element name="X20" library="we-rcl" package="PAD-1.27X1.27" value="PAD-1.27X1.27" x="30.035" y="56.02"/>
 <element name="R3" library="we-rcl" package="C0402" value="100k" x="50.435" y="52.32" rot="R270"/>
 <element name="C35" library="we-rcl" package="C0603" value="2.2µF" x="48.81" y="54.255"/>
 <element name="X21" library="we-rcl" package="PAD-0.5" value="PAD-0.5" x="83.735" y="69.005"/>
-<element name="NC_R18" library="we-rcl" package="C0402" value="0" x="54.645" y="81.39" rot="R270"/>
-<element name="NC_R19" library="we-rcl" package="C0402" value="0" x="54.65" y="82.455" rot="R270"/>
+<element name="NC_R18" library="we-rcl" package="C0402" value="NC_0" x="54.645" y="81.39" rot="R270"/>
+<element name="NC_R19" library="we-rcl" package="C0402" value="NC_0" x="54.65" y="82.455" rot="R270"/>
 <element name="C36" library="we-rcl" package="C1206" value="100µF" x="46.25" y="53.9" rot="R180"/>
 <element name="R15" library="we-rcl" package="C0402" value="0R3" x="46.25" y="57.6" rot="R180"/>
 <element name="BOOTLOADER_BTN" library="ERNW_parts" package="KSEM31G" value="KSEM31G" x="46.25" y="62.5" rot="R90"/>

@@ -96,7 +96,7 @@ rt_callback(struct rtimer *t, void *ptr)
 {
   rt_now = RTIMER_NOW();
   ct = clock_time();
-  printf("Task called at %u (clock = %u)\n", rt_now, ct);
+  printf("Task called at %lu (clock = %lu)\n", rt_now, ct);
 }
 #endif
 /*---------------------------------------------------------------------------*/
@@ -117,7 +117,7 @@ PROCESS_THREAD(clock_test_process, ev, data)
     clock_delay_usec(10000 * i);
     end_count = RTIMER_NOW();
     diff = end_count - start_count;
-    printf("Requested: %u usec, Real: %u rtimer ticks = ~%u us\n",
+    printf("Requested: %u usec, Real: %lu rtimer ticks = ~%lu us\n",
         10000 * i, diff, diff * 64);
     i++;
   }
@@ -132,7 +132,7 @@ PROCESS_THREAD(clock_test_process, ev, data)
     ct = clock_time();
     rt_now = RTIMER_NOW();
     rt_for = rt_now + RTIMER_SECOND;
-    printf("Now=%u (clock = %u) - For=%u\n", rt_now, ct, rt_for);
+    printf("Now=%lu (clock = %lu) - For=%lu\n", rt_now, ct, rt_for);
     if(rtimer_set(&rt, rt_for, 1,
               (void (*)(struct rtimer *, void *))rt_callback, NULL) != RTIMER_OK) {
       printf("Error setting\n");
@@ -152,7 +152,7 @@ PROCESS_THREAD(clock_test_process, ev, data)
     etimer_reset(&et);
 
     count = clock_time();
-    printf("%u ticks\n", count);
+    printf("%lu ticks\n", count);
 
     //leds_toggle(LEDS_RED);
     i++;

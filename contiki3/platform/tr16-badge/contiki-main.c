@@ -192,40 +192,11 @@ main(void)
   energest_init();
   ENERGEST_ON(ENERGEST_TYPE_CPU);
 
-//  fade(LEDS_YELLOW);
-
-  printf(" Net: ");
-  printf("%s\n", NETSTACK_NETWORK.name);
-  printf(" MAC: ");
-  printf("%s\n", NETSTACK_MAC.name);
-  printf(" RDC: ");
-  printf("%s", NETSTACK_RDC.name);
-
-  if(NETSTACK_RDC.channel_check_interval() != 0) {
-    printf(", Channel Check Interval: %u ticks",
-           NETSTACK_RDC.channel_check_interval());
-  }
-  printf("\n");
-
-  netstack_init();
-
-  set_rf_params();
-
-#if NETSTACK_CONF_WITH_IPV6
-  memcpy(&uip_lladdr.addr, &linkaddr_node_addr, sizeof(uip_lladdr.addr));
-  queuebuf_init();
-  process_start(&tcpip_process, NULL);
-#endif /* NETSTACK_CONF_WITH_IPV6 */
-
-//  fade(LEDS_GREEN);
-
   process_start(&sensors_process, NULL);
 
   autostart_start(autostart_processes);
 
   watchdog_start();
-
-//  fade(LEDS_ORANGE);
 
   while(1) {
     uint8_t r;

@@ -1,0 +1,22 @@
+
+#include <stdio.h>
+#include <stdint.h>
+#include "myconfig.h"
+#include "myhelpers.h"
+
+void hexdump (const void *buffer, size_t size) {
+    size_t i;
+    uint8_t *ptr = (uint8_t *) buffer;
+
+    for (i = 0; i < size; i++) {
+        if (i && ((i & 3) == 0)) {
+            printf(" ");
+        }
+        printf(" %02X", *ptr++);
+    }
+    printf(" [size=%02i]\n", size);
+}
+
+void print_message (const void *buffer) {
+    hexdump(buffer, MESSAGELENGTH);
+}

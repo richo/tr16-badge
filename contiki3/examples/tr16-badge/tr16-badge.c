@@ -122,6 +122,19 @@ rfc_cmd_fs_t
 
 rfc_cmd_prop_{tx,rx}_adv_t
 
+S.1506 23.3.4.3 CMD_GET_RSSI: Read RSSI Command
+Command ID number: 0x0403
+CMD_GET_RSSI is an immediate command that takes no parameters, and therefore, can be used as a
+direct command.
+On reception, the radio CPU reads the RSSI from an underlying receiver. The RSSI is returned in result
+byte 2 (bit 23–16) of CMDSTA, see Figure 23-5. The RSSI is given on signed form in dBm. If no RSSI is
+available, this is signaled with a special value of the RSSI (−128, or 0x80).
+If no radio operation command is running, the radio CPU returns the result ContextError in CMDSTA.
+Otherwise, the radio CPU returns Done along with the RSSI value.
+
+
+23.3.4.6 CMD_GET_FW_INFO: Request Information on the Firmware Being Run
+Command ID number: 0x0002
 
 */
 
@@ -132,10 +145,44 @@ rfc_cmd_prop_{tx,rx}_adv_t
 #define CMD_PROP_CS 				0x3805
 #define CMD_PROP_RADIO_SETUP 	    0x3806
 #define CMD_PROP_RADIO_DIV_SETUP    0x3807
+#define CMD_GET_RSSI                0x0403
+#define CMD_GET_FW_INFO             0x0002
+#define RF_CMD_CCA_REQ_RSSI_UNKNOWN -128
+
+void get_fw_info(void) {
+    uint32_t cmd_status;
+    rfc_CMD_GET_FW_INFO_t cmd;
+    cmd.commandNo = CMD_GET_FW_INFO;
+
+    if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
+        printf("Version No.: 0x%04x\n", cmd.versionNo);
+        printf("Free RAM: 0x%04x\n", cmd.freeRamSz);
+    } else {
+        printf("status: 0x%08lx\n", cmd_status);
+    }
+}
+
+void get_rssi(void) {
+    int8_t rssi;
+    uint32_t cmd_status;
+    rfc_CMD_GET_RSSI_t cmd;
+    memset(&cmd, 0x00, sizeof(cmd));
+    cmd.commandNo = CMD_GET_RSSI;
+
+    rssi = RF_CMD_CCA_REQ_RSSI_UNKNOWN;
+
+    if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
+        rssi = (cmd_status >> 16) & 0xFF;
+        printf("RSSI: 0x%04x\n", rssi);
+    } else {
+        printf("status: 0x%08lx\n", cmd_status);
+    }
+}
 
 
 void send() {
   uint32_t cmd_status, ret;
+  /*
   if(!rf_core_is_accessible()) {
       if(rf_core_power_up() != RF_CORE_CMD_OK) {
         PRINTF("send: rf_core_power_up() failed\n");
@@ -143,13 +190,15 @@ void send() {
   } else {
       printf("rfcore is accessible\n");
   }
+  */
+
+  init();
 
   rfc_CMD_PROP_TX_t *cmdTx = NULL;
   cmdTx = &RF_cmdPropTx;
 
+  RF_cmdPropTx.status = 0x00;
   RF_cmdPropTx.pPkt = message;
-
-  init();
 
   ret = rf_core_send_cmd((uint32_t)cmdTx, &cmd_status);
   if(rf_core_send_cmd((uint32_t)cmdTx, &cmd_status) != RF_CORE_CMD_OK) {
@@ -159,6 +208,20 @@ void send() {
     printf("rf_send: CMD_OK RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
     printf("send\n");
   }
+
+  rtimer_clock_t t0;
+  t0 = RTIMER_NOW();
+
+  while(cmdTx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE &&
+        (RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + ENTER_RX_WAIT_TIMEOUT)));
+
+  /* Wait to enter RX */
+  if(cmdTx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE) {
+    PRINTF("rf_tx: CMDSTA=0x%08lx, status=0x%04x\n",
+           cmd_status, cmdTx->status);
+    printf("not send\n");
+  }
+
   rf_core_power_down();
 }
 
@@ -173,6 +236,7 @@ void printMessage() {
 
 void receive() {
   uint32_t cmd_status, ret;
+  /*
   if(!rf_core_is_accessible()) {
       if(rf_core_power_up() != RF_CORE_CMD_OK) {
         PRINTF("receive: rf_core_power_up() failed\n");
@@ -180,13 +244,15 @@ void receive() {
   } else {
       printf("rfcore is accessible\n");
   }
+  */
+  init();
 
   rfc_CMD_PROP_RX_t *cmdRx = NULL;
   cmdRx = &RF_cmdPropRx;
 
+  RF_cmdPropRx.status = 0x00;
   RF_cmdPropRx.pOutput = message;
 
-  init();
 
   ret = rf_core_send_cmd((uint32_t)cmdRx, &cmd_status);
   if(rf_core_send_cmd((uint32_t)cmdRx, &cmd_status) != RF_CORE_CMD_OK) {
@@ -256,6 +322,8 @@ void init(void) {
   oscillators_switch_to_hf_xosc();
 
   cmdOpt = &RF_cmdPropRadioDivSetup;
+  cmdOpt->status = 0x00;
+  cmdOpt->pRegOverride = pOverrides;
   /* radio setup */
   if(rf_core_send_cmd((uint32_t)cmdOpt, &cmd_status) != RF_CORE_CMD_OK) {
     PRINTF("rf_cmdPropDivSetup: CMD_ABORT status=0x%08lx\n", cmd_status);
@@ -270,6 +338,7 @@ void init(void) {
   }
 
   cmdFs = (rfc_radioOp_t *)&RF_cmdFs;
+  cmdFs->status = 0x00;
   /* freq synthesizer */
   if(rf_core_send_cmd((uint32_t)cmdFs, &cmd_status) != RF_CORE_CMD_OK) {
     PRINTF("prop_fs: CMD_FS, CMD_ABORT CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
@@ -311,16 +380,20 @@ PROCESS_THREAD(send_messages_process, ev, data)
   event_data_ready = process_alloc_event();
 
   memset(message, 0, MESSAGELENGTH);
+  get_fw_info();
   init_rf();
+  get_fw_info();
+  get_rssi();
 
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
-          receive();
+          //receive();
+          send();
           printMessage();
-          memset(message, 0, MESSAGELENGTH);
+          //memset(message, 0, MESSAGELENGTH);
           //verify_message();
-          save_message(counter%BUFFERSIZE);
+          //save_message(counter%BUFFERSIZE);
 
           process_post(&output_messages_process, event_data_ready, &counter);
           etimer_reset(&timer);

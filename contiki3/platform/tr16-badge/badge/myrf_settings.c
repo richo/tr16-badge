@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Tue 08 Mar 2016 12:17:11 PM CET
+* Last Modified : Tue 08 Mar 2016 12:23:36 PM CET
 * Created By    :
 *
 */
@@ -53,7 +53,7 @@ rfc_CMD_PROP_RADIO_DIV_SETUP_t RF_cmdPropRadioDivSetup =
     .status = 0x0000,
     .pNextOp = 0, // INSERT APPLICABLE POINTER: (uint8_t*)&xxx
     .startTime = 0x00000000,
-    .startTrigger.triggerType = 0x0,
+    .startTrigger.triggerType = 0x0, // TRIG_NOW P.1483 ff
     .startTrigger.bEnaCmd = 0x0,
     .startTrigger.triggerNo = 0x0,
     .startTrigger.pastTrig = 0x0,

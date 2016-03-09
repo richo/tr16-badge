@@ -2,7 +2,7 @@ CFLAGS += -DBOARD_SMARTRF06EB=1
 
 CONTIKI_TARGET_DIRS += badge
 
-BOARD_SOURCEFILES += badge-sensors.c button-sensor.c pwm.c board-spi.c ext-flash.c board.c myhelpers.c myrf_settings.c
+BOARD_SOURCEFILES += badge-sensors.c button-sensor.c pwm.c board-spi.c ext-flash.c board.c myhelpers.c myrf_settings.c myrf_cmd.c
 
 PYTHON = python
 BSL_FLAGS += -e -w -v

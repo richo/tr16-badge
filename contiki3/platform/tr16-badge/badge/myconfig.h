@@ -15,6 +15,6 @@ extern rfc_CMD_PROP_RX_t RF_cmdPropRx;
 
 
 #define BUFFERSIZE 5
-#define MESSAGELENGTH 50
+#define MESSAGELENGTH 300
 
 #endif

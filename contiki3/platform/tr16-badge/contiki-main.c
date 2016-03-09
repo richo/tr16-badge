@@ -65,6 +65,8 @@
 #include "dev/serial-line.h"
 #include "net/mac/frame802154.h"
 
+#include "myrf_cmd.h"
+
 #include "driverlib/driverlib_release.h"
 
 #include <stdio.h>
@@ -92,41 +94,6 @@ fade(unsigned char l)
   }
 }
 */
-/*---------------------------------------------------------------------------*/
-static void
-set_rf_params(void)
-{
-  uint16_t short_addr;
-  uint8_t ext_addr[8];
-  radio_value_t val = 0;
-
-  ieee_addr_cpy_to(ext_addr, 8);
-
-  short_addr = ext_addr[7];
-  short_addr |= ext_addr[6] << 8;
-
-  /* Populate linkaddr_node_addr. Maintain endianness */
-  memcpy(&linkaddr_node_addr, &ext_addr[8 - LINKADDR_SIZE], LINKADDR_SIZE);
-
-  NETSTACK_RADIO.set_value(RADIO_PARAM_PAN_ID, IEEE802154_PANID);
-  NETSTACK_RADIO.set_value(RADIO_PARAM_16BIT_ADDR, short_addr);
-  NETSTACK_RADIO.set_value(RADIO_PARAM_CHANNEL, RF_CORE_CHANNEL);
-  NETSTACK_RADIO.set_object(RADIO_PARAM_64BIT_ADDR, ext_addr, 8);
-
-  NETSTACK_RADIO.get_value(RADIO_PARAM_CHANNEL, &val);
-  printf(" RF: Channel %d\n", val);
-
-#if STARTUP_CONF_VERBOSE
-  {
-    int i;
-    printf(" Link layer addr: ");
-    for(i = 0; i < LINKADDR_SIZE - 1; i++) {
-      printf("%02x:", linkaddr_node_addr.u8[i]);
-    }
-    printf("%02x\n", linkaddr_node_addr.u8[i]);
-  }
-#endif
-}
 /*---------------------------------------------------------------------------*/
 /**
  * \brief Main function for CC26xx-based platforms
@@ -176,8 +143,8 @@ main(void)
 
   /* Character I/O Initialisation */
 #if CC26XX_UART_CONF_ENABLE
-  cc26xx_uart_init();
 #endif
+  cc26xx_uart_init();
 
   serial_line_init();
 
@@ -192,11 +159,19 @@ main(void)
   energest_init();
   ENERGEST_ON(ENERGEST_TYPE_CPU);
 
-  process_start(&sensors_process, NULL);
+  //process_start(&sensors_process, NULL);
 
   autostart_start(autostart_processes);
 
   watchdog_start();
+
+  myrf_init();
+  myrf_get_fw_info();
+  myrf_get_rssi();
+
+  process_start(&rf_core_process, NULL);
+  /*
+  */
 
   while(1) {
     uint8_t r;

@@ -54,6 +54,7 @@
 #include "rf-core/rf-core.h"
 #include "sys/clock.h"
 #include "sys/rtimer.h"
+#include "dev/cc26xx-uart.h"
 /*---------------------------------------------------------------------------*/
 /* RF core and RF HAL API */
 #include "hw_rfc_dbell.h"
@@ -80,6 +81,9 @@
 
 static process_event_t event_data_ready, event_data_ready_res;
 
+static uint16_t input_counter = 0;
+
+static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t message[MESSAGELENGTH];
 static dataQueue_t q;
 static rfc_propRxOutput_t rx_stats;
@@ -103,21 +107,33 @@ void save_message(uint8_t slot) {
     }
 }
 
-/*
-void init_rf(void) {
+int uart_rx_callback(uint8_t c) {
+    input_counter++;
 
-  init();
-  process_start(&rf_core_process, NULL);
+    if (input_counter < PROVISIONBUFFERLENGTH) {
+        provisionbuffer[input_counter] = c;
+    }
+    return 1;
 }
-*/
 
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
 PROCESS(send_messages_process, "Send Messages process");
 PROCESS(system_resources_process, "Sys Resources process");
+PROCESS(uart_receive_process, "UART Receive process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &send_messages_process);
+AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &send_messages_process, &uart_receive_process);
 /*---------------------------------------------------------------------------*/
+PROCESS_THREAD(uart_receive_process, ev, data)
+{
+  PROCESS_BEGIN();
+  cc26xx_uart_set_input(uart_rx_callback);
+
+  while(1) {
+      PROCESS_YIELD();
+  }
+  PROCESS_END();
+}
 PROCESS_THREAD(send_messages_process, ev, data)
 {
   PROCESS_BEGIN();
@@ -129,19 +145,6 @@ PROCESS_THREAD(send_messages_process, ev, data)
   event_data_ready_res = process_alloc_event();
 
   myrf_init_queue(&q, message);
-
-  //memset(message, 0, MESSAGELENGTH);
-
-/*
-  message[0] = 'T';
-  message[1] = 'R';
-  message[2] = 'O';
-  message[3] = 'O';
-  message[4] = 'P';
-  message[5] = 'E';
-  message[6] = 'R';
-  message[7] = 'S';
-  */
 
   while(1) {
       PROCESS_WAIT_EVENT();
@@ -155,11 +158,11 @@ PROCESS_THREAD(send_messages_process, ev, data)
           if (0x00 == (counter%10)) {
             process_post(&output_messages_process, event_data_ready, &counter);
           }
-          etimer_reset(&timer);
-          counter++;
           if (0x00 == (counter%60)) {
             process_post(&system_resources_process, event_data_ready_res, &counter);
           }
+          etimer_reset(&timer);
+          counter++;
       }
   }
   PROCESS_END();
@@ -174,6 +177,8 @@ PROCESS_THREAD(system_resources_process, ev, data)
       PROCESS_WAIT_EVENT_UNTIL(ev == event_data_ready_res);
       myrf_get_fw_info();
       myrf_get_rssi();
+      printf("Provision: ");
+      hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
   }
   PROCESS_END();
 }

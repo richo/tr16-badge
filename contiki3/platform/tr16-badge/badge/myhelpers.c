@@ -12,6 +12,9 @@ void hexdump (const void *buffer, size_t size) {
         if (i && ((i & 3) == 0)) {
             printf(" ");
         }
+        if (i % 16 == 0) {
+            printf("\n");
+        }
         printf(" %02X", *ptr++);
     }
     printf(" [size=%02i]\n", size);

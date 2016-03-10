@@ -74,27 +74,6 @@
 /** \brief Board specific iniatialisation */
 void board_init(void);
 /*---------------------------------------------------------------------------*/
-/*
-static void
-fade(unsigned char l)
-{
-  volatile int i;
-  int k, j;
-  for(k = 0; k < 800; ++k) {
-    j = k > 400 ? 800 - k : k;
-
-    leds_on(l);
-    for(i = 0; i < j; ++i) {
-      __asm("nop");
-    }
-    leds_off(l);
-    for(i = 0; i < 400 - j; ++i) {
-      __asm("nop");
-    }
-  }
-}
-*/
-/*---------------------------------------------------------------------------*/
 /**
  * \brief Main function for CC26xx-based platforms
  *
@@ -118,8 +97,6 @@ main(void)
 
   gpio_interrupt_init();
 
-//  leds_init();
-
   /*
    * Disable I/O pad sleep mode and open I/O latches in the AON IOC interface
    * This is only relevant when returning from shutdown (which is what froze
@@ -127,8 +104,6 @@ main(void)
    * allow software to first regain control of pins
    */
   ti_lib_pwr_ctrl_io_freeze_disable();
-
-//  fade(LEDS_RED);
 
   ti_lib_int_master_enable();
 
@@ -142,8 +117,6 @@ main(void)
   random_init(0x1234);
 
   /* Character I/O Initialisation */
-#if CC26XX_UART_CONF_ENABLE
-#endif
   cc26xx_uart_init();
 
   serial_line_init();
@@ -159,8 +132,6 @@ main(void)
   energest_init();
   ENERGEST_ON(ENERGEST_TYPE_CPU);
 
-  //process_start(&sensors_process, NULL);
-
   autostart_start(autostart_processes);
 
   watchdog_start();
@@ -170,8 +141,6 @@ main(void)
   myrf_get_rssi();
 
   process_start(&rf_core_process, NULL);
-  /*
-  */
 
   while(1) {
     uint8_t r;

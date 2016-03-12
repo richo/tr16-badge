@@ -50,8 +50,6 @@
 #include "pwm.h"
 #include "net/packetbuf.h"
 #include "ext-flash.h"
-#include "rf-core/dot-15-4g.h"
-#include "rf-core/rf-core.h"
 #include "sys/clock.h"
 #include "sys/rtimer.h"
 #include "dev/cc26xx-uart.h"
@@ -60,24 +58,22 @@
 #include "hw_rfc_dbell.h"
 #include "hw_rfc_pwr.h"
 /*---------------------------------------------------------------------------*/
-/* RF Core Mailbox API */
-#include "rf-core/api/mailbox.h"
-#include "rf-core/api/common_cmd.h"
-#include "rf-core/api/data_entry.h"
-#include "rf-core/api/prop_mailbox.h"
-#include "rf-core/api/prop_cmd.h"
-/*---------------------------------------------------------------------------*/
-/* CC13xxware patches */
-#include "rf_patches/rf_patch_cpe_genfsk.h"
-/*---------------------------------------------------------------------------*/
-#include "rf-core/smartrf-settings.h"
-/*---------------------------------------------------------------------------*/
 
 #include "myconfig.h"
 #include "myhelpers.h"
 #include "myrf_settings.h"
 #include "myrf_cmd.h"
 
+typedef struct identity {
+    uint16_t id;
+    uint8_t first_name[30];
+    uint8_t last_name[30];
+} Identity_t;
+
+uint8_t group;
+
+static Identity_t me;
+static Identity_t fake;
 
 static process_event_t event_data_ready, event_data_ready_res;
 
@@ -97,6 +93,30 @@ void printMessage() {
     printf("\n"); 
 }
 
+void provisioning() {
+}
+
+void set_identity() {
+}
+
+void get_identity() {
+}
+
+void toggle_identity() {
+}
+
+void verify_sequence_number() {
+}
+
+void verify_key() {
+}
+
+void buffer_message() {
+}
+
+void verify_mac() {
+}
+
 void verify_message() {
     printf("verify\n");
 }
@@ -107,11 +127,22 @@ void save_message(uint8_t slot) {
     }
 }
 
+void self_test() {
+    test_flash();
+}
+
+
 int uart_rx_callback(uint8_t c) {
     input_counter++;
 
     if (input_counter < PROVISIONBUFFERLENGTH) {
         provisionbuffer[input_counter] = c;
+    }
+    if (c == 's') {
+        save_to_flash(30, provisionbuffer);
+    }
+    if (c == 'r') {
+        read_from_flash(30, provisionbuffer);
     }
     return 1;
 }
@@ -119,7 +150,7 @@ int uart_rx_callback(uint8_t c) {
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
 PROCESS(send_messages_process, "Send Messages process");
-PROCESS(system_resources_process, "Sys Resources process");
+PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 /*---------------------------------------------------------------------------*/
 AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &send_messages_process, &uart_receive_process);
@@ -140,16 +171,16 @@ PROCESS_THREAD(send_messages_process, ev, data)
   printf("*** PROCESS_THREAD send_messages_process started ***\n");
   static struct etimer timer;
   static uint8_t counter = 0;
-  etimer_set(&timer, CLOCK_SECOND);
+  etimer_set(&timer, CLOCK_SECOND/2);
   event_data_ready = process_alloc_event();
   event_data_ready_res = process_alloc_event();
 
-  myrf_init_queue(&q, message);
+  //myrf_init_queue(&q, message);
 
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
-          myrf_receive(&q, &rx_stats);
+          //myrf_receive(&q, &rx_stats);
           //myrf_send(message);
           //memset(message, 0, MESSAGELENGTH);
           //verify_message();
@@ -172,11 +203,14 @@ PROCESS_THREAD(system_resources_process, ev, data)
 {
   PROCESS_BEGIN();
   printf("*** PROCESS_THREAD system_resources_process started ***\n");
+  self_test();
 
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(ev == event_data_ready_res);
+      /*
       myrf_get_fw_info();
       myrf_get_rssi();
+      */
       printf("Provision: ");
       hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
   }

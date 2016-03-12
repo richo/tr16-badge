@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "ext-flash.h"
 #include "myhelpers.h"
+#include "myflash.h"
 
 void test_flash() {
     if (ext_flash_test()) {

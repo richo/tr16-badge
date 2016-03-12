@@ -63,6 +63,7 @@
 #include "myhelpers.h"
 #include "myrf_settings.h"
 #include "myrf_cmd.h"
+#include "myflash.h"
 
 typedef struct identity {
     uint16_t id;
@@ -75,7 +76,7 @@ uint8_t group;
 static Identity_t me;
 static Identity_t fake;
 
-static process_event_t event_data_ready, event_data_ready_res;
+static process_event_t event_display_message, event_display_system_resources;
 
 static uint16_t input_counter = 0;
 
@@ -172,8 +173,8 @@ PROCESS_THREAD(send_messages_process, ev, data)
   static struct etimer timer;
   static uint8_t counter = 0;
   etimer_set(&timer, CLOCK_SECOND/2);
-  event_data_ready = process_alloc_event();
-  event_data_ready_res = process_alloc_event();
+  event_display_message = process_alloc_event();
+  event_display_system_resources = process_alloc_event();
 
   //myrf_init_queue(&q, message);
 
@@ -187,10 +188,10 @@ PROCESS_THREAD(send_messages_process, ev, data)
           //save_message(counter%BUFFERSIZE);
 
           if (0x00 == (counter%10)) {
-            process_post(&output_messages_process, event_data_ready, &counter);
+            process_post(&output_messages_process, event_display_message, &counter);
           }
           if (0x00 == (counter%60)) {
-            process_post(&system_resources_process, event_data_ready_res, &counter);
+            process_post(&system_resources_process, event_display_system_resources, &counter);
           }
           etimer_reset(&timer);
           counter++;
@@ -206,7 +207,7 @@ PROCESS_THREAD(system_resources_process, ev, data)
   self_test();
 
   while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(ev == event_data_ready_res);
+      PROCESS_WAIT_EVENT_UNTIL(ev == event_display_system_resources);
       /*
       myrf_get_fw_info();
       myrf_get_rssi();
@@ -223,7 +224,7 @@ PROCESS_THREAD(output_messages_process, ev, data)
   printf("*** PROCESS_THREAD output_messages_process started ***\n");
 
   while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(ev == event_data_ready);
+      PROCESS_WAIT_EVENT_UNTIL(ev == event_display_message);
       printMessage();
   }
   PROCESS_END();

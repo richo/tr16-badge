@@ -80,9 +80,16 @@ static rfc_propRxOutput_t rx_stats;
 
 void printMessage() {
     rfc_dataEntryGeneral_t *entry;
+    uint8_t *msgptr = NULL;
     entry = (rfc_dataEntryGeneral_t *)message;
     printf("Message buffer\n"); 
     hexdump(&entry->data, PACKETLENGTH);
+    printf("\n"); 
+    msgptr = &entry->data;
+    printf("as string: ");
+    for (uint8_t pos = 0; pos < 80; pos++) {
+        printf("%c", msgptr[pos]);
+    }
     printf("\n"); 
 }
 

@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Tue 08 Mar 2016 12:23:36 PM CET
+* Last Modified : Sat 12 Mar 2016 05:13:26 PM CET
 * Created By    :
 *
 */
@@ -120,7 +120,7 @@ rfc_CMD_PROP_TX_t RF_cmdPropTx =
     .pktConf.bFsOff = 0x0,
     .pktConf.bUseCrc = 0x1,
     .pktConf.bVarLen = 0x0,
-    .pktLen = 0x1e, // SET APPLICATION PAYLOAD LENGTH
+    .pktLen = PACKETLENGTH, // SET APPLICATION PAYLOAD LENGTH
     .syncWord = 0xaabbaabb,
     .pPkt = 0, // INSERT APPLICABLE POINTER: (uint8_t*)&xxx
 };
@@ -154,7 +154,7 @@ rfc_CMD_PROP_RX_t RF_cmdPropRx =
     .rxConf.bAppendTimestamp = 0x0,
     .rxConf.bAppendStatus = 0x1,
     .syncWord = 0xaabbaabb,
-    .maxPktLen = 0x1e, // MAKE SURE DATA ENTRY IS LARGE ENOUGH
+    .maxPktLen = PACKETLENGTH, // MAKE SURE DATA ENTRY IS LARGE ENOUGH
     .address0 = 0xaa,
     .address1 = 0xbb,
     .endTrigger.triggerType = 0x1,

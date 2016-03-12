@@ -82,7 +82,7 @@ void printMessage() {
     rfc_dataEntryGeneral_t *entry;
     entry = (rfc_dataEntryGeneral_t *)message;
     printf("Message buffer\n"); 
-    hexdump(&entry->data, 30);
+    hexdump(&entry->data, PACKETLENGTH);
     printf("\n"); 
 }
 
@@ -180,7 +180,6 @@ PROCESS_THREAD(display_pin_process, ev, data)
     PROCESS_BEGIN();
     printf("*** PROCESS_THREAD PIN started ***\n");
     static struct etimer timer;
-    //static uint8_t idx = 0x00;
     static uint8_t button_pressed = 0x00;
     etimer_set(&timer, CLOCK_SECOND/3);
     while(1) {
@@ -210,12 +209,12 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
 
-  //myrf_init_queue(&q, message);
+  myrf_init_queue(&q, message);
 
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
-          //myrf_receive(&q, &rx_stats);
+          myrf_receive(&q, &rx_stats);
           //myrf_send(message);
           //memset(message, 0, MESSAGELENGTH);
           //verify_message();

@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sat 12 Mar 2016 09:18:52 PM CET
+* Last Modified : Sat 12 Mar 2016 09:34:51 PM CET
 * Created By    :
 *
 */
@@ -136,7 +136,7 @@ void myrf_init(void) {
     PRINTF("prop_fs: OK CMD_FS, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
   }
 
-  if(rf_core_wait_cmd_done(&cmdFs) != RF_CORE_CMD_OK) {
+  if(rf_core_wait_cmd_done(cmdFs) != RF_CORE_CMD_OK) {
     PRINTF("prop_fs: cmd_fs wait, CMD_ABORT CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
   } else {
     PRINTF("prop_fs: OK cmd_fs wait, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);

@@ -183,7 +183,7 @@ PROCESS_THREAD(send_messages_process, ev, data)
   static struct etimer timer;
   static uint8_t counter = 0x00;
   static uint8_t idx = 0x00;
-  static uint8_t button_pressed = 0x00;
+  //static uint8_t button_pressed = 0x00;
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
@@ -204,6 +204,7 @@ PROCESS_THREAD(send_messages_process, ev, data)
               pwm_start(idx);
               idx += 10;
               idx = idx % 121;
+              /*
               if (0x00 == button_pressed ) {
                 pwm_start(30);
                 button_pressed = 1;
@@ -211,6 +212,7 @@ PROCESS_THREAD(send_messages_process, ev, data)
                 pwm_start(120);
                 button_pressed = 0;
               }
+              */
            }
 
           if (0x00 == (counter%30)) {

@@ -42,8 +42,6 @@
 #include <stdio.h> /* For printf() */
 #include <string.h>
 #include "lpm.h"
-#include "dev/radio.h"
-#include "dev/oscillators.h"
 #include "dev/serial-line.h"
 #include "button-sensor.h"
 #include "ti-lib.h"
@@ -158,11 +156,12 @@ int uart_rx_callback(uint8_t c) {
 
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
-PROCESS(send_messages_process, "Send Messages process");
+PROCESS(receive_messages_process, "Send Messages process");
 PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
+PROCESS(display_pin_process, "Display PIN process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &send_messages_process, &uart_receive_process);
+AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -176,14 +175,37 @@ PROCESS_THREAD(uart_receive_process, ev, data)
   PROCESS_END();
 }
 
-PROCESS_THREAD(send_messages_process, ev, data)
+PROCESS_THREAD(display_pin_process, ev, data)
+{
+    PROCESS_BEGIN();
+    printf("*** PROCESS_THREAD PIN started ***\n");
+    static struct etimer timer;
+    //static uint8_t idx = 0x00;
+    static uint8_t button_pressed = 0x00;
+    etimer_set(&timer, CLOCK_SECOND/3);
+    while(1) {
+        if(ti_lib_gpio_pin_read(BOARD_KEY_BACKDOOR)) {
+            printf("Backdoor key pressed on=%u\n", button_pressed);
+            if (button_pressed) {
+                button_pressed = 0x00;
+                pwm_start(120);
+            } else {
+                button_pressed = 0xFF;
+                pwm_start(0);
+            }
+        }
+        PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+        etimer_reset(&timer);
+    }
+    PROCESS_END();
+}
+
+PROCESS_THREAD(receive_messages_process, ev, data)
 {
   PROCESS_BEGIN();
-  printf("*** PROCESS_THREAD send_messages_process started ***\n");
+  printf("*** PROCESS_THREAD receive_messages_process started ***\n");
   static struct etimer timer;
   static uint8_t counter = 0x00;
-  static uint8_t idx = 0x00;
-  //static uint8_t button_pressed = 0x00;
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
@@ -198,22 +220,6 @@ PROCESS_THREAD(send_messages_process, ev, data)
           //memset(message, 0, MESSAGELENGTH);
           //verify_message();
           //save_message(counter%BUFFERSIZE);
-
-          if(ti_lib_gpio_pin_read(BOARD_KEY_BACKDOOR)) {
-              printf("Backdoor key pressed idx=%u\n", idx);
-              pwm_start(idx);
-              idx += 10;
-              idx = idx % 121;
-              /*
-              if (0x00 == button_pressed ) {
-                pwm_start(30);
-                button_pressed = 1;
-              } else {
-                pwm_start(120);
-                button_pressed = 0;
-              }
-              */
-           }
 
           if (0x00 == (counter%30)) {
             process_post(&output_messages_process, event_display_message, &counter);

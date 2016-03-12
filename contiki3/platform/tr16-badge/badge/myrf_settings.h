@@ -39,7 +39,7 @@ Setting the packet-format:
 #define CMD_PROP_RADIO_SETUP 	    0x3806
 #define CMD_PROP_RADIO_DIV_SETUP    0x3807
 
-#define PACKETLENGTH 0xFF
+#define PACKETLENGTH 0x1E
 
 extern rfc_CMD_PROP_RADIO_DIV_SETUP_t RF_cmdPropRadioDivSetup;
 extern rfc_CMD_FS_t RF_cmdFs;

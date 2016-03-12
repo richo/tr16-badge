@@ -68,14 +68,13 @@
 static ExtIdentity_t me;
 static Identity_t fake;
 
-static process_event_t event_display_message, event_display_system_resources;
+static process_event_t event_display_message, event_display_system_resources, event_received_message;
 
 static uint16_t input_counter = 0;
 
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t message[MESSAGELENGTH];
 static dataQueue_t q;
-static rfc_propRxOutput_t rx_stats;
 
 
 void printMessage() {
@@ -150,6 +149,9 @@ int uart_rx_callback(uint8_t c) {
         case '\t':
             read_from_flash(30, provisionbuffer);
         break;
+        case 'p':
+            printMessage();
+        break;
         default:
             if (input_counter < PROVISIONBUFFERLENGTH) {
                 provisionbuffer[input_counter] = c;
@@ -212,9 +214,12 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   printf("*** PROCESS_THREAD receive_messages_process started ***\n");
   static struct etimer timer;
   static uint8_t counter = 0x00;
+  static int8_t last_received_timestamp = 0x00;
+  static rfc_propRxOutput_t rx_stats;
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
+  event_received_message = process_alloc_event();
 
   myrf_init_queue(&q, message);
 
@@ -227,8 +232,16 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           //verify_message();
           //save_message(counter%BUFFERSIZE);
 
-          if (0x00 == (counter%30)) {
-            process_post(&output_messages_process, event_display_message, &counter);
+          printf("nrxok %i", rx_stats.nRxOk);
+          printf("nrxNok %i", rx_stats.nRxNok);
+          printf("nrxIgn %i", rx_stats.nRxIgnored);
+
+          if (last_received_timestamp ^ rx_stats.lastRssi) {
+              printf("received message but will it be valid?\n");
+              last_received_timestamp = rx_stats.lastRssi;
+              //if (0x00 == (counter%30)) {
+              process_post(&output_messages_process, event_display_message, &counter);
+              //}
           }
           if (0x00 == (counter%60)) {
             process_post(&system_resources_process, event_display_system_resources, &counter);

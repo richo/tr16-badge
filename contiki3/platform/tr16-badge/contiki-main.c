@@ -48,6 +48,7 @@
 #include "contiki-net.h"
 #include "leds.h"
 #include "lpm.h"
+#include "pwm.h"
 #include "gpio-interrupt.h"
 #include "dev/watchdog.h"
 #include "dev/oscillators.h"

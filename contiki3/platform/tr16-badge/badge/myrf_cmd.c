@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Wed 09 Mar 2016 04:47:05 PM CET
+* Last Modified : Sat 12 Mar 2016 09:15:41 PM CET
 * Created By    :
 *
 */
@@ -62,10 +62,10 @@ void myrf_get_fw_info(void) {
     cmd.commandNo = CMD_GET_FW_INFO;
 
     if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
-        printf("Version No.: 0x%04x\n", cmd.versionNo);
-        printf("Free RAM: 0x%04x\n", cmd.freeRamSz);
+        PRINTF("Version No.: 0x%04x\n", cmd.versionNo);
+        PRINTF("Free RAM: 0x%04x\n", cmd.freeRamSz);
     } else {
-        printf("status: 0x%08lx\n", cmd_status);
+        PRINTF("status: 0x%08lx\n", cmd_status);
     }
 }
 
@@ -80,9 +80,9 @@ void myrf_get_rssi(void) {
 
     if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
         rssi = (cmd_status >> 16) & 0xFF;
-        printf("RSSI: 0x%04x\n", rssi);
+        PRINTF("RSSI: 0x%04x\n", rssi);
     } else {
-        printf("status: 0x%08lx\n", cmd_status);
+        PRINTF("status: 0x%08lx\n", cmd_status);
     }
 }
 
@@ -137,9 +137,9 @@ void myrf_init(void) {
   }
 
   if(rf_core_wait_cmd_done(&cmdFs) != RF_CORE_CMD_OK) {
-    printf("prop_fs: cmd_fs wait, CMD_ABORT CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
+    PRINTF("prop_fs: cmd_fs wait, CMD_ABORT CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
   } else {
-    printf("prop_fs: OK cmd_fs wait, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
+    PRINTF("prop_fs: OK cmd_fs wait, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdFs->status);
   }
 
   if(!rf_core_is_accessible()) {
@@ -149,16 +149,6 @@ void myrf_init(void) {
 
 void myrf_send(uint8_t *message) {
   uint32_t cmd_status, ret;
-  /*
-  if(!rf_core_is_accessible()) {
-      if(rf_core_power_up() != RF_CORE_CMD_OK) {
-        PRINTF("send: rf_core_power_up() failed\n");
-      }
-  } else {
-      printf("rfcore is accessible\n");
-  }
-
-  */
 
   myrf_init();
 
@@ -170,10 +160,10 @@ void myrf_send(uint8_t *message) {
 
   ret = rf_core_send_cmd((uint32_t)cmdTx, &cmd_status);
   if(rf_core_send_cmd((uint32_t)cmdTx, &cmd_status) != RF_CORE_CMD_OK) {
-    printf("rf_send: CMD_ABORT RF_prop_tx, ret=0x%08lx\n", ret);
-    printf("rf_send: CMD_ABORT RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
+    PRINTF("rf_send: CMD_ABORT RF_prop_tx, ret=0x%08lx\n", ret);
+    PRINTF("rf_send: CMD_ABORT RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
   } else {
-    printf("rf_send: CMD_OK RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
+    PRINTF("rf_send: CMD_OK RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
   }
 
   rtimer_clock_t t0;
@@ -188,58 +178,47 @@ void myrf_send(uint8_t *message) {
            cmd_status, cmdTx->status);
   }
 
-  /*
-  rf_core_power_down();
-  */
 }
 
 void myrf_receive(dataQueue_t *q, rfc_propRxOutput_t *rx_stats) {
   uint32_t cmd_status, ret;
-  /*
-  if(!rf_core_is_accessible()) {
-      if(rf_core_power_up() != RF_CORE_CMD_OK) {
-        PRINTF("receive: rf_core_power_up() failed\n");
-      }
-  } else {
-      printf("rfcore is accessible\n");
-  }
-  */
+  rtimer_clock_t t0;
+
   myrf_init();
-  //ENERGEST_ON(ENERGEST_TYPE_LISTEN);
 
   rfc_CMD_PROP_RX_t *cmdRx = NULL;
   cmdRx = &RF_cmdPropRx;
 
-  RF_cmdPropRx.status = 0x00;
   RF_cmdPropRx.pOutput = (uint8_t *)rx_stats;
   RF_cmdPropRx.status = RF_CORE_RADIO_OP_STATUS_IDLE;
   RF_cmdPropRx.pQueue = q;
 
   ret = rf_core_send_cmd((uint32_t)cmdRx, &cmd_status);
-  if(rf_core_send_cmd((uint32_t)cmdRx, &cmd_status) != RF_CORE_CMD_OK) {
-    printf("rf_receive: CMD_ABORT RF_prop_rx, ret=0x%08lx\n", ret);
-    printf("rf_receive: CMD_ABORT RF_prop_rx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdRx->status);
+  if(ret != RF_CORE_CMD_OK) {
+    PRINTF("rf_receive: CMD_ABORT RF_prop_rx, ret=0x%08lx\n", ret);
+    PRINTF("rf_receive: CMD_ABORT RF_prop_rx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdRx->status);
   } else {
-    printf("rf_receive: CMD_OK RF_prop_rx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdRx->status);
-    printf("receive\n");
-  }
-  rtimer_clock_t t0;
-  t0 = RTIMER_NOW();
+    PRINTF("rf_receive: CMD_OK RF_prop_rx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdRx->status);
+    PRINTF("receive\n");
+    t0 = RTIMER_NOW();
 
-  while(cmdRx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE &&
-        (RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + ENTER_RX_WAIT_TIMEOUT)));
+    while(cmdRx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE &&
+          (RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + ENTER_RX_WAIT_TIMEOUT)));
 
-  /* Wait to enter RX */
-  if(cmdRx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE) {
-    PRINTF("rf_rx: CMDSTA=0x%08lx, status=0x%04x\n",
-           cmd_status, cmdRx->status);
-    printf("not receive\n");
-  } else {
-    hexdump(cmdRx->pQueue, sizeof(dataQueue_t));
-    hexdump(cmdRx->pOutput, sizeof(rfc_propRxOutput_t));
+    /* Wait to enter RX */
+    if(cmdRx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE) {
+      PRINTF("rf_rx: CMDSTA=0x%08lx, status=0x%04x\n",
+             cmd_status, cmdRx->status);
+      //PRINTF("not receive\n");
+    } /* else {
+      hexdump(cmdRx->pQueue, sizeof(dataQueue_t));
+      hexdump(cmdRx->pOutput, sizeof(rfc_propRxOutput_t));
+    }
+    */
+    if(ret) {
+      ENERGEST_ON(ENERGEST_TYPE_LISTEN);
+    }
   }
-  /*
-  rf_core_power_down();
-  */
+
 }
 

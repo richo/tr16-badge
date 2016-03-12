@@ -64,16 +64,10 @@
 #include "myrf_settings.h"
 #include "myrf_cmd.h"
 #include "myflash.h"
+#include "myprovision.h"
 
-typedef struct identity {
-    uint16_t id;
-    uint8_t first_name[30];
-    uint8_t last_name[30];
-} Identity_t;
 
-uint8_t group;
-
-static Identity_t me;
+static ExtIdentity_t me;
 static Identity_t fake;
 
 static process_event_t event_display_message, event_display_system_resources;
@@ -128,22 +122,36 @@ void save_message(uint8_t slot) {
     }
 }
 
+void test_display() {
+  printf("set pins on\n");
+  /* Test display on */
+  ti_lib_gpio_pin_write(BOARD_LCD_BL, 1);
+  ti_lib_gpio_pin_write(BOARD_LCD_BL_PWR_ON, 1);
+  pwm_start(120); // 40mA
+}
+
 void self_test() {
     test_flash();
+    test_display();
 }
 
 
 int uart_rx_callback(uint8_t c) {
-    input_counter++;
 
-    if (input_counter < PROVISIONBUFFERLENGTH) {
-        provisionbuffer[input_counter] = c;
-    }
-    if (c == 's') {
-        save_to_flash(30, provisionbuffer);
-    }
-    if (c == 'r') {
-        read_from_flash(30, provisionbuffer);
+    switch (c) {
+        case '\r':
+            save_to_flash(30, provisionbuffer);
+        break;
+        case '\t':
+            read_from_flash(30, provisionbuffer);
+        break;
+        default:
+            if (input_counter < PROVISIONBUFFERLENGTH) {
+                provisionbuffer[input_counter] = c;
+                input_counter++;
+            }
+        break;
+
     }
     return 1;
 }
@@ -156,6 +164,7 @@ PROCESS(uart_receive_process, "UART Receive process");
 /*---------------------------------------------------------------------------*/
 AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &send_messages_process, &uart_receive_process);
 /*---------------------------------------------------------------------------*/
+
 PROCESS_THREAD(uart_receive_process, ev, data)
 {
   PROCESS_BEGIN();
@@ -166,12 +175,15 @@ PROCESS_THREAD(uart_receive_process, ev, data)
   }
   PROCESS_END();
 }
+
 PROCESS_THREAD(send_messages_process, ev, data)
 {
   PROCESS_BEGIN();
   printf("*** PROCESS_THREAD send_messages_process started ***\n");
   static struct etimer timer;
-  static uint8_t counter = 0;
+  static uint8_t counter = 0x00;
+  static uint8_t idx = 0x00;
+  static uint8_t button_pressed = 0x00;
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
@@ -187,7 +199,21 @@ PROCESS_THREAD(send_messages_process, ev, data)
           //verify_message();
           //save_message(counter%BUFFERSIZE);
 
-          if (0x00 == (counter%10)) {
+          if(ti_lib_gpio_pin_read(BOARD_KEY_BACKDOOR)) {
+              printf("Backdoor key pressed idx=%u\n", idx);
+              pwm_start(idx);
+              idx += 10;
+              idx = idx % 121;
+              if (0x00 == button_pressed ) {
+                pwm_start(30);
+                button_pressed = 1;
+              } else {
+                pwm_start(120);
+                button_pressed = 0;
+              }
+           }
+
+          if (0x00 == (counter%30)) {
             process_post(&output_messages_process, event_display_message, &counter);
           }
           if (0x00 == (counter%60)) {
@@ -208,11 +234,7 @@ PROCESS_THREAD(system_resources_process, ev, data)
 
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(ev == event_display_system_resources);
-      /*
-      myrf_get_fw_info();
-      myrf_get_rssi();
-      */
-      printf("Provision: ");
+      printf("Provision Buffer: ");
       hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
   }
   PROCESS_END();

@@ -73,6 +73,25 @@
 /*---------------------------------------------------------------------------*/
 /** \brief Board specific iniatialisation */
 void board_init(void);
+
+
+
+void pin_init(void) {
+
+  printf("set ip pin type\n");
+  /* set ip pin type */
+  ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_KEY_BACKDOOR);
+  ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_LCD_BL);
+  ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_LCD_BL_PWR_ON);
+
+  printf("clear test pins\n");
+  /* Clear everything */
+  //ti_lib_gpio_pin_write(BOARD_KEY_BACKDOOR, 0);
+  ti_lib_gpio_pin_write(BOARD_LCD_BL, 0);
+  ti_lib_gpio_pin_write(BOARD_LCD_BL_PWR_ON, 0);
+}
+
+
 /*---------------------------------------------------------------------------*/
 /**
  * \brief Main function for CC26xx-based platforms
@@ -139,6 +158,7 @@ main(void)
   myrf_init();
   myrf_get_fw_info();
   myrf_get_rssi();
+  pin_init();
 
   process_start(&rf_core_process, NULL);
 

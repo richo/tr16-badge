@@ -72,17 +72,21 @@ void myrf_get_fw_info(void) {
 void myrf_get_rssi(void) {
     int8_t rssi;
     uint32_t cmd_status;
+    uint8_t attempts = 0;
     rfc_CMD_GET_RSSI_t cmd;
-    memset(&cmd, 0x00, sizeof(cmd));
-    cmd.commandNo = CMD_GET_RSSI;
 
     rssi = RF_CMD_CCA_REQ_RSSI_UNKNOWN;
 
-    if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
-        rssi = (cmd_status >> 16) & 0xFF;
-        PRINTF("RSSI: 0x%04x\n", rssi);
-    } else {
-        PRINTF("status: 0x%08lx\n", cmd_status);
+    while ((rssi == RF_CMD_CCA_REQ_RSSI_UNKNOWN || rssi == 0) && ++attempts < 10) {
+        memset(&cmd, 0x00, sizeof(cmd));
+        cmd.commandNo = CMD_GET_RSSI;
+        if(rf_core_send_cmd((uint32_t)&cmd, &cmd_status) != RF_CORE_CMD_OK) {
+            PRINTF("status: 0x%08lx\n", cmd_status);
+            break;
+        } else {
+            rssi = (cmd_status >> 16) & 0xFF;
+            PRINTF("RSSI: 0x%02x\n", rssi);
+        }
     }
 }
 

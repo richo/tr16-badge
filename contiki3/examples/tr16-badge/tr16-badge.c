@@ -235,6 +235,8 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           printf("nrxok %i", rx_stats.nRxOk);
           printf("nrxNok %i", rx_stats.nRxNok);
           printf("nrxIgn %i", rx_stats.nRxIgnored);
+          printf("\n");
+          myrf_get_rssi();
 
           if (last_received_timestamp ^ rx_stats.lastRssi) {
               printf("received message but will it be valid?\n");

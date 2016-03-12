@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sat 12 Mar 2016 09:15:41 PM CET
+* Last Modified : Sat 12 Mar 2016 09:17:48 PM CET
 * Created By    :
 *
 */
@@ -159,7 +159,7 @@ void myrf_send(uint8_t *message) {
   RF_cmdPropTx.pPkt = message;
 
   ret = rf_core_send_cmd((uint32_t)cmdTx, &cmd_status);
-  if(rf_core_send_cmd((uint32_t)cmdTx, &cmd_status) != RF_CORE_CMD_OK) {
+  if(ret != RF_CORE_CMD_OK) {
     PRINTF("rf_send: CMD_ABORT RF_prop_tx, ret=0x%08lx\n", ret);
     PRINTF("rf_send: CMD_ABORT RF_prop_tx, CMDSTA=0x%08lx, status=0x%04x\n", cmd_status, cmdTx->status);
   } else {

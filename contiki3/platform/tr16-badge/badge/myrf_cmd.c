@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sat 12 Mar 2016 09:17:48 PM CET
+* Last Modified : Sat 12 Mar 2016 09:18:52 PM CET
 * Created By    :
 *
 */
@@ -172,7 +172,7 @@ void myrf_send(uint8_t *message) {
   while(cmdTx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE &&
         (RTIMER_CLOCK_LT(RTIMER_NOW(), t0 + ENTER_RX_WAIT_TIMEOUT)));
 
-  /* Wait to enter RX */
+  /* Wait to enter TX */
   if(cmdTx->status != RF_CORE_RADIO_OP_STATUS_ACTIVE) {
     PRINTF("rf_tx: CMDSTA=0x%08lx, status=0x%04x\n",
            cmd_status, cmdTx->status);

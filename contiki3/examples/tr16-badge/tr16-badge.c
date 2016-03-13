@@ -176,6 +176,7 @@ void rssi_indicator(void) {
   pwm_start(pwr);
 
 }
+
 void print_day(uint8_t day) {
 
 }

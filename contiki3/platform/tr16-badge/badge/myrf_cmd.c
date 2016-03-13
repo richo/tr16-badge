@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sun 13 Mar 2016 09:30:54 AM CET
+* Last Modified : Sun 13 Mar 2016 11:06:17 AM CET
 * Created By    :
 *
 */
@@ -48,7 +48,7 @@
 void myrf_init_queue(dataQueue_t *q, uint8_t *buf) {
     rfc_dataEntry_t *entry;
     entry = (rfc_dataEntry_t *)buf;
-    entry->status = 0; //DATA_ENTRY_STATUS_PENDING;
+    entry->status = DATA_ENTRY_STATUS_PENDING;
     entry->config.type = DATA_ENTRY_TYPE_GEN;
     entry->config.lenSz = 2; //DATA_ENTRY_LENSZ_WORD;
     entry->length = MESSAGELENGTH - 8;

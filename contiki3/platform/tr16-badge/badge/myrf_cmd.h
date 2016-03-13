@@ -61,6 +61,12 @@ Command ID number: 0x0002
 #define RF_CMD_CCA_REQ_RSSI_UNKNOWN -128
 #define ENTER_RX_WAIT_TIMEOUT (RTIMER_SECOND >> 10)
 
+#define DATA_ENTRY_STATUS_PENDING    0x00 /* Not in use by the Radio CPU */
+#define DATA_ENTRY_STATUS_ACTIVE     0x01 /* Open for r/w by the radio CPU */
+#define DATA_ENTRY_STATUS_BUSY       0x02 /* Ongoing r/w */
+#define DATA_ENTRY_STATUS_FINISHED   0x03 /* Free to use and to free */
+#define DATA_ENTRY_STATUS_UNFINISHED 0x04 /* Partial RX entry */
+
 #define DEBUG 1
 #if DEBUG
 #define PRINTF(...) printf(__VA_ARGS__)

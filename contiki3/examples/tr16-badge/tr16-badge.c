@@ -231,14 +231,19 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   printf("*** PROCESS_THREAD receive_messages_process started ***\n");
   static struct etimer timer;
   static uint8_t counter = 0x00;
-  static int8_t last_rssi = 0x00;
   static rfc_propRxOutput_t rx_stats;
+  rfc_dataEntry_t *entry;
+
+  rfc_dataEntryGeneral_t *gentry;
+  gentry = (rfc_dataEntryGeneral_t *)message;
+
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
 
   myrf_init_queue(&q, message);
+  printf("initial gentry Status %i\n", gentry->status);
 
   while(1) {
       PROCESS_WAIT_EVENT();
@@ -255,13 +260,16 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           printf("\n");
           rssi_inicator();
 
-          if (last_rssi ^ rx_stats.lastRssi) {
+          printf("gentry Status %i\n", gentry->status);
+
+          if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
               printf("received message but will it be valid?\n");
-              last_rssi = rx_stats.lastRssi;
               process_post(&output_messages_process, event_display_message, &counter);
+              //gentry->status = DATA_ENTRY_STATUS_PENDING;
+              myrf_init_queue(&q, message);
           }
           if (0x00 == (counter%60)) {
-            process_post(&system_resources_process, event_display_system_resources, &counter);
+              process_post(&system_resources_process, event_display_system_resources, &counter);
           }
           etimer_reset(&timer);
           counter++;

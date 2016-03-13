@@ -65,18 +65,24 @@
 #include "myprovision.h"
 
 
-static ExtIdentity_t me;
+static Identity_t me;
 static Identity_t fake;
 
 static process_event_t event_display_message, event_display_system_resources, event_received_message;
 
 static uint16_t input_counter = 0;
+static uint8_t is_provisioned = 0;
 
 #define STORAGESIZE 3
+#define PROVISIONBUFFERLENGTH 340
+
 void print_stored_message(uint8_t index);
 void print_queue_data(void);
 
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
+//static uint8_t delimiter = '#';
+static uint8_t delimiter_count = 0x00;
+
 static uint8_t message[MESSAGELENGTH];
 static uint8_t message_storage[STORAGESIZE][MESSAGELENGTH];
 static uint8_t storage_counter = 0x00;
@@ -128,15 +134,6 @@ void print_queue_data() {
     printf("\n");
 }
 
-void provisioning() {
-}
-
-void set_identity() {
-}
-
-void get_identity() {
-}
-
 void toggle_identity() {
 }
 
@@ -179,27 +176,94 @@ void rssi_indicator(void) {
   pwm_start(pwr);
 
 }
+void print_day(uint8_t day) {
+
+}
+
+void print_agenda() {
+    print_day(1);
+    print_day(2);
+}
+
+void print_help() {
+    printf("Hi, I'm your Help-Menue\n");
+    printf("'a' for the Agenda\n");
+    printf("'p' for your Message Buffer\n");
+    printf("'s' for setting the Time\n");
+    printf("'h' for ... I think you already know\n");
+}
+
+void print_identities() {
+    printf("%s, %s, %s\n", me.first_name, me.last_name, me.badge_name);
+    printf("%s, %s, %s\n", fake.first_name, fake.last_name, fake.badge_name);
+}
+
+void save_identities() {
+    uint16_t start_fname = 7;
+    uint16_t start_lname = 38;
+    uint16_t start_bname = 69;
+    uint16_t start_id = 2;
+
+    uint16_t start_fid = 172;
+    uint16_t start_ffname = 177;
+    uint16_t start_flname = 218;
+    uint16_t start_fbname = 249;
+
+    me.group = provisionbuffer[0];
+    fake.group = provisionbuffer[170];
+
+    for (uint32_t i = 0; i < 100; i++) {
+        if (i < 4) {
+            me.id[i] = provisionbuffer[start_id+i];
+            fake.id[i] = provisionbuffer[start_fid+i];
+        }
+        if (i < 30) {
+            me.first_name[i] = provisionbuffer[start_fname+i];
+            me.last_name[i] = provisionbuffer[start_lname+i];
+            fake.first_name[i] = provisionbuffer[start_ffname+i];
+            fake.last_name[i] = provisionbuffer[start_flname+i];
+        }
+        me.badge_name[i] = provisionbuffer[start_bname+i];
+        fake.badge_name[i] = provisionbuffer[start_fbname+i];
+    }
+
+    save_to_flash(1, sizeof(me), (uint8_t *)&me);
+    save_to_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+}
 
 int uart_rx_callback(uint8_t c) {
 
-    switch (c) {
-        case '\r':
-            save_to_flash(30, provisionbuffer);
-        break;
-        case '\t':
-            read_from_flash(30, provisionbuffer);
-        break;
-        case 'p':
-            print_queue_data();
-            print_message_storage();
-        break;
-        default:
-            if (input_counter < PROVISIONBUFFERLENGTH) {
-                provisionbuffer[input_counter] = c;
-                input_counter++;
-            }
-        break;
+    if (!is_provisioned) {
+        switch (c) {
+            case '#':
+                delimiter_count++;
+                /* fall through */
+            default:
+                if (input_counter < PROVISIONBUFFERLENGTH) {
+                    provisionbuffer[input_counter] = c;
+                    input_counter++;
+                    if (0x05 == delimiter_count) {
+                        is_provisioned = 0x01;
+                        save_identities();
+                    }
+                }
+            break;
 
+        }
+    } else {
+        switch (c) {
+            case 'a':
+                print_agenda();
+            break;
+            case 'h':
+                print_help();
+            break;
+            case 'p':
+                print_identities();
+                print_queue_data();
+                print_message_storage();
+            break;
+        }
     }
     return 1;
 }
@@ -264,6 +328,13 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
+
+  read_from_flash(0, 1, &is_provisioned);
+
+  if (is_provisioned) {
+    read_from_flash(1, sizeof(me), (uint8_t *)&me);
+    read_from_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+  }
 
   myrf_init_queue(&q, message);
   printf("initial gentry Status %i\n", gentry->status);

@@ -13,14 +13,14 @@ void test_flash() {
     }
 }
 
-void save_to_flash(uint32_t length, uint8_t *buffer) {
+void save_to_flash(uint32_t offset, uint32_t length, uint8_t *buffer) {
     if (ext_flash_open()) {
         printf("flash opened\n");
     } else {
         printf("flash open failed\n");
     }
 
-    if (ext_flash_write(0, length, buffer)) {
+    if (ext_flash_write(offset, length, buffer)) {
         hexdump(buffer, length);
         printf("flash write\n");
     } else {
@@ -30,14 +30,14 @@ void save_to_flash(uint32_t length, uint8_t *buffer) {
     ext_flash_close();
 }
 
-void read_from_flash(uint32_t length, uint8_t *buffer) {
+void read_from_flash(uint32_t offset, uint32_t length, uint8_t *buffer) {
     if (ext_flash_open()) {
         printf("flash opened\n");
     } else {
         printf("flash open failed\n");
     }
 
-    if (ext_flash_read(0, length, buffer)) {
+    if (ext_flash_read(offset, length, buffer)) {
         hexdump(buffer, length);
         printf("flash write\n");
     } else {

@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sat 12 Mar 2016 09:34:51 PM CET
+* Last Modified : Sun 13 Mar 2016 09:30:54 AM CET
 * Created By    :
 *
 */
@@ -69,7 +69,7 @@ void myrf_get_fw_info(void) {
     }
 }
 
-void myrf_get_rssi(void) {
+int8_t myrf_get_rssi(void) {
     int8_t rssi;
     uint32_t cmd_status;
     uint8_t attempts = 0;
@@ -88,6 +88,7 @@ void myrf_get_rssi(void) {
             PRINTF("RSSI: 0x%02x\n", rssi);
         }
     }
+    return rssi;
 }
 
 

@@ -69,7 +69,7 @@ Command ID number: 0x0002
 #endif
 
 void myrf_get_fw_info(void);
-void myrf_get_rssi(void);
+int8_t myrf_get_rssi(void);
 
 void myrf_init(void);
 void myrf_send(uint8_t *msg);

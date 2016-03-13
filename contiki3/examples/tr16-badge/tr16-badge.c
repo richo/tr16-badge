@@ -139,6 +139,23 @@ void self_test() {
     test_display();
 }
 
+void rssi_inicator(void) {
+  int8_t rssi;
+  uint8_t pwr;
+  uint8_t val;
+  rssi = myrf_get_rssi();
+
+  val = rssi;
+  val = val % 0x10;
+  pwr = val*7;
+
+  if (val > 120)  {
+      pwr = 120;
+  }
+  pwm_start(pwr); // 40mA
+
+}
+
 
 int uart_rx_callback(uint8_t c) {
 
@@ -214,7 +231,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   printf("*** PROCESS_THREAD receive_messages_process started ***\n");
   static struct etimer timer;
   static uint8_t counter = 0x00;
-  static int8_t last_received_timestamp = 0x00;
+  static int8_t last_rssi = 0x00;
   static rfc_propRxOutput_t rx_stats;
   etimer_set(&timer, CLOCK_SECOND/2);
   event_display_message = process_alloc_event();
@@ -236,14 +253,12 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           printf("nrxNok %i", rx_stats.nRxNok);
           printf("nrxIgn %i", rx_stats.nRxIgnored);
           printf("\n");
-          myrf_get_rssi();
+          rssi_inicator();
 
-          if (last_received_timestamp ^ rx_stats.lastRssi) {
+          if (last_rssi ^ rx_stats.lastRssi) {
               printf("received message but will it be valid?\n");
-              last_received_timestamp = rx_stats.lastRssi;
-              //if (0x00 == (counter%30)) {
+              last_rssi = rx_stats.lastRssi;
               process_post(&output_messages_process, event_display_message, &counter);
-              //}
           }
           if (0x00 == (counter%60)) {
             process_post(&system_resources_process, event_display_system_resources, &counter);

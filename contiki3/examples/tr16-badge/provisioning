@@ -1,0 +1,43 @@
+
+import json
+from pprint import pprint
+import serial
+from time import sleep
+import os
+
+badgefile = 'mybadges.json'
+
+with open(badgefile) as data_file:
+    data = json.load(data_file)
+
+for b in list(data['data']):
+    provdata = ""
+    if b['group'] == "regular":
+        provdata = str(0) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("regular")
+    elif b['group'] == "speaker":
+        provdata = str(1) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("speaker")
+    elif b['group'] == "ernw":
+        provdata = str(2) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("ernw")
+    elif b['group'] == "helper":
+        provdata = str(3) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("helper")
+    print(provdata)
+    raw_input("Press Enter to flash")
+    os.system('sh flash')
+    raw_input("Press Enter to provision")
+    ser = serial.Serial(
+        port='/dev/ttyUSB0',\
+        baudrate=115200,\
+        parity=serial.PARITY_NONE,\
+        stopbits=serial.STOPBITS_ONE,\
+        bytesize=serial.EIGHTBITS,\
+        timeout=0)
+
+    ser.write(provdata);
+    ser.close()
+
+print(data['data'].__len__())
+

@@ -1,0 +1,4 @@
+source ../../venv/bin/activate
+../../flasher.py -p /dev/ttyUSB0 -e -w -v tr16-badge.bin
+
+

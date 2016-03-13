@@ -72,12 +72,48 @@ static process_event_t event_display_message, event_display_system_resources, ev
 
 static uint16_t input_counter = 0;
 
+#define STORAGESIZE 3
+void print_stored_message(uint8_t index);
+void print_queue_data(void);
+
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t message[MESSAGELENGTH];
+static uint8_t message_storage[STORAGESIZE][MESSAGELENGTH];
+static uint8_t storage_counter = 0x00;
+static uint8_t storage_filling_level = 0x00;
+static uint8_t last_stored_message = 0x00;
 static dataQueue_t q;
 
+void store_message(uint8_t index) {
+    for (uint8_t i = 0; i < PACKETLENGTH+2; i++) {
+        message_storage[index][i] = message[i];
+    }
+}
 
-void printMessage() {
+void print_message_storage() {
+    printf("Received Messages: 0x%02x\n", storage_filling_level); 
+    printf("All Stored Messages:\n"); 
+    for (uint8_t i = 0; i < storage_filling_level % STORAGESIZE; i++) {
+        print_stored_message(i);
+    }
+}
+
+void print_stored_message(uint8_t index) {
+    rfc_dataEntryGeneral_t *entry;
+    uint8_t *msgptr = NULL;
+    entry = (rfc_dataEntryGeneral_t *)message_storage[index];
+    printf("Message Storage buffer\n"); 
+    hexdump(&entry->data, PACKETLENGTH);
+    printf("\n");
+    msgptr = &entry->data;
+    printf("as string: ");
+    for (uint8_t pos = 0; pos < 80; pos++) {
+        printf("%c", msgptr[pos]);
+    }
+    printf("\n");
+}
+
+void print_queue_data() {
     rfc_dataEntryGeneral_t *entry;
     uint8_t *msgptr = NULL;
     entry = (rfc_dataEntryGeneral_t *)message;
@@ -104,18 +140,6 @@ void get_identity() {
 void toggle_identity() {
 }
 
-void verify_sequence_number() {
-}
-
-void verify_key() {
-}
-
-void buffer_message() {
-}
-
-void verify_mac() {
-}
-
 void verify_message() {
     printf("verify\n");
 }
@@ -139,7 +163,7 @@ void self_test() {
     test_display();
 }
 
-void rssi_inicator(void) {
+void rssi_indicator(void) {
   int8_t rssi;
   uint8_t pwr;
   uint8_t val;
@@ -150,12 +174,11 @@ void rssi_inicator(void) {
   pwr = val*7;
 
   if (val > 120)  {
-      pwr = 120;
+      pwr = 120; // 40mA
   }
-  pwm_start(pwr); // 40mA
+  pwm_start(pwr);
 
 }
-
 
 int uart_rx_callback(uint8_t c) {
 
@@ -167,7 +190,8 @@ int uart_rx_callback(uint8_t c) {
             read_from_flash(30, provisionbuffer);
         break;
         case 'p':
-            printMessage();
+            print_queue_data();
+            print_message_storage();
         break;
         default:
             if (input_counter < PROVISIONBUFFERLENGTH) {
@@ -232,7 +256,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   static struct etimer timer;
   static uint8_t counter = 0x00;
   static rfc_propRxOutput_t rx_stats;
-  rfc_dataEntry_t *entry;
 
   rfc_dataEntryGeneral_t *gentry;
   gentry = (rfc_dataEntryGeneral_t *)message;
@@ -249,23 +272,15 @@ PROCESS_THREAD(receive_messages_process, ev, data)
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
           myrf_receive(&q, &rx_stats);
-          //myrf_send(message);
-          //memset(message, 0, MESSAGELENGTH);
-          //verify_message();
-          //save_message(counter%BUFFERSIZE);
-
-          printf("nrxok %i", rx_stats.nRxOk);
-          printf("nrxNok %i", rx_stats.nRxNok);
-          printf("nrxIgn %i", rx_stats.nRxIgnored);
-          printf("\n");
-          rssi_inicator();
-
-          printf("gentry Status %i\n", gentry->status);
 
           if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
+              printf("nrxok %i", rx_stats.nRxOk);
+              printf("nrxNok %i", rx_stats.nRxNok);
+              printf("nrxIgn %i", rx_stats.nRxIgnored);
+              printf("\n");
+              printf("entry Status %i\n", gentry->status);
               printf("received message but will it be valid?\n");
               process_post(&output_messages_process, event_display_message, &counter);
-              //gentry->status = DATA_ENTRY_STATUS_PENDING;
               myrf_init_queue(&q, message);
           }
           if (0x00 == (counter%60)) {
@@ -299,7 +314,11 @@ PROCESS_THREAD(output_messages_process, ev, data)
 
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(ev == event_display_message);
-      printMessage();
+      store_message(storage_counter);
+      last_stored_message = storage_counter;
+      storage_counter = (storage_counter + 1) % STORAGESIZE;
+      storage_filling_level++;
+      print_queue_data();
   }
   PROCESS_END();
 }

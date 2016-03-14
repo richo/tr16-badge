@@ -61,7 +61,7 @@
 #include "myhelpers.h"
 #include "myrf_settings.h"
 #include "myrf_cmd.h"
-#include "myflash.h"
+#include "badge-eeprom.h"
 #include "myprovision.h"
 #include "myagenda.h"
 
@@ -95,6 +95,16 @@ void store_message(uint8_t index) {
     for (uint8_t i = 0; i < PACKETLENGTH+2; i++) {
         message_storage[index][i] = message[i];
     }
+}
+
+void test_read_flash() {
+    printf("read from flash\n");    
+    uint8_t buffer[10];
+    eeprom_read(1, buffer, 10);
+    for (uint8_t i = 0; i < 10; i++) {
+        printf("%c", buffer[i]);
+    }
+    printf("\n");
 }
 
 void print_message_storage() {
@@ -157,7 +167,6 @@ void test_display() {
 }
 
 void self_test() {
-    test_flash();
     test_display();
 }
 
@@ -240,33 +249,43 @@ void save_identities() {
         fake.badge_name[i] = provisionbuffer[start_fbname+i];
     }
 
+    badge_eeprom_writePage(1, &me.first_name);
+    badge_eeprom_writePage(2, &me.last_name);
+    /*
     save_to_flash(1, sizeof(me), (uint8_t *)&me);
     save_to_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+    */
+}
+
+void provision(uint8_t c) {
+    switch (c) {
+        case '#':
+            delimiter_count++;
+            /* fall through */
+        default:
+            if (input_counter < PROVISIONBUFFERLENGTH) {
+                provisionbuffer[input_counter] = c;
+                input_counter++;
+                if (0x05 == delimiter_count) {
+                    is_provisioned = 0x01;
+                    save_identities();
+                }
+            }
+        break;
+    }
 }
 
 int uart_rx_callback(uint8_t c) {
 
     if (!is_provisioned) {
-        switch (c) {
-            case '#':
-                delimiter_count++;
-                /* fall through */
-            default:
-                if (input_counter < PROVISIONBUFFERLENGTH) {
-                    provisionbuffer[input_counter] = c;
-                    input_counter++;
-                    if (0x05 == delimiter_count) {
-                        is_provisioned = 0x01;
-                        save_identities();
-                    }
-                }
-            break;
-
-        }
+        provision(c);
     } else {
         switch (c) {
             case 'a':
                 print_agenda();
+            break;
+            case 'r':
+                test_read_flash();
             break;
             case 'h':
                 print_help();

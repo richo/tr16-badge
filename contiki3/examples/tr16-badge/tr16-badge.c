@@ -47,7 +47,6 @@
 #include "ti-lib.h"
 #include "pwm.h"
 #include "net/packetbuf.h"
-#include "ext-flash.h"
 #include "sys/clock.h"
 #include "sys/rtimer.h"
 #include "dev/cc26xx-uart.h"
@@ -64,6 +63,7 @@
 #include "badge-eeprom.h"
 #include "myprovision.h"
 #include "myagenda.h"
+#include "eeprom.h"
 
 
 static Identity_t me;
@@ -249,8 +249,8 @@ void save_identities() {
         fake.badge_name[i] = provisionbuffer[start_fbname+i];
     }
 
-    badge_eeprom_writePage(1, &me.first_name);
-    badge_eeprom_writePage(2, &me.last_name);
+    badge_eeprom_writePage(1, (uint8_t *)&me.first_name);
+    badge_eeprom_writePage(2, (uint8_t *)&me.last_name);
     /*
     save_to_flash(1, sizeof(me), (uint8_t *)&me);
     save_to_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
@@ -361,11 +361,11 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
 
-  read_from_flash(0, 1, &is_provisioned);
+  eeprom_read(0, &is_provisioned, 1);
 
   if (is_provisioned) {
-    read_from_flash(1, sizeof(me), (uint8_t *)&me);
-    read_from_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+    eeprom_read(1, (uint8_t *)&me, sizeof(me));
+    eeprom_read(sizeof(me)+1, (uint8_t *)&fake, sizeof(me));
   }
 
   myrf_init_queue(&q, message);

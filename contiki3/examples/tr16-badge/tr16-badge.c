@@ -76,6 +76,10 @@ static uint8_t is_provisioned = 0;
 
 #define STORAGESIZE 3
 #define PROVISIONBUFFERLENGTH 340
+#define MESSAGEWAIT 300
+
+uint32_t clock = 0x0;
+uint16_t wait = 0x0;
 
 void print_stored_message(uint8_t index);
 void print_queue_data(void);
@@ -90,6 +94,10 @@ static uint8_t storage_counter = 0x00;
 static uint8_t storage_filling_level = 0x00;
 static uint8_t last_stored_message = 0x00;
 static dataQueue_t q;
+
+void print_clock() {
+   printf("%2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
+}
 
 void store_message(uint8_t index) {
     for (uint8_t i = 0; i < PACKETLENGTH+2; i++) {
@@ -306,8 +314,9 @@ PROCESS(receive_messages_process, "Send Messages process");
 PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 PROCESS(display_pin_process, "Display PIN process");
+PROCESS(clock_process, "Clock process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
+AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -319,6 +328,20 @@ PROCESS_THREAD(uart_receive_process, ev, data)
       PROCESS_YIELD();
   }
   PROCESS_END();
+}
+
+PROCESS_THREAD(clock_process, ev, data)
+{
+    PROCESS_BEGIN();
+    printf("*** PROCESS_THREAD Clock started ***\n");
+    static struct etimer timer;
+    etimer_set(&timer, CLOCK_SECOND);
+    while(1) {
+        PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+        clock += 1;
+        etimer_reset(&timer);
+    }
+    PROCESS_END();
 }
 
 PROCESS_THREAD(display_pin_process, ev, data)
@@ -338,6 +361,7 @@ PROCESS_THREAD(display_pin_process, ev, data)
                 button_pressed = 0xFF;
                 pwm_start(0);
             }
+            print_clock();
         }
         PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
         etimer_reset(&timer);

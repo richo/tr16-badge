@@ -63,6 +63,7 @@
 #include "myrf_cmd.h"
 #include "myflash.h"
 #include "myprovision.h"
+#include "myagenda.h"
 
 
 static Identity_t me;
@@ -178,7 +179,18 @@ void rssi_indicator(void) {
 }
 
 void print_day(uint8_t day) {
-
+    switch (day) {
+        case 1:
+            for (uint8_t i = 0; i < 8; i++) {
+                print_slot(&day1[i]);
+            }
+        break;
+        case 2:
+            for (uint8_t i = 0; i < 6; i++) {
+                print_slot(&day2[i]);
+            }
+        break;
+    }
 }
 
 void print_agenda() {

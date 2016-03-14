@@ -10,7 +10,7 @@ void print_time(DayTime_t *time) {
 }
 
 void print_event(Event_t *ev) {
-    printf("Title: %s - By %s\n", ev->name, ev->speakers);
+    printf("Title: %s\n", ev->name);
 
     switch (ev->track) {
         case ATTACK:
@@ -48,7 +48,7 @@ Slot_t day1[8] = {
         /* Slot one */
         { 
             { "Opening Keynote" },
-            { "Ben Zevenbergen" },
+//            { "Ben Zevenbergen" },
              ATTACK ,
             {
                  9 ,
@@ -66,7 +66,7 @@ Slot_t day1[8] = {
         /* Slot two */
         { 
             { "Hiding your White-Box Designs is Not Enough" },
-            { "Philippe Teuwen" },
+ //           { "Philippe Teuwen" },
              ATTACK ,
             {
                  10 ,
@@ -75,8 +75,8 @@ Slot_t day1[8] = {
             },
         },
         { 
-            { "Casey Smith" },
             { "Mind The Gap - Exploit Free Whitelisting Evasion Tactics" },
+            //{ "Casey Smith" },
              DEFENSE ,
             {
                  10 ,
@@ -86,7 +86,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Patch me if you can" },
-            { "Damian Poddebniak, Sebastian Schinzel, Andreas Wiegenstein" },
+            //{ "Damian Poddebniak, Sebastian Schinzel, Andreas Wiegenstein" },
              SAP ,
             {
                  10 ,
@@ -100,7 +100,7 @@ Slot_t day1[8] = {
         /* Slot three */
         { 
             { "Attacking Next-Generation Firewalls" },
-            { "Felix Wilhelm" },
+            //{ "Felix Wilhelm" },
              ATTACK ,
             {
                  11 ,
@@ -110,7 +110,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Towards a LangSec-aware SDLC" },
-            { "Jacob Torrey" },
+            //{ "Jacob Torrey" },
              DEFENSE ,
             {
                  11 ,
@@ -120,7 +120,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Preventing vulnerabilities in HANA-based deployments" },
-            { "Juan Perez-Etchegoyen, Nahuel Sanchez" },
+            //{ "Juan Perez-Etchegoyen, Nahuel Sanchez" },
              SAP ,
             {
                  11 ,
@@ -133,7 +133,7 @@ Slot_t day1[8] = {
         /* Slot four */
         { 
             { "QNX: 99 Problems but a Microkernel ain't one!" },
-            { "Georgi Geshev, Alex Plaskett" },
+            //{ "Georgi Geshev, Alex Plaskett" },
              ATTACK ,
             {
                  13 ,
@@ -143,7 +143,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Cloud Seeding or Finding weird machines in the cloud crowd sourced economy." },
-            { "Graeme Neilson, Vladimir Wolstencroft" },
+            //{ "Graeme Neilson, Vladimir Wolstencroft" },
              DEFENSE ,
             {
                  13 ,
@@ -153,7 +153,7 @@ Slot_t day1[8] = {
         },
         { 
             { "An easy way into your multi-million dollar SAP systems: An unknown default SAP account" },
-            { "Joris van de Vis" },
+            //{ "Joris van de Vis" },
              SAP ,
             {
                  13 ,
@@ -166,7 +166,7 @@ Slot_t day1[8] = {
         /* Slot five */
         { 
             { "unrubby: reversing without reversing" },
-            { "Richo Healey" },
+            //{ "Richo Healey" },
              ATTACK ,
             {
                  14 ,
@@ -176,7 +176,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Imma Chargin Mah Lazer - How to protect against (D)DoS attacks" },
-            { "Oliver Matula" },
+            //{ "Oliver Matula" },
              DEFENSE ,
             {
                  14 ,
@@ -186,7 +186,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Thanks SAP for the vulnerabilities. Exploiting the unexploitable" },
-            { "Dmitry Chastuhin, Alexander Polyakov" },
+            //{ "Dmitry Chastuhin, Alexander Polyakov" },
              SAP ,
             {
                  14 ,
@@ -200,7 +200,7 @@ Slot_t day1[8] = {
         /* Slot six */
         { 
             { "I Have the Power(View): Offensive Active Directory with PowerShell" },
-            { "Will Schroeder" },
+            //{ "Will Schroeder" },
              ATTACK ,
             {
                  16 ,
@@ -210,7 +210,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Learn about the enemy - How to profile national APT hacking group" },
-            { "Jinwook Chung, Moonbeom Park" },
+            //{ "Jinwook Chung, Moonbeom Park" },
              DEFENSE ,
             {
                  16 ,
@@ -219,8 +219,8 @@ Slot_t day1[8] = {
             },
         },
         { 
-            { "Martin Gallo" },
             { "Deep-dive into SAP archive file formats" },
+            //{ "Martin Gallo" },
              SAP ,
             {
                  16 ,
@@ -234,7 +234,7 @@ Slot_t day1[8] = {
         /* Slot seven */
         { 
             { "Reverse Engineering a Digital Two-Way Radio" },
-            { "Travis Goodspeed, Christiane  Ruetten" },
+            //{ "Travis Goodspeed, Christiane  Ruetten" },
              ATTACK ,
             {
                  17 ,
@@ -244,7 +244,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Lightning Talks" },
-            { "An uprising Star" },
+            //{ "An uprising Star" },
              DEFENSE ,
             {
                  17 ,
@@ -254,7 +254,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Crypto code: the 9 circles of testing" },
-            { "Jean-Philippe Aumasson" },
+            //{ "Jean-Philippe Aumasson" },
              SAP ,
             {
                  17 ,
@@ -268,7 +268,7 @@ Slot_t day1[8] = {
         /* Slot eight */
         { 
             { "Freifunk - Building a free and open network" },
-            { "Ben Oswald" },
+            //{ "Ben Oswald" },
              ATTACK ,
             {
                  17 ,
@@ -278,7 +278,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Lightning Talks" },
-            { "An uprising Star" },
+            //{ "An uprising Star" },
              DEFENSE ,
             {
                  17 ,
@@ -288,7 +288,7 @@ Slot_t day1[8] = {
         },
         { 
             { "Adrian Dabrowski" },
-            { "Hollywood Hacking" },
+            //{ "Hollywood Hacking" },
              SAP ,
             {
                  17 ,
@@ -306,7 +306,7 @@ Slot_t day2[6] = {
         /* Slot one */
         { 
             { "2nd Day Keynote" },
-            { "Rodrigo Branco" },
+            //{ "Rodrigo Branco" },
              ATTACK ,
             {
                  9 ,
@@ -323,7 +323,7 @@ Slot_t day2[6] = {
         /* Slot two */
         { 
             { "Passive Intelligence Gathering and Analytics - It's all Just Metadata!" },
-            { "Christopher Truncer" },
+            //{ "Christopher Truncer" },
              ATTACK ,
             {
                  10 ,
@@ -333,7 +333,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Real-life Software-Defined Security" },
-            { "Ivan Pepelnjak" },
+            //{ "Ivan Pepelnjak" },
              DEFENSE ,
             {
                  10 ,
@@ -343,7 +343,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Broadcasting your attack: Security testing DAB radio in cars" },
-            { "Andy Davis" },
+            //{ "Andy Davis" },
              EMBEDDED ,
             {
                  10 ,
@@ -357,7 +357,7 @@ Slot_t day2[6] = {
         /* Slot three */
         { 
             { "THE KINGS IN YOUR CASTLE - All the lame threats that own you but will never make you famous" },
-            { "Marion Marschalek, Raphael Vinot" },
+            //{ "Marion Marschalek, Raphael Vinot" },
              ATTACK ,
             {
                  11 ,
@@ -367,7 +367,7 @@ Slot_t day2[6] = {
         },
         { 
             { "BetterCrypto: three years in" },
-            { "Aaron Zauner" },
+            //{ "Aaron Zauner" },
              DEFENSE ,
             {
                  11 ,
@@ -377,7 +377,7 @@ Slot_t day2[6] = {
         },
         { 
             { "The road to secure Smart Cars: ENISA approach" },
-            { "Cedric Levy-Bencheton" },
+            //{ "Cedric Levy-Bencheton" },
              EMBEDDED ,
             {
                  11 ,
@@ -391,7 +391,7 @@ Slot_t day2[6] = {
         /* Slot four */
         { 
             { "Rapid Radio Reversing" },
-            { "Michael Ossmann" },
+            //{ "Michael Ossmann" },
              ATTACK ,
             {
                  13 ,
@@ -401,7 +401,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Attacking & Protecting Big Data Environments" },
-            { "Birk Kauer, Matthias Luft" },
+            //{ "Birk Kauer, Matthias Luft" },
              DEFENSE ,
             {
                  13 ,
@@ -411,7 +411,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Medical Device Security: Hack or Hype?" },
-            { "Kevin Fu" },
+            //{ "Kevin Fu" },
              EMBEDDED ,
             {
                  13 ,
@@ -425,7 +425,7 @@ Slot_t day2[6] = {
         /* Slot five */
         { 
             { "The Joy of Sandbox Mitigations" },
-            { "James Forshaw" },
+            //{ "James Forshaw" },
              ATTACK ,
             {
                  14 ,
@@ -435,7 +435,7 @@ Slot_t day2[6] = {
         },
         { 
             { "How to Implement an SDL in a Large Company" },
-            { "Arne Ludtke" },
+            //{ "Arne Ludtke" },
              DEFENSE ,
             {
                  14 ,
@@ -445,7 +445,7 @@ Slot_t day2[6] = {
         },
         { 
             { "How easy to grow robust botnet with low hanging fruits (IoT) - for free" },
-            { "Attila Marosi" },
+            //{ "Attila Marosi" },
              EMBEDDED ,
             {
                  14 ,
@@ -459,7 +459,7 @@ Slot_t day2[6] = {
         /* Slot six */
         { 
             { "Caring for file formats" },
-            { "Ange Albertini" },
+            //{ "Ange Albertini" },
              ATTACK ,
             {
                  16 ,
@@ -469,7 +469,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Russian attack: Live demos of their steps, tools, techniques" },
-            { "Sun Huang, Wayne Huang" },
+            //{ "Sun Huang, Wayne Huang" },
              DEFENSE ,
             {
                  16 ,
@@ -479,7 +479,7 @@ Slot_t day2[6] = {
         },
         { 
             { "Unpatchable: Living with a vulnerable implanted device" },
-            { "Marie Moe" },
+            //{ "Marie Moe" },
              EMBEDDED ,
             {
                  16 ,

@@ -146,6 +146,7 @@ bool badge_eeprom_FullTestRead();
  *
  */
 bool badge_eeprom_writePage(uint8_t page, unsigned char *buf);
+bool badge_eeprom_writePageN(uint16_t page, unsigned char *buf, uint8_t bufsize);
 bool badge_eeprom_write(eeprom_addr_t addr, unsigned char *buf);
 
 /**
@@ -163,6 +164,7 @@ bool badge_eeprom_write(eeprom_addr_t addr, unsigned char *buf);
  *
  */
 bool badge_eeprom_readPage(uint8_t page, unsigned char *buf);
+bool badge_eeprom_readPageN(uint16_t page, unsigned char *buf, uint8_t bufsize);
 bool badge_eeprom_read(eeprom_addr_t addr, unsigned char *buf);
 
 

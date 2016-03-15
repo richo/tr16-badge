@@ -117,7 +117,7 @@ bool badge_eeprom_FullTestWrite() {
   for (uint16_t i=0; i <= PAGE_NUMBER; i++) {
     printf("BADGER-EEPROM-FullWriteTest page-number %03d\n", i);
     for (uint8_t k=0; k < PAGE_SIZE; k++) {
-        spibufeeprom[k] = k;
+        spibufeeprom[k] = 0x00;
       }
       status = badge_eeprom_writePage(i, spibufeeprom);
   }
@@ -165,6 +165,21 @@ bool badge_eeprom_readPage(uint8_t page, unsigned char *buf) {
   }
 }
 
+bool badge_eeprom_readPageN(uint16_t page, unsigned char *buf, uint8_t bufsize) {
+
+  unsigned short addr = page * PAGE_SIZE;
+  // check start addresse is beginning of a page
+  if ( addr == 0 || (addr % PAGE_SIZE) == 0 ) {
+    // read data
+    eeprom_read(addr, buf, bufsize % PAGE_SIZE);
+    return true;
+  }
+  else {
+    printf("BADGE_EEPROM_READ: Wrong start addresse %04x\n", addr);
+    return false;
+  }
+}
+
 bool badge_eeprom_read(unsigned short addr, unsigned char *buf) { return false; }
 
   
@@ -177,6 +192,19 @@ bool badge_eeprom_writePage(uint8_t page, unsigned char *buf) {
   // check start addresse is beginning of a page
   if ( addr == 0 || (addr % PAGE_SIZE) == 0 ) {
     eeprom_write(addr, buf, PAGE_SIZE);
+    return true;
+  }
+  else {
+    printf("BADGE_EEPROM_WRITE: Wrong start addresse %04x\n", addr);
+    return false;
+  }
+}
+
+bool badge_eeprom_writePageN(uint16_t page, unsigned char *buf, uint8_t bufsize) {
+  unsigned short addr = page * PAGE_SIZE;
+  // check start addresse is beginning of a page
+  if ( addr == 0 || (addr % PAGE_SIZE) == 0 ) {
+    eeprom_write(addr, buf, bufsize % PAGE_SIZE);
     return true;
   }
   else {

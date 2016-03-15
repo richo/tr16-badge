@@ -597,13 +597,8 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                     receive_timed_out = 0xFF;
                 }
               }
-          } else {
-              printf("something bad may happen which is pending\n");
-              printf("entry Status %i\n", gentry->status);
-              myrf_init_queue(&q, message);
           }
-          /*
-          */
+          myrf_init_queue(&q, message);
           if (0x00 == (counter%60)) {
               //process_post(&system_resources_process, event_display_system_resources, &counter);
           }

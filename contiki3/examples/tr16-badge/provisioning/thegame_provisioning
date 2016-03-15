@@ -4,13 +4,18 @@ from pprint import pprint
 import serial
 from time import sleep
 import os
+import sys
 
-badgefile = 'mybadges.json'
+badgefile = 'all_badges_ind.json'
 
 with open(badgefile) as data_file:
     data = json.load(data_file)
 
-provisions = []
+ingame = []
+notingame = []
+
+#Maria, rene, niki, enno, horsch, schaefer, fehrenbach
+ids = ['929', '221', '577', '12', '622', '58', '900']
 
 for b in list(data['data']):
     is_in = False
@@ -26,26 +31,55 @@ for b in list(data['data']):
     elif b['group'] == "ernw":
         provdata = str(2) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
         print("ernw")
+        if str(b['id']) in ids:
+            is_in = True
     elif b['group'] == "helper":
         provdata = str(3) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
         print("helper")
 
     if is_in:
-        provisions.append(provdata)
+        ingame.append(provdata)
+    else:
+        notingame.append(provdata+provdata)
 
-print(str(provisions.__len__()))
+print(str(ingame.__len__()))
 
-thegame_provisions = []
+provisions = []
 
-if provisions.__len__()%2:
+if ingame.__len__()%2:
     print("unequal")
 else:
     print("equal")
 
-    for i in range (0, provisions.__len__()):
+    for i in range (0, ingame.__len__()):
         print(i)
-        gameprovdata = provisions[i]+provisions[-i]
-        thegame_provisions.append(gameprovdata)
+        gameprovdata = ingame[i]+ingame[-i-1]
+        provisions.append(gameprovdata)
+    for b in notingame:
+        provisions.append(b)
 
-    for p in thegame_provisions:
-        pprint(p)
+    #for p in provisions:
+    #    pprint(p)
+
+myarg = sys.argv[1]
+print(myarg)
+
+myid = format(int(myarg), '04d')
+
+for b in provisions:
+    if myid == b[2:6]:
+        print("found and write")
+        print(b)
+        raw_input("Press Enter to flash make sure u USB0")
+        os.system('sh flash')
+        raw_input("Press Enter to provision same")
+        ser = serial.Serial(
+            port='/dev/ttyUSB0',\
+            baudrate=115200,\
+            parity=serial.PARITY_NONE,\
+            stopbits=serial.STOPBITS_ONE,\
+            bytesize=serial.EIGHTBITS,\
+            timeout=0)
+
+        ser.write(b);
+        ser.close()

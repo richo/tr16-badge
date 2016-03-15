@@ -298,23 +298,6 @@ void save_identities() {
     badge_eeprom_writePageN(323, fake.badge_name, 100);
     badge_eeprom_writePageN(324, fake.id, 4);
 
-/*
-    for (uint32_t i = 0; i < 100; i++) {
-        if (i < 4) {
-            me.id[i] = provisionbuffer[start_id+i];
-            fake.id[i] = provisionbuffer[start_fid+i];
-        }
-        if (i < 30) {
-            me.first_name[i] = provisionbuffer[start_fname+i];
-            me.last_name[i] = provisionbuffer[start_lname+i];
-            fake.first_name[i] = provisionbuffer[start_ffname+i];
-            fake.last_name[i] = provisionbuffer[start_flname+i];
-        }
-        me.badge_name[i] = provisionbuffer[start_bname+i];
-        fake.badge_name[i] = provisionbuffer[start_fbname+i];
-    }
-    */
-
 }
 
 void provision(uint8_t c) {
@@ -356,9 +339,9 @@ int uart_rx_callback(uint8_t c) {
                 print_help();
             break;
             case 'p':
-                print_identities();
+                //print_identities();
                 print_queue_data((rfc_dataEntryGeneral_t *)message);
-                print_message_storage();
+                //print_message_storage();
             break;
         }
     /* } */
@@ -378,6 +361,11 @@ int8_t check_and_parse_msg(
         uint8_t *slot,
         uint8_t *day) {
 
+    printf("in checknparse\n");
+    hexdump(msg, 10);
+    *info_type = *msg & 0x0F;
+    *slot = (*msg & 0x70) / 16;
+    *day = (*msg & 0x80) / 128;
     // error checking
     if(*info_type > INFO_TYPE_MAX_SLOTS)
         return 0;
@@ -537,7 +525,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   rfc_dataEntryGeneral_t *gentry;
   gentry = (rfc_dataEntryGeneral_t *)message;
 
-  etimer_set(&timer, CLOCK_SECOND/2);
+  etimer_set(&timer, CLOCK_SECOND/3);
   event_display_message = process_alloc_event();
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
@@ -567,9 +555,14 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               printf("entry Status %i\n", gentry->status);
               printf("received message but will it be valid?\n");
               process_post(&output_messages_process, event_display_message, &counter);
+              myrf_init_queue(&q, message);
 
+          } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
+              printf("not finished\n");
               uint8_t* cmd = &gentry->data + 2;
+              hexdump(cmd, 10);
               if(cmd[0] == 0xFF) {
+
                   output_arbitrary_message(++cmd, &gentry->length);
               }
               else {
@@ -583,8 +576,9 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                       continue;
                   }
               }
+              process_post(&output_messages_process, event_display_message, &counter);
               myrf_init_queue(&q, message);
-          } else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
+          } /* else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
               printf("something bad may happen\n");
               printf("entry Status %i\n", gentry->status);
               if(receive_timed_out) {
@@ -597,11 +591,15 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                     receive_timed_out = 0xFF;
                 }
               }
+
           }
+          */
+          /*
           myrf_init_queue(&q, message);
           if (0x00 == (counter%60)) {
               //process_post(&system_resources_process, event_display_system_resources, &counter);
           }
+          */
           etimer_reset(&timer);
           counter++;
       }

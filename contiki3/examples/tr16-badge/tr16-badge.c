@@ -340,9 +340,11 @@ void provision(uint8_t c) {
 
 int uart_rx_callback(uint8_t c) {
 
+    /*
     if (!is_provisioned) {
         provision(c);
     } else {
+        */
         switch (c) {
             case 'a':
                 print_agenda();
@@ -359,7 +361,7 @@ int uart_rx_callback(uint8_t c) {
                 print_message_storage();
             break;
         }
-    }
+    /* } */
     return 1;
 }
 /*
@@ -554,7 +556,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
-          myrf_init_queue(&q, message);
+          //myrf_send(message);
           myrf_receive(&q, &rx_stats);
 
           if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
@@ -581,6 +583,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                       continue;
                   }
               }
+              myrf_init_queue(&q, message);
           } else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
               printf("something bad may happen\n");
               printf("entry Status %i\n", gentry->status);
@@ -594,7 +597,13 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                     receive_timed_out = 0xFF;
                 }
               }
+          } else {
+              printf("something bad may happen which is pending\n");
+              printf("entry Status %i\n", gentry->status);
+              myrf_init_queue(&q, message);
           }
+          /*
+          */
           if (0x00 == (counter%60)) {
               //process_post(&system_resources_process, event_display_system_resources, &counter);
           }
@@ -613,8 +622,9 @@ PROCESS_THREAD(system_resources_process, ev, data)
 
   while(1) {
       PROCESS_WAIT_EVENT_UNTIL(ev == event_display_system_resources);
-      printf("Provision Buffer: ");
+      /* printf("Provision Buffer: ");
       hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
+      */
   }
   PROCESS_END();
 }

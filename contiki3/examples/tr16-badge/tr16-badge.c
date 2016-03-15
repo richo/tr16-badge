@@ -456,9 +456,17 @@ void output_arbitrary_message(uint8_t *data, uint16_t *length) {
         buf_len = (size_t) *length;
 
     char out_buf[buf_len + 1];
-    memset(&out_buf, 0, buf_len + 1); // let there be a null byte in any case
+    out_buf[buf_len] = 0x00;// let there be a null byte in any case
+    hexdump(&out_buf, 30);
     strncpy(&out_buf, (char *) data, buf_len);
-    printf("%s", out_buf);
+    for(uint16_t i=0; i < MAX_ARBITRARY_MSG; i++){
+        if(out_buf[i] < 32 || out_buf[i] > 126) {
+            out_buf[i] = 0x00;
+            break;
+        }
+    }
+    hexdump(&out_buf, 30);
+    printf("%s\n", out_buf);
 }
 
 /*

@@ -30,16 +30,14 @@ void print_event(Event_t *ev) {
 }
 
 void print_slot(Slot_t *slot) {
-    for (uint8_t i = 0; i < 3; i++) {
-        if (slot->track1.name != NULL) {
-            print_event(&slot->track1);
-        }
-        if (slot->track2.name != NULL) {
-            print_event(&slot->track2);
-        }
-        if (slot->track3.name != NULL) {
-            print_event(&slot->track3);
-        }
+    if (slot->track1.name != NULL) {
+        print_event(&slot->track1);
+    }
+    if (slot->track2.name != NULL) {
+        print_event(&slot->track2);
+    }
+    if (slot->track3.name != NULL) {
+        print_event(&slot->track3);
     }
 }
 

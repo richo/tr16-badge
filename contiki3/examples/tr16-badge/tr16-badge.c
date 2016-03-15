@@ -81,7 +81,7 @@ static uint8_t receive_timed_out = 0;
 static uint8_t receive_timeout_counter = 0;
 
 #define RECEIVE_TIMEOUT 30
-#define STORAGESIZE 3
+#define STORAGESIZE 2
 #define PROVISIONBUFFERLENGTH 340
 #define MESSAGEWAIT 300
 

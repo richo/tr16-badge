@@ -100,7 +100,7 @@ static uint8_t last_stored_message = 0x00;
 static dataQueue_t q;
 
 void print_clock() {
-   printf("%2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
+   printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
 }
 
 void store_message(uint8_t index) {

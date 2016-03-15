@@ -81,5 +81,10 @@ for b in provisions:
             bytesize=serial.EIGHTBITS,\
             timeout=0)
 
-        ser.write(b);
+        for myc in b:
+            sleep(0.1)
+            if myc == '#':
+                sleep(0.6)
+            ser.write(myc)
+        print(b)
         ser.close()

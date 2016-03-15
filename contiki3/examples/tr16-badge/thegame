@@ -1,0 +1,51 @@
+
+import json
+from pprint import pprint
+import serial
+from time import sleep
+import os
+
+badgefile = 'mybadges.json'
+
+with open(badgefile) as data_file:
+    data = json.load(data_file)
+
+provisions = []
+
+for b in list(data['data']):
+    is_in = False
+    provdata = ""
+    if b['group'] == "regular":
+        provdata = str(0) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("regular")
+        is_in = True
+    elif b['group'] == "speaker":
+        provdata = str(1) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("speaker")
+        is_in = True
+    elif b['group'] == "ernw":
+        provdata = str(2) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("ernw")
+    elif b['group'] == "helper":
+        provdata = str(3) + "#" + format(b['id'], '04d') + "#" + "{:<30}".format(b['first_name']) + "#" + "{:<30}".format(b['last_name']) + "#" + "{:<100}".format(b['badge_name']) + "#"
+        print("helper")
+
+    if is_in:
+        provisions.append(provdata)
+
+print(str(provisions.__len__()))
+
+thegame_provisions = []
+
+if provisions.__len__()%2:
+    print("unequal")
+else:
+    print("equal")
+
+    for i in range (0, provisions.__len__()):
+        print(i)
+        gameprovdata = provisions[i]+provisions[-i]
+        thegame_provisions.append(gameprovdata)
+
+    for p in thegame_provisions:
+        pprint(p)

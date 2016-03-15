@@ -265,14 +265,22 @@ void save_identities() {
 
     badge_eeprom_writePage(1, (uint8_t *)&me.first_name);
     badge_eeprom_writePage(2, (uint8_t *)&me.last_name);
-    /*
-    save_to_flash(1, sizeof(me), (uint8_t *)&me);
-    save_to_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
-    */
 }
 
 void provision(uint8_t c) {
+    /*
+    uint8_t *prov[8];
+    prov[0] = &me.group;
+    prov[1] = &me.id;
+    prov[2] = &me.badge_name;
+    prov[3] = &fake.group;
+    prov[4] = &fake.id;
+    prov[5] = &fake.badge_name;
+    */
     switch (c) {
+        case '\r':
+            delimiter_count++;
+        break;
         case '#':
             delimiter_count++;
             /* fall through */
@@ -280,6 +288,7 @@ void provision(uint8_t c) {
             if (input_counter < PROVISIONBUFFERLENGTH) {
                 provisionbuffer[input_counter] = c;
                 input_counter++;
+                //prov[delimiter_count][prov_count] = c;
                 if (0x05 == delimiter_count) {
                     is_provisioned = 0x01;
                     save_identities();

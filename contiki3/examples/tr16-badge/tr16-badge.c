@@ -297,6 +297,7 @@ void save_identities() {
     badge_eeprom_writePageN(322, &fake.group, 1);
     badge_eeprom_writePageN(323, fake.badge_name, 100);
     badge_eeprom_writePageN(324, fake.id, 4);
+
 /*
     for (uint32_t i = 0; i < 100; i++) {
         if (i < 4) {
@@ -328,7 +329,6 @@ void provision(uint8_t c) {
             if (input_counter < PROVISIONBUFFERLENGTH) {
                 provisionbuffer[input_counter] = c;
                 input_counter++;
-                //prov[delimiter_count][prov_count] = c;
                 if (0x05 == delimiter_count) {
                     is_provisioned = 0x01;
                     save_identities();

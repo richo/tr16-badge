@@ -76,7 +76,10 @@ static process_event_t event_display_message, event_display_system_resources, ev
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
 static uint8_t is_faked = 0;
+static uint8_t receive_timed_out = 0;
+static uint8_t receive_timeout_counter = 0;
 
+#define RECEIVE_TIMEOUT 30
 #define STORAGESIZE 3
 #define PROVISIONBUFFERLENGTH 340
 #define MESSAGEWAIT 300
@@ -424,6 +427,19 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               printf("received message but will it be valid?\n");
               process_post(&output_messages_process, event_display_message, &counter);
               myrf_init_queue(&q, message);
+          } else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
+              printf("something bad may happen\n");
+              printf("entry Status %i\n", gentry->status);
+              if(receive_timed_out) {
+                myrf_init_queue(&q, message);
+                receive_timed_out = 0x00;
+                receive_timeout_counter = 0x00;
+              } else {
+                receive_timeout_counter++;
+                if (RECEIVE_TIMEOUT == receive_timeout_counter) {
+                    receive_timed_out = 0xFF;
+                }
+              }
           }
           if (0x00 == (counter%60)) {
               process_post(&system_resources_process, event_display_system_resources, &counter);

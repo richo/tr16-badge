@@ -8,7 +8,7 @@ import struct
 
 def send_data(data):
     d = rflib.RfCat()
-    d.setModeTx()
+    d.setModeIDLE()
     d.setFreq(868000000)
     d.makePktFLEN(30)
     d.setMdmModulation(MOD_GFSK)

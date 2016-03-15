@@ -365,14 +365,10 @@ void output_arbitrary_message(uint8_t *data, uint16_t *length) {
     if(*length < MAX_ARBITRARY_MSG && *length > 0)
         buf_len = (size_t) *length;
 
-    // +1 is place for nullbyte
-    char* out_buf = (char*) malloc( (sizeof(char) * buf_len) + 1);
-    if(out_buf == (char *) -1)
-        return; // out of memmory, silent end
-    memset(out_buf, 0, buf_len + 1); // let there be a null byte
-    strncpy(out_buf, (char *) data, buf_len);
+    char out_buf[buf_len + 1];
+    memset(&out_buf, 0, buf_len + 1); // let there be a null byte in any case
+    strncpy(&out_buf, (char *) data, buf_len);
     printf("%s", out_buf);
-    free(out_buf);
 }
 
 /*
@@ -521,22 +517,10 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
+          myrf_init_queue(&q, message);
           myrf_receive(&q, &rx_stats);
 
           if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
-              uint8_t* cmd = &gentry->data + 2;
-              if(cmd[0] == 0xFF)
-                  output_arbitrary_message(++cmd, &gentry->length);
-              else {
-                  uint8_t info_type = 0;
-                  uint8_t slot = 0;
-                  uint8_t day = 0;
-
-                  if(check_and_parse_msg(cmd, &info_type, &slot, &day))
-                      output_fix_messages(&info_type, &slot, &day);
-                  else
-                      continue;
-              }
               printf("nrxok %i", rx_stats.nRxOk);
               printf("nrxNok %i", rx_stats.nRxNok);
               printf("nrxIgn %i", rx_stats.nRxIgnored);
@@ -544,7 +528,22 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               printf("entry Status %i\n", gentry->status);
               printf("received message but will it be valid?\n");
               process_post(&output_messages_process, event_display_message, &counter);
-              myrf_init_queue(&q, message);
+
+              uint8_t* cmd = &gentry->data + 2;
+              if(cmd[0] == 0xFF) {
+                  output_arbitrary_message(++cmd, &gentry->length);
+              }
+              else {
+                  uint8_t info_type = 0;
+                  uint8_t slot = 0;
+                  uint8_t day = 0;
+
+                  if(check_and_parse_msg(cmd, &info_type, &slot, &day))
+                      output_fix_messages(&info_type, &slot, &day);
+                  else {
+                      continue;
+                  }
+              }
           } else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
               printf("something bad may happen\n");
               printf("entry Status %i\n", gentry->status);
@@ -560,7 +559,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               }
           }
           if (0x00 == (counter%60)) {
-              process_post(&system_resources_process, event_display_system_resources, &counter);
+              //process_post(&system_resources_process, event_display_system_resources, &counter);
           }
           etimer_reset(&timer);
           counter++;

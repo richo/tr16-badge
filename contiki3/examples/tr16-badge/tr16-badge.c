@@ -85,13 +85,12 @@ static uint8_t receive_timeout_counter = 0;
 #define PROVISIONBUFFERLENGTH 340
 #define MESSAGEWAIT 300
 
-uint32_t clock = 0x0;
-uint16_t wait = 0x0;
-
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t user_input[4]; // id that user types in
 //static uint8_t delimiter = '#';
 static uint8_t delimiter_count = 0x00;
+uint32_t clock = 0x0;
+uint16_t wait = 0x0;
 
 static uint8_t message[MESSAGELENGTH];
 static uint8_t message_storage[STORAGESIZE][MESSAGELENGTH];
@@ -119,14 +118,8 @@ uint8_t compare_user_input() {
     return 0x00;
 }
 
-void test_read_flash() {
-    printf("read from flash\n");    
-    uint8_t buffer[10];
-    eeprom_read(1, buffer, 10);
-    for (uint8_t i = 0; i < 10; i++) {
-        printf("%c", buffer[i]);
-    }
-    printf("\n");
+void init_provision_buffer() {
+    memset(provisionbuffer, 0, PROVISIONBUFFERLENGTH);
 }
 
 void print_message_storage() {
@@ -233,9 +226,33 @@ void print_help() {
     printf("'h' for ... I think you already know\n");
 }
 
+void print_identity(Identity_t *iden) {
+    printf("%s, %s, %s, group: %c id: ", iden->first_name, iden->last_name, iden->badge_name, iden->group);
+    for (uint8_t i = 0; i < 4; i++) {
+        printf("%u", iden->id[i]);
+    }
+    printf("\n");
+}
+
 void print_identities() {
-    printf("%s, %s, %s\n", me.first_name, me.last_name, me.badge_name);
-    printf("%s, %s, %s\n", fake.first_name, fake.last_name, fake.badge_name);
+    print_identity(&me);
+    print_identity(&fake);
+
+}
+
+void read_identities() {
+    badge_eeprom_readPageN(310, me.first_name, 30);
+    badge_eeprom_readPageN(311, me.last_name, 30);
+    badge_eeprom_readPageN(312, &me.group, 1);
+    badge_eeprom_readPageN(313, me.badge_name, 100);
+    badge_eeprom_readPageN(314, me.id, 4);
+
+    badge_eeprom_readPageN(320, fake.first_name, 30);
+    badge_eeprom_readPageN(321, fake.last_name, 30);
+    badge_eeprom_readPageN(322, &fake.group, 1);
+    badge_eeprom_readPageN(323, fake.badge_name, 100);
+    badge_eeprom_readPageN(324, fake.id, 4);
+    printf("read pages 310-324\n");
 }
 
 void save_identities() {
@@ -252,6 +269,35 @@ void save_identities() {
     me.group = provisionbuffer[0];
     fake.group = provisionbuffer[170];
 
+    memcpy(&me.id, &provisionbuffer[start_id], 4);
+    memcpy(&fake.id, &provisionbuffer[start_fid], 4);
+
+    memcpy(&me.first_name, &provisionbuffer[start_fname], 30);
+    memcpy(&me.last_name, &provisionbuffer[start_lname], 30);
+    me.first_name[30-1] = 0x00;
+    me.last_name[30-1] = 0x00;
+    memcpy(&fake.first_name, &provisionbuffer[start_ffname], 30);
+    memcpy(&fake.last_name, &provisionbuffer[start_flname], 30);
+    fake.first_name[30-1] = 0x00;
+    fake.last_name[30-1] = 0x00;
+
+    memcpy(&me.badge_name, &provisionbuffer[start_bname], 100);
+    memcpy(&fake.badge_name, &provisionbuffer[start_fbname], 100);
+    me.badge_name[100-1] = 0x00;
+    fake.badge_name[100-1] = 0x00;
+
+    badge_eeprom_writePageN(310, &me.first_name[0], 30);
+    badge_eeprom_writePageN(311, &me.last_name[0], 30);
+    badge_eeprom_writePageN(312, &me.group, 1);
+    badge_eeprom_writePageN(313, &me.badge_name[0], 100);
+    badge_eeprom_writePageN(314, &me.id[0], 4);
+
+    badge_eeprom_writePageN(320, fake.first_name, 30);
+    badge_eeprom_writePageN(321, fake.last_name, 30);
+    badge_eeprom_writePageN(322, &fake.group, 1);
+    badge_eeprom_writePageN(323, fake.badge_name, 100);
+    badge_eeprom_writePageN(324, fake.id, 4);
+/*
     for (uint32_t i = 0; i < 100; i++) {
         if (i < 4) {
             me.id[i] = provisionbuffer[start_id+i];
@@ -266,21 +312,11 @@ void save_identities() {
         me.badge_name[i] = provisionbuffer[start_bname+i];
         fake.badge_name[i] = provisionbuffer[start_fbname+i];
     }
+    */
 
-    badge_eeprom_writePage(1, (uint8_t *)&me.first_name);
-    badge_eeprom_writePage(2, (uint8_t *)&me.last_name);
 }
 
 void provision(uint8_t c) {
-    /*
-    uint8_t *prov[8];
-    prov[0] = &me.group;
-    prov[1] = &me.id;
-    prov[2] = &me.badge_name;
-    prov[3] = &fake.group;
-    prov[4] = &fake.id;
-    prov[5] = &fake.badge_name;
-    */
     switch (c) {
         case '\r':
             delimiter_count++;
@@ -312,7 +348,7 @@ int uart_rx_callback(uint8_t c) {
                 print_agenda();
             break;
             case 'r':
-                test_read_flash();
+                printf("pressed r\n");
             break;
             case 'h':
                 print_help();
@@ -508,12 +544,13 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
 
-  eeprom_read(0, &is_provisioned, 1);
 
+/*
   if (is_provisioned) {
-    eeprom_read(1, (uint8_t *)&me, sizeof(me));
-    eeprom_read(sizeof(me)+1, (uint8_t *)&fake, sizeof(me));
+      read_identities();
+      print_identities();
   }
+  */
 
   myrf_init_queue(&q, message);
   printf("initial gentry Status %i\n", gentry->status);

@@ -99,6 +99,10 @@ static uint8_t storage_filling_level = 0x00;
 static uint8_t last_stored_message = 0x00;
 static dataQueue_t q;
 
+static uint8_t solving = 0;
+static char solution[8];
+static uint8_t input_cnt;
+
 void print_clock() {
    printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
 }
@@ -221,19 +225,51 @@ void print_agenda() {
 void print_help() {
     printf("Hi, I'm your Help-Menue\n");
     printf("'a' for the Agenda\n");
+    printf("'i' for your Identity\n");
     printf("'p' for your Message Buffer\n");
     printf("'s' for setting the Time\n");
+    if (is_faked) {
+        printf("'r' for resolving the naming trouble\n");
+    } else {
+        //TODO print token foo
+    }
     printf("'h' for ... I think you already know\n");
+}
+
+void test_set_ident(Identity_t *iden) {
+    //set id
+    uint32_t i = 0;
+    for(i=0;i<4;i++){
+        iden->id[i] = i+10;
+    }
+    //end set
 }
 
 void print_identity(Identity_t *iden) {
     printf("%s, %s, %s, group: %c id: ", iden->first_name, iden->last_name, iden->badge_name, iden->group);
     for (uint8_t i = 0; i < 4; i++) {
-        printf("%u", iden->id[i]);
+        printf("%02x", iden->id[i]);
     }
     printf("\n");
 }
 
+
+//till
+
+void solve_game(){
+    printf("To resolve the naming issue find the corresponding person who has your name!\n");
+    solving = 1;
+    input_cnt = 0;
+    printf("Press q to quit input\n");
+    printf("Enter your original ID!\n");
+}
+
+void check_solution(Identity_t *iden){
+    hexdump(iden, 8);
+
+}
+
+//
 void print_identities() {
     print_identity(&me);
     print_identity(&fake);
@@ -328,12 +364,29 @@ int uart_rx_callback(uint8_t c) {
         provision(c);
     } else {
         */
+//my stuff
+    if (solving) {
+        switch (c) {
+            case 'q':
+                solving = 0;
+            break;
+            default:
+                if (input_cnt<8){
+                    solution[input_cnt] = c;
+                    input_cnt++;
+                    //printf("Current solution %s\n", solution);
+                } else {
+                    check_solution(&fake);
+                }
+            break;
+        }
+    } else {
+//
+
         switch (c) {
             case 'a':
                 print_agenda();
             break;
-            case 'r':
-                printf("pressed r\n");
             break;
             case 'h':
                 print_help();
@@ -343,8 +396,19 @@ int uart_rx_callback(uint8_t c) {
                 print_queue_data((rfc_dataEntryGeneral_t *)message);
                 //print_message_storage();
             break;
+            case 'i':
+                print_identity(&fake);
+                printf("\n\n\n\n\n\n\n\n");
+            break;
+            case 'r':
+                if (is_faked) {
+                    solve_game();
+                } else {
+                    printf("Function currently not available!\n");
+                }
+            break;
         }
-    /* } */
+    }
     return 1;
 }
 /*
@@ -361,7 +425,7 @@ int8_t check_and_parse_msg(
         uint8_t *slot,
         uint8_t *day) {
 
-    printf("in checknparse\n");
+    PRINTF("in checknparse\n");
     hexdump(msg, 10);
     *info_type = *msg & 0x0F;
     *slot = (*msg & 0x70) / 16;

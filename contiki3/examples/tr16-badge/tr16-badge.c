@@ -400,10 +400,8 @@ void output_fix_messages(
                     "Busses at the PMA leaving at 6:30pm  \n");
             break;
         case 4:
-            printf("Charity Auction starts in a few minutes.\n"
-                    "All Troopers should move to the 2nd floor.\n ");
-            // TODO MEHR (und bessere) INFO
-            // Versteigerung, Was ist das, wann und wo findet es statt
+            printf("Charity Ruffle starts in a few minutes (12:30pm).\n"
+                    "All Troopers should move to the 2nd floor right now!.\n");
             break;
         case 5:
             printf("Next round of talks in 10 minutes:\n");

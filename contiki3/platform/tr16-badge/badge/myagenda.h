@@ -11,8 +11,8 @@ typedef enum {
 } track_t;
 
 typedef struct {
-    uint8_t min;
     uint8_t hour;
+    uint8_t min;
     uint8_t day;
 } DayTime_t;
 

@@ -96,6 +96,9 @@ bool board_spi_read(uint8_t *buf, size_t length);
  * recommended to call board_spi_close() at the end of an operation.
  */
 bool board_spi_write(const uint8_t *buf, size_t length);
+
+// write just a byte
+bool board_spi_write_byte(const uint8_t buf);
 /*---------------------------------------------------------------------------*/
 #endif /* BOARD_SPI_H_ */
 /*---------------------------------------------------------------------------*/

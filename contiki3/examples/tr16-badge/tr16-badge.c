@@ -47,7 +47,6 @@
 #include "ti-lib.h"
 #include "pwm.h"
 #include "net/packetbuf.h"
-#include "ext-flash.h"
 #include "sys/clock.h"
 #include "sys/rtimer.h"
 #include "dev/cc26xx-uart.h"
@@ -61,11 +60,14 @@
 #include "myhelpers.h"
 #include "myrf_settings.h"
 #include "myrf_cmd.h"
-#include "myflash.h"
+#include "badge-eeprom.h"
 #include "myprovision.h"
 #include "myagenda.h"
 #include "tr16-badge.h"
+#include "eeprom.h"
 
+void print_stored_message(uint8_t index);
+void print_queue_data(rfc_dataEntryGeneral_t *dataEntry);
 
 static Identity_t me;
 static Identity_t fake;
@@ -74,14 +76,20 @@ static process_event_t event_display_message, event_display_system_resources, ev
 
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
+static uint8_t is_faked = 0;
+static uint8_t receive_timed_out = 0;
+static uint8_t receive_timeout_counter = 0;
 
+#define RECEIVE_TIMEOUT 30
 #define STORAGESIZE 3
 #define PROVISIONBUFFERLENGTH 340
+#define MESSAGEWAIT 300
 
-void print_stored_message(uint8_t index);
-void print_queue_data(void);
+uint32_t clock = 0x0;
+uint16_t wait = 0x0;
 
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
+static uint8_t user_input[4]; // id that user types in
 //static uint8_t delimiter = '#';
 static uint8_t delimiter_count = 0x00;
 
@@ -92,10 +100,33 @@ static uint8_t storage_filling_level = 0x00;
 static uint8_t last_stored_message = 0x00;
 static dataQueue_t q;
 
+void print_clock() {
+   printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
+}
+
 void store_message(uint8_t index) {
     for (uint8_t i = 0; i < PACKETLENGTH+2; i++) {
         message_storage[index][i] = message[i];
     }
+}
+
+uint8_t compare_user_input() {
+    for (uint8_t i = 0; i < 4; i++) {
+        if (fake.id[i] != user_input[i]) {
+            return 0xFF;
+        }
+    }
+    return 0x00;
+}
+
+void test_read_flash() {
+    printf("read from flash\n");    
+    uint8_t buffer[10];
+    eeprom_read(1, buffer, 10);
+    for (uint8_t i = 0; i < 10; i++) {
+        printf("%c", buffer[i]);
+    }
+    printf("\n");
 }
 
 void print_message_storage() {
@@ -108,23 +139,14 @@ void print_message_storage() {
 
 void print_stored_message(uint8_t index) {
     rfc_dataEntryGeneral_t *entry;
-    uint8_t *msgptr = NULL;
     entry = (rfc_dataEntryGeneral_t *)message_storage[index];
-    printf("Message Storage buffer\n"); 
-    hexdump(&entry->data, PACKETLENGTH);
-    printf("\n");
-    msgptr = &entry->data;
-    printf("as string: ");
-    for (uint8_t pos = 0; pos < 80; pos++) {
-        printf("%c", msgptr[pos]);
-    }
-    printf("\n");
+    print_queue_data(entry);
 }
 
-void print_queue_data() {
+void print_queue_data(rfc_dataEntryGeneral_t *dataEntry) {
     rfc_dataEntryGeneral_t *entry;
     uint8_t *msgptr = NULL;
-    entry = (rfc_dataEntryGeneral_t *)message;
+    entry = dataEntry;
     printf("Message buffer\n"); 
     hexdump(&entry->data, PACKETLENGTH);
     printf("\n");
@@ -137,6 +159,11 @@ void print_queue_data() {
 }
 
 void toggle_identity() {
+    if (is_faked) {
+        is_faked = 0x00;
+    } else {
+        is_faked = 0x01;
+    }
 }
 
 void verify_message() {
@@ -158,7 +185,6 @@ void test_display() {
 }
 
 void self_test() {
-    test_flash();
     test_display();
 }
 
@@ -241,40 +267,59 @@ void save_identities() {
         fake.badge_name[i] = provisionbuffer[start_fbname+i];
     }
 
-    save_to_flash(1, sizeof(me), (uint8_t *)&me);
-    save_to_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+    badge_eeprom_writePage(1, (uint8_t *)&me.first_name);
+    badge_eeprom_writePage(2, (uint8_t *)&me.last_name);
+}
+
+void provision(uint8_t c) {
+    /*
+    uint8_t *prov[8];
+    prov[0] = &me.group;
+    prov[1] = &me.id;
+    prov[2] = &me.badge_name;
+    prov[3] = &fake.group;
+    prov[4] = &fake.id;
+    prov[5] = &fake.badge_name;
+    */
+    switch (c) {
+        case '\r':
+            delimiter_count++;
+        break;
+        case '#':
+            delimiter_count++;
+            /* fall through */
+        default:
+            if (input_counter < PROVISIONBUFFERLENGTH) {
+                provisionbuffer[input_counter] = c;
+                input_counter++;
+                //prov[delimiter_count][prov_count] = c;
+                if (0x05 == delimiter_count) {
+                    is_provisioned = 0x01;
+                    save_identities();
+                }
+            }
+        break;
+    }
 }
 
 int uart_rx_callback(uint8_t c) {
 
     if (!is_provisioned) {
-        switch (c) {
-            case '#':
-                delimiter_count++;
-                /* fall through */
-            default:
-                if (input_counter < PROVISIONBUFFERLENGTH) {
-                    provisionbuffer[input_counter] = c;
-                    input_counter++;
-                    if (0x05 == delimiter_count) {
-                        is_provisioned = 0x01;
-                        save_identities();
-                    }
-                }
-            break;
-
-        }
+        provision(c);
     } else {
         switch (c) {
             case 'a':
                 print_agenda();
+            break;
+            case 'r':
+                test_read_flash();
             break;
             case 'h':
                 print_help();
             break;
             case 'p':
                 print_identities();
-                print_queue_data();
+                print_queue_data((rfc_dataEntryGeneral_t *)message);
                 print_message_storage();
             break;
         }
@@ -394,8 +439,9 @@ PROCESS(receive_messages_process, "Send Messages process");
 PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 PROCESS(display_pin_process, "Display PIN process");
+PROCESS(clock_process, "Clock process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
+AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -407,6 +453,20 @@ PROCESS_THREAD(uart_receive_process, ev, data)
       PROCESS_YIELD();
   }
   PROCESS_END();
+}
+
+PROCESS_THREAD(clock_process, ev, data)
+{
+    PROCESS_BEGIN();
+    printf("*** PROCESS_THREAD Clock started ***\n");
+    static struct etimer timer;
+    etimer_set(&timer, CLOCK_SECOND);
+    while(1) {
+        PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+        clock += 1;
+        etimer_reset(&timer);
+    }
+    PROCESS_END();
 }
 
 PROCESS_THREAD(display_pin_process, ev, data)
@@ -426,6 +486,7 @@ PROCESS_THREAD(display_pin_process, ev, data)
                 button_pressed = 0xFF;
                 pwm_start(0);
             }
+            print_clock();
         }
         PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
         etimer_reset(&timer);
@@ -449,11 +510,11 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   event_display_system_resources = process_alloc_event();
   event_received_message = process_alloc_event();
 
-  read_from_flash(0, 1, &is_provisioned);
+  eeprom_read(0, &is_provisioned, 1);
 
   if (is_provisioned) {
-    read_from_flash(1, sizeof(me), (uint8_t *)&me);
-    read_from_flash(sizeof(me)+1, sizeof(me), (uint8_t *)&fake);
+    eeprom_read(1, (uint8_t *)&me, sizeof(me));
+    eeprom_read(sizeof(me)+1, (uint8_t *)&fake, sizeof(me));
   }
 
   myrf_init_queue(&q, message);
@@ -486,6 +547,19 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               printf("received message but will it be valid?\n");
               process_post(&output_messages_process, event_display_message, &counter);
               myrf_init_queue(&q, message);
+          } else if (DATA_ENTRY_STATUS_PENDING != gentry->status) {
+              printf("something bad may happen\n");
+              printf("entry Status %i\n", gentry->status);
+              if(receive_timed_out) {
+                myrf_init_queue(&q, message);
+                receive_timed_out = 0x00;
+                receive_timeout_counter = 0x00;
+              } else {
+                receive_timeout_counter++;
+                if (RECEIVE_TIMEOUT == receive_timeout_counter) {
+                    receive_timed_out = 0xFF;
+                }
+              }
           }
           if (0x00 == (counter%60)) {
               process_post(&system_resources_process, event_display_system_resources, &counter);
@@ -522,7 +596,7 @@ PROCESS_THREAD(output_messages_process, ev, data)
       last_stored_message = storage_counter;
       storage_counter = (storage_counter + 1) % STORAGESIZE;
       storage_filling_level++;
-      print_queue_data();
+      print_queue_data((rfc_dataEntryGeneral_t *)message);
   }
   PROCESS_END();
 }

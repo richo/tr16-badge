@@ -108,14 +108,14 @@
 /** @} */
 /*---------------------------------------------------------------------------*/
 /**
- * \name External flash IOID mapping
+ * \name External SPI EEPROM IOID mapping
  *
  * Those values are not meant to be modified by the user
  * @{
  */
-#define BOARD_IOID_FLASH_CS       IOID_9
-#define BOARD_FLASH_CS            (1 << BOARD_IOID_FLASH_CS)
-#define BOARD_IOID_SPI_CLK_FLASH  BOARD_IOID_SPI_SCK
+#define BOARD_IOID_SPI_FLASH_CS       IOID_9
+#define BOARD_SPI_FLASH_CS            (1 << BOARD_IOID_SPI_FLASH_CS)
+#define BOARD_IOID_SPI_FLASH_CLK      BOARD_IOID_SPI_SCK
 /** @} */
 /*---------------------------------------------------------------------------*/
 /**

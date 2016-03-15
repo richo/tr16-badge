@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+echo "TEXT" > myfile
+
+python2 broadcaster.py myfile

@@ -42,7 +42,6 @@
 #include "prcm.h"
 #include "hw_sysctl.h"
 #include "pwm.h"
-#include "ext-flash.h"
 
 #include <stdint.h>
 #include <string.h>
@@ -89,8 +88,6 @@ board_init()
   /* Init of PWM */
   pwm_init();
   
-  /* Make sure the external flash is in the lower power mode */
-  ext_flash_init();
 
 }
 /*---------------------------------------------------------------------------*/

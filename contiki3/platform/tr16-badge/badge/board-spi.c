@@ -69,12 +69,29 @@ board_spi_write(const uint8_t *buf, size_t len)
 
   while(len > 0) {
     uint32_t ul;
-
     ti_lib_ssi_data_put(SSI0_BASE, *buf);
     ti_lib_rom_ssi_data_get(SSI0_BASE, &ul);
     len--;
     buf++;
   }
+
+  return true;
+}
+/*---------------------------------------------------------------------------*/
+bool
+board_spi_write_byte(const uint8_t buf)
+{
+  if(accessible() == false) {
+    return false;
+  }
+
+  uint8_t spibuf[] = { 0x0 };
+  spibuf[0] = buf;
+
+  uint32_t ul;
+
+  ti_lib_ssi_data_put(SSI0_BASE, *spibuf);
+  ti_lib_rom_ssi_data_get(SSI0_BASE, &ul);
 
   return true;
 }
@@ -156,8 +173,8 @@ board_spi_close()
   ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_SPI_MOSI);
   ti_lib_ioc_io_port_pull_set(BOARD_IOID_SPI_MOSI, IOC_IOPULL_DOWN);
 
-  ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_SPI_CLK_FLASH);
-  ti_lib_ioc_io_port_pull_set(BOARD_IOID_SPI_CLK_FLASH, IOC_IOPULL_DOWN);
+  ti_lib_ioc_pin_type_gpio_input(BOARD_IOID_SPI_SCK);
+  ti_lib_ioc_io_port_pull_set(BOARD_IOID_SPI_SCK, IOC_IOPULL_DOWN);
 }
 /*---------------------------------------------------------------------------*/
 /** @} */

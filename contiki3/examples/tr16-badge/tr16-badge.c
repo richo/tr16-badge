@@ -65,6 +65,8 @@
 #include "myagenda.h"
 #include "eeprom.h"
 
+void print_stored_message(uint8_t index);
+void print_queue_data(rfc_dataEntryGeneral_t *dataEntry);
 
 static Identity_t me;
 static Identity_t fake;
@@ -73,6 +75,7 @@ static process_event_t event_display_message, event_display_system_resources, ev
 
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
+static uint8_t is_faked = 0;
 
 #define STORAGESIZE 3
 #define PROVISIONBUFFERLENGTH 340
@@ -81,10 +84,8 @@ static uint8_t is_provisioned = 0;
 uint32_t clock = 0x0;
 uint16_t wait = 0x0;
 
-void print_stored_message(uint8_t index);
-void print_queue_data(void);
-
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
+static uint8_t user_input[4]; // id that user types in
 //static uint8_t delimiter = '#';
 static uint8_t delimiter_count = 0x00;
 
@@ -103,6 +104,15 @@ void store_message(uint8_t index) {
     for (uint8_t i = 0; i < PACKETLENGTH+2; i++) {
         message_storage[index][i] = message[i];
     }
+}
+
+uint8_t compare_user_input() {
+    for (uint8_t i = 0; i < 4; i++) {
+        if (fake.id[i] != user_input[i]) {
+            return 0xFF;
+        }
+    }
+    return 0x00;
 }
 
 void test_read_flash() {
@@ -125,23 +135,14 @@ void print_message_storage() {
 
 void print_stored_message(uint8_t index) {
     rfc_dataEntryGeneral_t *entry;
-    uint8_t *msgptr = NULL;
     entry = (rfc_dataEntryGeneral_t *)message_storage[index];
-    printf("Message Storage buffer\n"); 
-    hexdump(&entry->data, PACKETLENGTH);
-    printf("\n");
-    msgptr = &entry->data;
-    printf("as string: ");
-    for (uint8_t pos = 0; pos < 80; pos++) {
-        printf("%c", msgptr[pos]);
-    }
-    printf("\n");
+    print_queue_data(entry);
 }
 
-void print_queue_data() {
+void print_queue_data(rfc_dataEntryGeneral_t *dataEntry) {
     rfc_dataEntryGeneral_t *entry;
     uint8_t *msgptr = NULL;
-    entry = (rfc_dataEntryGeneral_t *)message;
+    entry = dataEntry;
     printf("Message buffer\n"); 
     hexdump(&entry->data, PACKETLENGTH);
     printf("\n");
@@ -154,6 +155,11 @@ void print_queue_data() {
 }
 
 void toggle_identity() {
+    if (is_faked) {
+        is_faked = 0x00;
+    } else {
+        is_faked = 0x01;
+    }
 }
 
 void verify_message() {
@@ -300,7 +306,7 @@ int uart_rx_callback(uint8_t c) {
             break;
             case 'p':
                 print_identities();
-                print_queue_data();
+                print_queue_data((rfc_dataEntryGeneral_t *)message);
                 print_message_storage();
             break;
         }
@@ -445,7 +451,7 @@ PROCESS_THREAD(output_messages_process, ev, data)
       last_stored_message = storage_counter;
       storage_counter = (storage_counter + 1) % STORAGESIZE;
       storage_filling_level++;
-      print_queue_data();
+      print_queue_data((rfc_dataEntryGeneral_t *)message);
   }
   PROCESS_END();
 }

@@ -64,6 +64,7 @@
 #include "myflash.h"
 #include "myprovision.h"
 #include "myagenda.h"
+#include "tr16-badge.h"
 
 
 static Identity_t me;
@@ -280,6 +281,112 @@ int uart_rx_callback(uint8_t c) {
     }
     return 1;
 }
+/*
+ * Parses the recieved message (of one byte). And returns 0 if received
+ * message was valid.
+ * 1111 1111
+ * info_type  = last four bit, niederwertigstes nibble
+ * slots  = second to fourth bits
+ * day = first bit
+ */
+int8_t check_and_parse_msg(
+        const uint8_t *msg,
+        uint8_t *info_type,
+        uint8_t *slot,
+        uint8_t *day) {
+
+    // error checking
+    if(*info_type > INFO_TYPE_MAX_SLOTS)
+        return 0;
+    if(*day < 0 || *day > 1)
+        return 0;
+    if(*day == 0 && *slot > DAY1_MAX_SLOTS)
+        return 0;
+    if(*day == 1 && *slot > DAY2_MAX_SLOTS)
+        return 0;
+    if(*slot > DAY2_MAX_SLOTS)
+        return 0;
+    if(*info_type == 7 && (*slot < 0 || *slot > 3) )
+        return 0;
+
+    return 1;
+}
+
+/*
+ * Output arbitrary text received via radio.
+ */
+void output_arbitrary_message(uint8_t *data, uint16_t *length) {
+    size_t buf_len = MAX_ARBITRARY_MSG;
+    if(*length < MAX_ARBITRARY_MSG && *length > 0)
+        buf_len = (size_t) *length;
+
+    // +1 is place for nullbyte
+    char* out_buf = (char*) malloc( (sizeof(char) * buf_len) + 1);
+    if(out_buf == (char *) -1)
+        return; // out of memmory, silent end
+    memset(out_buf, 0, buf_len + 1); // let there be a null byte
+    strncpy(out_buf, (char *) data, buf_len);
+    printf("%s", out_buf);
+    free(out_buf);
+}
+
+/*
+ * Prints messages according to given the codes.
+ */
+void output_fix_messages(
+        const uint8_t *info_type,
+        const uint8_t *slot,
+        const uint8_t *day) {
+
+    switch(*info_type) {
+        case 0:
+            printf("Good morning Trooper!\n");
+            break;
+        case 1:
+            printf("Have a nice evening Trooper!\n"
+                    "Go get some rest (or some more drinks).\n");
+            break;
+        case 2:
+            printf("Shared dinner and Packet Wars afterwards at the Kulturbrauerei.\n"
+                    "Busses at the PMA leaving at 6:30pm  \n");
+            break;
+        case 3:
+            printf("Speaker's dinner is at the restaurant Goldenes Schaaf.\n"
+                    "Busses at the PMA leaving at 6:30pm  \n");
+            break;
+        case 4:
+            printf("Charity Auction starts in a few minutes.\n"
+                    "All Troopers should move to the 2nd floor.\n ");
+            // TODO MEHR (und bessere) INFO
+            // Versteigerung, Was ist das, wann und wo findet es statt
+            break;
+        case 5:
+            printf("Next round of talks in 10 minutes:\n");
+            if(*day == 0)
+                print_slot(&day1[*slot]);
+            else
+                print_slot(&day2[*slot]);
+            break;
+        case 6:
+            printf("Next round of talks in 5 minutes:\n");
+            if(*day == 0)
+                print_slot(&day1[*slot]);
+            else
+                print_slot(&day2[*slot]);
+            break;
+        case 7:
+            if(*slot == 0)
+                printf("I am a happy and innocent Trooper's badge.\n\t\t;-)\n");
+            else if(*slot == 1)
+                printf("And now I am an angry botnet.\n\t\t>:‑)\n");
+            else if(*slot == 2)
+                printf("Our best wishes to the newly engaged couple!1!!.\n");
+                // TODO, some more weird stuff? ASCII-ART?
+            break;
+        default:
+            printf("Troopers16\n");
+    }
+}
 
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
@@ -358,6 +465,19 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           myrf_receive(&q, &rx_stats);
 
           if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
+              uint8_t* cmd = &gentry->data + 2;
+              if(cmd[0] == 0xFF)
+                  output_arbitrary_message(++cmd, &gentry->length);
+              else {
+                  uint8_t info_type = 0;
+                  uint8_t slot = 0;
+                  uint8_t day = 0;
+
+                  if(check_and_parse_msg(cmd, &info_type, &slot, &day))
+                      output_fix_messages(&info_type, &slot, &day);
+                  else
+                      continue;
+              }
               printf("nrxok %i", rx_stats.nRxOk);
               printf("nrxNok %i", rx_stats.nRxNok);
               printf("nrxIgn %i", rx_stats.nRxIgnored);

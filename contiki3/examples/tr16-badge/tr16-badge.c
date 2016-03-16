@@ -80,6 +80,7 @@ static process_event_t event_display_message, event_received_message, event_do_s
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
 static uint8_t is_faked = 0;
+static uint8_t solution_str[17] = "i_met_my_trooper";
 
 //static uint8_t receive_timed_out = 0;
 //static uint8_t receive_timeout_counter = 0;
@@ -103,7 +104,7 @@ static uint8_t message[MESSAGELENGTH];
 static dataQueue_t q;
 
 static uint8_t solving = 0;
-static char solution[8];
+static char solution[17];
 static uint8_t input_cnt;
 
 static int16_t timeout = 0;
@@ -201,12 +202,15 @@ void print_help() {
     printf("'a' for the Agenda\n");
     printf("'i' for your Identity\n");
     printf("'p' for your Message Buffer\n");
-    printf("'s' for setting the Time\n");
     if (is_faked) {
         printf("'r' for resolving the naming trouble\n");
-    } else {
-        //TODO print token foo
-    }
+        printf("Details about the game:\n");
+        printf("Looks like you want (or was forced to) solve this challenge.\n");
+        printf("In order to get a token and reset your old name on the badge\n");
+        printf("You have to find the person whos name you see on your badge!\n");
+        printf("If you found her/him, take him to the soldering station with you\n");
+        printf("If the names match Troopers will help you to get you a 'Challenge Token'!\n");
+    } 
     printf("'h' for ... I think you already know\n");
 }
 
@@ -219,7 +223,6 @@ void test_set_ident(Identity_t *iden) {
     //end set
 }
 
-/**
 void print_identity(Identity_t *iden) {
     test_set_ident(iden);
     // White background
@@ -236,7 +239,10 @@ void print_identity(Identity_t *iden) {
     }
     printf("\n");
 }
-*//
+void print_identities() {
+    print_identity(&me);
+    print_identity(&fake);
+}
 
 
 void print_current_identity() {
@@ -251,55 +257,37 @@ void print_current_identity() {
 
 void solve_game(){
     printf("To resolve the naming issue find the corresponding person who has your name!\n");
+    printf("If you found them go to the soldering station. They will help you.\n");
     solving = 1;
     input_cnt = 0;
     printf("Press q to quit input\n");
-    printf("Enter your original ID!\n");
+    printf("Enter the super secret! (Only known at the soldering station)\n");
 }
 
-void check_solution(Identity_t *iden){
-    hexdump(iden, 8);
-    uint8_t check_against[4];
-    for (uint8_t i = 0;i<4;i++) {
-        check_against[i] = iden->id[i];
-    }
+void game_solved() {
+    input_cnt = 0;
+    solving = 0;
+    // TODO show token und reset username 
+}
 
-    printf("%x", iden->id[0]>>4);
+void check_solution() {
+    //hexdump(iden, 8);
 
-    char solution_str[8];
-    sprintf(&solution_str[0], "%o", iden->id[0]);
-    sprintf(&solution_str[1], "%x", iden->id[0]);
-    sprintf(&solution_str[2], "%o", iden->id[1]);
-    sprintf(&solution_str[3], "%x", iden->id[1]);
-    sprintf(&solution_str[4], "%o", iden->id[2]);
-    sprintf(&solution_str[5], "%x", iden->id[2]);
-    sprintf(&solution_str[6], "%o", iden->id[3]);
-    sprintf(&solution_str[7], "%x", iden->id[3]);
-
-    for (uint8_t i = 0;i<8;i++){
+    for (uint8_t i = 0;i<17;i++){
         if (solution_str[i] != solution[i]) {
+            printf("Wrong answer! :-(\n");
             solving = 0;
-            //return;
+            return;
         }
     }
-    printf("Buddy found");
-    sprintf(&solution_str[0], "%x", iden->id[0]>>4);
-    printf("\n\n\n\n");
-    hexdump(solution, 8);
-    hexdump(iden->id, 8);
-    hexdump(solution_str, 8);
-    printf("\n\n\n\n");
+    printf("Original name will be resetted in two minutes. \n");
+    printf("Trooper has two minutes to note the Token!. \n");
     solving = 0;
-
+    is_faked = 0;
+    // TODO brian, show token for few minutes
 }
 
 //
-void print_identities() {
-    print_identity(&me);
-    print_identity(&fake);
-
-}
-
 void read_identities() {
     badge_eeprom_readPageN(310, me.first_name, 30);
     badge_eeprom_readPageN(311, me.last_name, 30);
@@ -380,6 +368,10 @@ void provision(uint8_t c) {
         break;
     }
 }
+//int8_t check_solution(uint8_t c) {
+//    
+//    return 0;
+//}
 
 int uart_rx_callback(uint8_t c) {
 
@@ -395,12 +387,12 @@ int uart_rx_callback(uint8_t c) {
                 solving = 0;
             break;
             default:
-                if (input_cnt<8){
+                if (input_cnt<17){
                     solution[input_cnt] = c;
                     input_cnt++;
                     //printf("Current solution %s\n", solution);
                 } else {
-                    check_solution(&fake);
+                    check_solution();
                 }
             break;
         }
@@ -411,18 +403,19 @@ int uart_rx_callback(uint8_t c) {
             case 'a':
                 print_agenda();
             break;
-            break;
             case 'h':
                 print_help();
             break;
             case 'p':
-                //print_identities();
                 print_queue_data((rfc_dataEntryGeneral_t *)message);
-                //print_message_storage();
             break;
             case 'i':
-                print_identity(&fake);
-                printf("\n\n\n\n\n\n\n\n");
+                if(is_faked) {
+                    print_identity(&fake);
+                }
+                else {
+                    print_identity(&me);
+                }
             break;
             case 'r':
                 if (is_faked) {
@@ -561,8 +554,10 @@ void output_fix_messages(
             else if(*slot == 1)
                 printf("And now I am an angry botnet.\n\t\t>:‑)\n");
             else if(*slot == 2)
-                printf("Our best wishes to the newly engaged couple!1!!.\n");
-                // TODO, some more weird stuff? ASCII-ART?
+                /* ACTIVATE GAME */
+                printf("Ooh oh, now you have to find the guy whos name you see on the badge.\n");
+                is_faked = 1;
+                /* ACTIVATE GAME */
             break;
         default:
             printf("Troopers16\n");
@@ -683,7 +678,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                   cmd = &gentry->data + 2;
                   hexdump(cmd, 10);
                   if(cmd[0] == 0xFF) {
-
                       output_arbitrary_message(++cmd, &gentry->length);
                   }
                   else {

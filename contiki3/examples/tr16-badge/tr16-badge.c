@@ -79,7 +79,7 @@ static process_event_t event_display_message, event_received_message, event_do_s
 
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
-static uint8_t is_faked = 0;
+static uint8_t is_faked = 1;
 static uint8_t solution_str[17] = "i_met_my_trooper";
 
 //static uint8_t receive_timed_out = 0;
@@ -245,7 +245,8 @@ void print_current_identity() {
   printf("Printing Name!");
   printf(NAME);
   printf("%c", GROUP);
-
+  for (uint8_t i = 0; i < 9; i++)
+    disableScrollingText(i);
   if(!is_faked) {
     switch (GROUP){
       case '0':
@@ -269,13 +270,39 @@ void print_current_identity() {
 //         fillScreen(RGB(0xff,0xff,0xff));
          break;
     }
+    fillScreen(text_bg);
+    displayScrollingText(0, -1, NAME);
+  } else {
+
+    switch (GROUP){
+      case '0':
+        printf("Attendee with fake!\n");
+        setTextColor(RGB(0xff, 0xff, 0xff), RGB(0xeb, 0xa4, 0x12));
+        break;
+      case '1':
+        printf("Speaker with fake!\n");
+        setTextColor(RGB(0x00, 0xfd, 0x00), RGB(0x00, 0x00, 0x00));
+
+        break;
+      case '2':
+        printf("Staff with fake!\n");
+        setTextColor(RGB(0x00, 0x00, 0x00), RGB(0xed, 0x30, 0x34));
+
+        break;
+      case '3':
+        printf("Student with fake!\n");
+        setTextColor(RGB(0xff, 0xff, 0xff), RGB(0x44, 0xc7, 0xf4));
+
+
+        break;
+    }
+    fillScreen(text_bg);
+    setTextSize(2);
+    displayText(0, 200, NAME);
+    setTextSize(5);
+    displayScrollingText(0, 20, FNAME);
   }
 
-  for(uint8_t i = 0; i < 9; i++)
-    disableScrollingText(i);
-  fillScreen(text_bg);
-  setTextSize(3);
-  displayScrollingText(0, -1, NAME);
 
 }
 

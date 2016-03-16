@@ -23,5 +23,5 @@ void vscrollInit();
 void vscroll();
 
 void displayText(int16_t x, int16_t y, const char* str);
-void displayScrollingText(int16_t y, const char* str);
-void disableScrollingText();
+void displayScrollingText(uint8_t idx, int16_t y, const char* str);
+void disableScrollingText(uint8_t idx);

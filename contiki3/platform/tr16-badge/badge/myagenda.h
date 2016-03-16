@@ -33,6 +33,9 @@ void print_event(Event_t *ev);
 void print_slot(Slot_t *slot);
 void print_time(DayTime_t *time);
 
+void display_event(uint8_t idx, Event_t *ev);
+void display_slot(Slot_t *slot);
+
 extern Slot_t day1[8];
 extern Slot_t day2[6];
 

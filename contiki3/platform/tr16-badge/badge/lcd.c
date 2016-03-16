@@ -692,43 +692,52 @@ void printCentered(uint16_t y, const char* str, uint8_t size) {
 }
 
 
-const char* currentScrollingText = 0;
-const char* currentScrollingTextPosition = 0;
-int16_t currentScrollingTextLine = 0;
+const char* currentScrollingText[] = {
+0, 0, 0, 0, 0,
+0, 0, 0, 0 
+};
+const char* currentScrollingTextPosition[] = {
+0, 0, 0, 0, 0,
+0, 0, 0, 0 
+};
+int16_t currentScrollingTextLine[] = {
+0, 0, 0, 0, 0,
+0, 0, 0, 0 
+};
 
-void displayScrollingText(int16_t y, const char* str) {
+void displayScrollingText(uint8_t idx, int16_t y, const char* str) {
     if(str) {
         // center vertically
         if(y < 0) {
             y = (lcd_height - 20 - ((text_size&0x7F)*FONT_HEIGHT)) / 2;
         }
 
-        currentScrollingTextLine = y;
-        currentScrollingText = str;
-        currentScrollingTextPosition = str - 1;
+        currentScrollingTextLine[idx] = y;
+        currentScrollingText[idx] = str;
+        currentScrollingTextPosition[idx] = str - 1;
     }
 
-    if(currentScrollingText) {
+    if(currentScrollingText[idx]) {
         uint8_t oldwrap = text_wrap;
         setTextWrap(0);
         // add offset on text start
-        if(currentScrollingTextPosition < currentScrollingText) {
-            displayText(0, y, currentScrollingText);
+        if(currentScrollingTextPosition[idx] < currentScrollingText[idx]) {
+            displayText(0, currentScrollingTextLine[idx], currentScrollingText[idx]);
             //fillRect(0, y, ((text_size&0x7F)*FONT_WIDTH), ((text_size&0x7F)*FONT_HEIGHT), text_bg);
         } else {
-            displayText(0, y, currentScrollingTextPosition);
+            displayText(0, currentScrollingTextLine[idx], currentScrollingTextPosition[idx]);
         }
         setTextWrap(oldwrap);
-        currentScrollingTextPosition++;
-        if(!*currentScrollingTextPosition ||
-            ((strlen(currentScrollingTextPosition) + 1) * ((text_size&0x7F)*FONT_WIDTH)) < lcd_width) {
-            currentScrollingTextPosition = currentScrollingText - 1;
+        currentScrollingTextPosition[idx]++;
+        if(!*currentScrollingTextPosition[idx] ||
+            ((strlen(currentScrollingTextPosition[idx]) + 1) * ((text_size&0x7F)*FONT_WIDTH)) < lcd_width) {
+            currentScrollingTextPosition[idx] = currentScrollingText[idx] - 1;
         }
     }
 }
 
-void disableScrollingText()  {
-    currentScrollingText = 0;
-    currentScrollingTextPosition = 0;
-    currentScrollingTextLine = 0;
+void disableScrollingText(uint8_t idx)  {
+    currentScrollingText[idx] = 0;
+    currentScrollingTextPosition[idx] = 0;
+    currentScrollingTextLine[idx]= 0;
 }

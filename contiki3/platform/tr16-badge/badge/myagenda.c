@@ -42,25 +42,39 @@ void print_slot(Slot_t *slot) {
     }
 }
 
-void display_event(Event_t *ev) {
-    //displayScrollingText()
-    printf("Title: %s\n", ev->name);
+void display_slot(Slot_t *slot) {
+    fillScreen(0xffff);
+    if (slot->track1.name != NULL) {
+        display_event(0, &slot->track1);
+    }
+    if (slot->track2.name != NULL) {
+        display_event(1, &slot->track2);
+    }
+    if (slot->track3.name != NULL) {
+        display_event(2, &slot->track3);
+    }
+}
+
+
+void display_event(uint8_t idx, Event_t *ev) {
+    uint16_t y = 10 + idx * 3 * (text_size&0x7f)*FONT_HEIGHT;
+    displayScrollingText(idx * 3, y, ev->name);
 
     switch (ev->track) {
         case ATTACK:
-            printf("In: Attack & Research\n");
+            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Attack & Research");
         break;
         case SAP:
-            printf("In: SAP Security\n");
+            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: SAP Security");
         break;
         case EMBEDDED:
-            printf("In: Embedded\n");
+            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Embedded");
         break;
         case DEFENSE:
-            printf("In: Defense & Management\n");
+            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Defense & Management");
         break;
     }
-    print_time(&ev->daytime);
+    //print_time(&ev->daytime);
 }
 
 Slot_t day1[8] = {

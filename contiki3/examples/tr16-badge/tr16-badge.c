@@ -250,8 +250,8 @@ void print_identity(Identity_t *iden) {
     // White background
     fillScreen(RGB(0xff, 0xff, 0xff));
     setTextSize(5);
-    //displayScrollingText(-1, iden->badge_name);
-    displayScrollingText(-1, "Timo Schmid");
+    //displayScrollingText(0, -1, iden->badge_name);
+    displayScrollingText(0, -1, "Timo Schmid");
 
     printf("%s, %s, %s, group: %c id: ", iden->first_name, iden->last_name, iden->badge_name, iden->group);
     for (uint8_t i = 0; i < 4; i++) {
@@ -465,22 +465,20 @@ int8_t check_and_parse_msg(
  * Output arbitrary text received via radio.
  */
 void output_arbitrary_message(uint8_t *data, uint16_t *length) {
-    size_t buf_len = MAX_ARBITRARY_MSG;
-    if(*length < MAX_ARBITRARY_MSG && *length > 0)
-        buf_len = (size_t) *length;
 
-    char out_buf[buf_len + 1];
-    out_buf[buf_len] = 0x00;// let there be a null byte in any case
-    hexdump(&out_buf, 30);
-    strncpy(&out_buf, (char *) data, buf_len);
+    static char out_buf[MAX_ARBITRARY_MSG + 1];
+    out_buf[MAX_ARBITRARY_MSG] = 0x00;// let there be a null byte in any case
+    strncpy(out_buf, (char *) data, MAX_ARBITRARY_MSG-1);
     for(uint16_t i=0; i < MAX_ARBITRARY_MSG; i++){
         if(out_buf[i] < 32 || out_buf[i] > 126) {
             out_buf[i] = 0x00;
             break;
         }
     }
-    hexdump(&out_buf, 30);
-    printf("%s\n", out_buf);
+    setTextSize(4);
+    fillScreen(0xffff);
+    displayScrollingText(0, -1, out_buf);
+    //printf("%s\n", out_buf);
 }
 
 /*
@@ -512,18 +510,20 @@ void output_fix_messages(
                     "All Troopers should move to the 2nd floor right now!.\n");
             break;
         case 5:
-            printf("Next round of talks in 10 minutes:\n");
+            setTextSize(2);
             if(*day == 0)
-                print_slot(&day1[*slot]);
+                display_slot(&day1[*slot]);
             else
-                print_slot(&day2[*slot]);
+                display_slot(&day2[*slot]);
+            displayScrollingText(8, 210, "IN 10 MINUTES!1!!");
             break;
         case 6:
-            printf("Next round of talks in 5 minutes:\n");
+            setTextSize(2);
             if(*day == 0)
-                print_slot(&day1[*slot]);
+                display_slot(&day1[*slot]);
             else
-                print_slot(&day2[*slot]);
+                display_slot(&day2[*slot]);
+            displayScrollingText(8, 210, "IN 5 MINUTES!1!!");
             break;
         case 7:
             if(*slot == 0)
@@ -608,7 +608,8 @@ PROCESS_THREAD(scroll_process, ev, data)
     printf("*** PROCESS_THREAD Scroll started ***\n");
     while(1) {
         PROCESS_WAIT_EVENT_UNTIL(ev == event_do_scroll);
-        displayScrollingText(-2, NULL);
+        for(uint8_t i =0; i < 9; i++)
+            displayScrollingText(i, -2, NULL);
     }
     PROCESS_END();
 }

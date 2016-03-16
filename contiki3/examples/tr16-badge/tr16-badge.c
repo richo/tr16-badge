@@ -596,12 +596,22 @@ PROCESS_THREAD(display_pin_process, ev, data)
     PROCESS_BEGIN();
     printf("*** PROCESS_THREAD PIN started ***\n");
     static struct etimer timer;
-    uint8_t button_pressed = 0;
-    etimer_set(&timer, CLOCK_SECOND);
+    static uint8_t button_pressed = 0x00;
+    etimer_set(&timer, CLOCK_SECOND/3);
     while(1) {
         if(ti_lib_gpio_pin_read(BOARD_KEY_BACKDOOR)) {
             printf("Backdoor key pressed on=%u\n", button_pressed);
-       }
+            if (button_pressed) {
+                button_pressed = 0x00;
+                //pwm_start(120);
+            } else {
+                button_pressed = 0xFF;
+                //pwm_start(0);
+            }
+            setTextColor(RGB(0xff, 0xff, 0xff), RGB(0xff, 0, 0));
+        }
+        PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+        etimer_reset(&timer);
     }
     PROCESS_END();
 }
@@ -635,7 +645,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
 
   myrf_init_queue(&q, message);
   begin();
-  led(120);
   lcdInit();
   printf("initial gentry Status %i\n", gentry->status);
   uint8_t* cmd; 

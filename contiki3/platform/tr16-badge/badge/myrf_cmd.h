@@ -67,7 +67,7 @@ Command ID number: 0x0002
 #define DATA_ENTRY_STATUS_FINISHED   0x03 /* Free to use and to free */
 #define DATA_ENTRY_STATUS_UNFINISHED 0x04 /* Partial RX entry */
 
-#define DEBUG 0
+#define DEBUG 1
 #if DEBUG
 #define PRINTF(...) printf(__VA_ARGS__)
 #else

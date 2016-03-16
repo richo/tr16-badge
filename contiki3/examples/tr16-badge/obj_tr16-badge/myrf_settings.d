@@ -1,0 +1,21 @@
+obj_tr16-badge/myrf_settings.o: \
+ ../../platform/tr16-badge/badge/myrf_settings.c \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/mailbox.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/common_cmd.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/mailbox.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/data_entry.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/prop_mailbox.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/prop_cmd.h \
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/common_cmd.h \
+ ../../cpu/cc26xx-cc13xx/lib/cc13xxware/rf_patches/rf_patch_cpe_genfsk.h \
+ ../../platform/tr16-badge/badge/myrf_settings.h
+ ../../platform/tr16-badge/badge/myrf_settings.c :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/mailbox.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/common_cmd.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/mailbox.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/data_entry.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/prop_mailbox.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/prop_cmd.h :
+ ../../cpu/cc26xx-cc13xx/./rf-core/api/common_cmd.h :
+ ../../cpu/cc26xx-cc13xx/lib/cc13xxware/rf_patches/rf_patch_cpe_genfsk.h :
+ ../../platform/tr16-badge/badge/myrf_settings.h :

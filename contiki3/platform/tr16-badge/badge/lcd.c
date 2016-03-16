@@ -132,11 +132,6 @@ void begin()
 
   ti_lib_ioc_pin_type_gpio_output(BOARD_IOID_TOUCH_BUSY);
 
-  // hw reste off the display
-  ti_lib_gpio_pin_toggle(BOARD_LCD_RST);
-  clock_delay_usec(100);
-  ti_lib_gpio_pin_toggle(BOARD_LCD_RST);
-
   LCD_PWROFF();
 
   LED_DISABLE();
@@ -167,7 +162,7 @@ void led(int power)
   else //1...99%
   {
     LCD_PWRON();
-    pwm_start(120);
+    pwm_start(power);
   }
 
 return;
@@ -460,6 +455,99 @@ void lcdInit (void) {
   CS_DISABLE();
 }
 
+/*
+void lcdInit (void)
+{
+  //printf("starting init...\n");
+  uint8_t data1[] = {0x00, 0x83, 0x30};
+  uint8_t data2[] = {0x64, 0x03, 0x12, 0x81};
+  uint8_t data3[] = {0x85, 0x01, 0x79};
+  uint8_t data4[] = {0x39, 0x2C, 0x00, 0x34, 0x02};
+  uint8_t data5[] = {0x20};
+  uint8_t data6[] = {0x00, 0x00};
+  uint8_t data7[] = {0x26};
+  uint8_t data8[] = {0x11};
+  uint8_t data9[] = {0x35, 0x3E};
+  uint8_t data10[] = {0xBE};
+  uint8_t data11[] = {0x00, 0x1B};
+  uint8_t data12[] = {0x08};
+  uint8_t data13[] = {0x01};
+  uint8_t data14[] = {0x1F, 0x1A, 0x18, 0x0A, 0x0F, 0x06, 0x45, 0x87, 0x32, 0x0A, 0x07, 0x02, 0x07, 0x05, 0x00};
+  uint8_t data15[] = {0x00, 0x25, 0x27, 0x05, 0x10, 0x09, 0x3A, 0x78, 0x4D, 0x05, 0x18, 0x0D, 0x38, 0x3A, 0x1F};
+  uint8_t data16[] = {0x0A, 0x82, 0x27, 0x00};
+  uint8_t data17[] = {0x07};
+  uint8_t data18[] = {0x55};
+  uint8_t data19[] = {(1<<MEM_BGR) | (1<<MEM_X) | (1<<MEM_Y) | (1<<MEM_V)};       //CHECK!!!
+  uint8_t data20[] = {0x00, 0x00};
+  //uint8_t data21[] = {((LCD_WIDTH-1)>>8)&0xFF, (LCD_WIDTH-1)&0xFF};
+  uint8_t data21[] = {0x01, 0xEF};
+  uint8_t data22[] = {0x00, 0x00};
+  //uint8_t data23[] = {((LCD_HEIGHT-1)>>8)&0xFF, (LCD_HEIGHT-1)&0xFF};
+  uint8_t data23[] = {0x00, 0xEF};
+
+  //printf("spi open\n");
+
+  board_spi_open(10000000, BOARD_IOID_SPI_SCK);		//initialize SPI with bit rate and clock pin
+
+  //send init commands and data
+  wr_cmd(LCD_CMD_RESET);  // sw reset
+  clock_delay_usec(5000);
+  wr_cmd(LCD_CMD_DISPLAY_OFF);  //display off
+
+  clock_delay_usec(20000);;  //wait 20ms => CS why? not in spec
+  wr_cmd(LCD_CMD_POWER_CTRLB);
+  wr_data(data1, sizeof(data1));
+  wr_cmd(LCD_CMD_POWERON_SEQ_CTRL);
+  wr_data(data2, sizeof(data2));
+  wr_cmd(LCD_CMD_DRV_TIMING_CTRLA);
+  wr_data(data3, sizeof(data3));
+  wr_cmd(LCD_CMD_POWER_CTRLA);
+  wr_data(data4, sizeof(data4));
+  wr_cmd(LCD_CMD_PUMP_RATIO_CTRL);
+  wr_data(data5, sizeof(data5));
+  wr_cmd(LCD_CMD_DRV_TIMING_CTRLB);
+  wr_data(data6, sizeof(data6));
+  wr_cmd(LCD_CMD_POWER_CTRL1);
+  wr_data(data7, sizeof(data7));
+  wr_cmd(LCD_CMD_POWER_CTRL2);
+  wr_data(data8, sizeof(data8));
+  wr_cmd(LCD_CMD_VCOM_CTRL1);
+  wr_data(data9, sizeof(data9));
+  wr_cmd(LCD_CMD_VCOM_CTRL2);
+  wr_data(data10, sizeof(data10));
+  wr_cmd(LCD_CMD_FRAME_CTRL);
+  wr_data(data11, sizeof(data11));
+  wr_cmd(LCD_CMD_ENABLE_3G);
+  wr_data(data12, sizeof(data12));
+  wr_cmd(LCD_CMD_GAMMA);
+  wr_data(data13, sizeof(data13));
+  wr_cmd(LCD_CMD_POS_GAMMA);
+  wr_data(data14, sizeof(data14));
+  wr_cmd(LCD_CMD_NEG_GAMMA);
+  wr_data(data15, sizeof(data15));
+  wr_cmd(LCD_CMD_DISPLAY_CTRL);
+  wr_data(data16, sizeof(data16));
+  wr_cmd(LCD_CMD_ENTRY_MODE);
+  wr_data(data17, sizeof(data17));
+  wr_cmd(LCD_CMD_PIXEL_FORMAT);
+  wr_data(data18, sizeof(data18));
+  wr_cmd(LCD_CMD_MEMACCESS_CTRL);       //CHECK!!!
+  wr_data(data19, sizeof(data19));      //CHECK!!!
+  wr_cmd(LCD_CMD_COLUMN);
+  wr_data(data20, sizeof(data20));
+  wr_data(data21, sizeof(data21));
+  wr_cmd(LCD_CMD_PAGE);
+  wr_data(data22, sizeof(data22));
+  wr_data(data23, sizeof(data23));
+  wr_cmd(LCD_CMD_SLEEPOUT);
+  clock_delay_usec(60000);
+  clock_delay_usec(60000);
+  wr_cmd(LCD_CMD_DISPLAY_ON);
+  clock_delay_usec(20000);;
+
+  setOrientation(0);
+}
+*/
 
 void wr_cmd(uint8_t cmd)
 {

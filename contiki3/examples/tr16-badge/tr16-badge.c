@@ -337,6 +337,7 @@ void check_solution() {
     printf("Trooper deserves the Token!. \n");
     solving = 0;
     is_faked = 0;
+    print_current_identity();
 }
 
 //
@@ -616,6 +617,7 @@ void output_fix_messages(
                 /* ACTIVATE GAME */
                 printf("Ooh oh, now you have to find the guy whos name you see on the badge.\n");
                 is_faked = 1;
+                print_current_identity();
                 /* ACTIVATE GAME */
             break;
         default:
@@ -705,6 +707,10 @@ PROCESS_THREAD(receive_messages_process, ev, data)
       if(ev == PROCESS_EVENT_TIMER) {
           //myrf_send(message);
           if(timeout <= 0) {
+              if(timeout == 0) {
+                print_current_identity();
+                timeout--;
+              }
               myrf_receive(&q, &rx_stats);
 
               if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {

@@ -132,11 +132,6 @@ void print_queue_data(rfc_dataEntryGeneral_t *dataEntry) {
     hexdump(&entry->data, PACKETLENGTH);
     printf("\n");
     msgptr = &entry->data;
-    printf("as string: ");
-    for (uint8_t pos = 0; pos < 80; pos++) {
-        printf("%c", msgptr[pos]);
-    }
-    printf("\n");
 }
 
 void toggle_identity() {
@@ -444,7 +439,6 @@ int8_t check_and_parse_msg(
         uint8_t *slot,
         uint8_t *day) {
 
-    PRINTF("in checknparse\n");
     hexdump(msg, 10);
     *info_type = *msg & 0x0F;
     *slot = (*msg & 0x70) / 16;
@@ -626,11 +620,11 @@ PROCESS_THREAD(receive_messages_process, ev, data)
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
           //myrf_send(message);
-          myrf_receive(&q, &rx_stats);
-
-          uint8_t* cmd = &gentry->data + 2;
-          if (!receive_locked) {
+          //if (!receive_locked) {
+              myrf_receive(&q, &rx_stats);
+              uint8_t* cmd = &gentry->data + 2;
               if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
+                  //receive_locked = 0x01;
                   printf("received message but will it be valid?\n");
                   hexdump(cmd, 10);
                   if(cmd[0] == 0xFF) {
@@ -652,6 +646,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                   myrf_init_queue(&q, message);
 
               } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
+                  //receive_locked = 0x01;
                   printf("not finished\n");
                   if(cmd[0] == 0xFF) {
                       output_arbitrary_message(++cmd, &gentry->length);
@@ -676,13 +671,13 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               etimer_reset(&timer);
               counter++;
           }
-          if (receive_locktime < RECEIVE_LOCKTIME) {
-              receive_locktime++;
-          } else {
-              receive_locked = 0x00;
-              receive_locktime = 0x00;
-          }
-      }
+          //if (receive_locktime < RECEIVE_LOCKTIME) {
+              //receive_locktime++;
+          //} else {
+              //receive_locked = 0x00;
+              //receive_locktime = 0x00;
+          //}
+      //}
   }
   PROCESS_END();
 }

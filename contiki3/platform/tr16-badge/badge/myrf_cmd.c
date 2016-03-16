@@ -2,7 +2,7 @@
 * File Name     :
 * Purpose       :
 * Creation Date : 08-03-2016
-* Last Modified : Sun 13 Mar 2016 12:21:02 PM CET
+* Last Modified : Wed 16 Mar 2016 04:20:52 AM CET
 * Created By    :
 *
 */
@@ -46,7 +46,7 @@
 #include "myconfig.h"
 
 void myrf_init_queue(dataQueue_t *q, uint8_t *buf) {
-    memset(buf, 0x00, MESSAGELENGTH);
+    //memset(buf, 0x00, MESSAGELENGTH);
     rfc_dataEntry_t *entry;
     entry = (rfc_dataEntry_t *)buf;
     entry->status = DATA_ENTRY_STATUS_PENDING;

@@ -246,13 +246,6 @@ void test_set_ident(Identity_t *iden) {
     //end set
 }
 
-void print_current_identity() {
-    if(!is_faked)
-        print_identity(&me);
-    else
-        print_identity(&fake);
-}
-
 void print_identity(Identity_t *iden) {
     test_set_ident(iden);
     // White background
@@ -266,6 +259,13 @@ void print_identity(Identity_t *iden) {
         printf("%02x", iden->id[i]);
     }
     printf("\n");
+}
+
+void print_current_identity() {
+    if(!is_faked)
+        print_identity(&me);
+    else
+        print_identity(&fake);
 }
 
 

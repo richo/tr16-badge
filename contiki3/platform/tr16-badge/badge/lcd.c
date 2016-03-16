@@ -291,7 +291,6 @@ void drawStop(void)
 
 void setArea(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
 {
-  printf("(%d,%d) -> (%d,%d)\n", x0, y0, x1, y1);
   wr_cmd(LCD_CMD_COLUMN);
 
 

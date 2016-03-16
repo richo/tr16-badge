@@ -286,7 +286,7 @@ void check_solution(Identity_t *iden){
         check_against[i] = iden->id[i];
     }
 
-    printf("%x"iden->[0]>>4);
+    printf("%x", iden->id[0]>>4);
 
     char solution_str[8];
     sprintf(&solution_str[0], "%o", iden->id[0]);

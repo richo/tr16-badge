@@ -618,6 +618,9 @@ int16_t currentScrollingTextLine[] = {
 };
 
 void displayScrollingText(uint8_t idx, int16_t y, const char* str) {
+    if(idx > 8)
+	return;
+
     if(str) {
         // center vertically
         if(y < 0) {
@@ -627,9 +630,7 @@ void displayScrollingText(uint8_t idx, int16_t y, const char* str) {
         currentScrollingTextLine[idx] = y;
         currentScrollingText[idx] = str;
         currentScrollingTextPosition[idx] = str - 1;
-    }
-
-    if(currentScrollingText[idx]) {
+    } else if(currentScrollingText[idx]) {
         uint8_t oldwrap = text_wrap;
         setTextWrap(0);
         // add offset on text start
@@ -641,9 +642,11 @@ void displayScrollingText(uint8_t idx, int16_t y, const char* str) {
         }
         setTextWrap(oldwrap);
         currentScrollingTextPosition[idx]++;
-        if(!*currentScrollingTextPosition[idx] ||
-            ((strlen(currentScrollingTextPosition[idx]) + 1) * ((text_size&0x7F)*FONT_WIDTH)) < lcd_width) {
-            currentScrollingTextPosition[idx] = currentScrollingText[idx] - 1;
+        if(currentScrollingTextPosition[idx] >= currentScrollingText[idx]) {
+            if(!*currentScrollingTextPosition[idx] ||
+                ((strlen(currentScrollingTextPosition[idx]) + 1) * ((text_size&0x7F)*FONT_WIDTH)) < lcd_width) {
+                currentScrollingTextPosition[idx] = currentScrollingText[idx] - 1;
+            }
         }
     }
 }

@@ -729,6 +729,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                       else {
                           etimer_reset(&timer);
                           timeout = DEF_TIMEOUT;
+                          process_post(&output_messages_process, event_display_message, &counter);
                           myrf_init_queue(&q, message);
                           continue;
                       }
@@ -754,6 +755,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                       else {
                           etimer_reset(&timer);
                           timeout = DEF_TIMEOUT;
+                          process_post(&output_messages_process, event_display_message, &counter);
                           myrf_init_queue(&q, message);
                           continue;
                       }

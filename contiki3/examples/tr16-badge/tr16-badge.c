@@ -88,7 +88,6 @@ static uint8_t receive_timeout_counter = 0;
 
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t user_input[4]; // id that user types in
-//static uint8_t delimiter = '#';
 static uint8_t delimiter_count = 0x00;
 uint32_t clock = 0x0;
 uint16_t wait = 0x0;
@@ -574,13 +573,12 @@ void output_fix_messages(
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
 PROCESS(receive_messages_process, "Send Messages process");
-PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 PROCESS(display_pin_process, "Display PIN process");
 PROCESS(clock_process, "Clock process");
 PROCESS(scroll_process, "Text Scroll process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process, &scroll_process);
+AUTOSTART_PROCESSES(&clock_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process, &scroll_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -739,21 +737,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           etimer_reset(&timer);
           counter++;
       }
-  }
-  PROCESS_END();
-}
-
-PROCESS_THREAD(system_resources_process, ev, data)
-{
-  PROCESS_BEGIN();
-  printf("*** PROCESS_THREAD system_resources_process started ***\n");
-  self_test();
-
-  while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(ev == event_display_system_resources);
-      /* printf("Provision Buffer: ");
-      hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
-      */
   }
   PROCESS_END();
 }

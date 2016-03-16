@@ -241,7 +241,7 @@ void test_set_ident(Identity_t *iden) {
     //set id
     uint32_t i = 0;
     for(i=0;i<4;i++){
-        iden->id[i] = i+10;
+        iden->id[i] = i+20;
     }
     //end set
 }
@@ -254,6 +254,7 @@ void print_current_identity() {
 }
 
 void print_identity(Identity_t *iden) {
+    test_set_ident(iden);
     // White background
     fillScreen(RGB(0xff, 0xff, 0xff));
     setTextSize(5);
@@ -280,6 +281,37 @@ void solve_game(){
 
 void check_solution(Identity_t *iden){
     hexdump(iden, 8);
+    uint8_t check_against[4];
+    for (uint8_t i = 0;i<4;i++) {
+        check_against[i] = iden->id[i];
+    }
+
+    printf("%x"iden->[0]>>4);
+
+    char solution_str[8];
+    sprintf(&solution_str[0], "%o", iden->id[0]);
+    sprintf(&solution_str[1], "%x", iden->id[0]);
+    sprintf(&solution_str[2], "%o", iden->id[1]);
+    sprintf(&solution_str[3], "%x", iden->id[1]);
+    sprintf(&solution_str[4], "%o", iden->id[2]);
+    sprintf(&solution_str[5], "%x", iden->id[2]);
+    sprintf(&solution_str[6], "%o", iden->id[3]);
+    sprintf(&solution_str[7], "%x", iden->id[3]);
+
+    for (uint8_t i = 0;i<8;i++){
+        if (solution_str[i] != solution[i]) {
+            solving = 0;
+            //return;
+        }
+    }
+    printf("Buddy found");
+    sprintf(&solution_str[0], "%x", iden->id[0]>>4);
+    printf("\n\n\n\n");
+    hexdump(solution, 8);
+    hexdump(iden->id, 8);
+    hexdump(solution_str, 8);
+    printf("\n\n\n\n");
+    solving = 0;
 
 }
 

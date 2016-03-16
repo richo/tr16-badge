@@ -219,6 +219,7 @@ void test_set_ident(Identity_t *iden) {
     //end set
 }
 
+/**
 void print_identity(Identity_t *iden) {
     test_set_ident(iden);
     // White background
@@ -235,13 +236,54 @@ void print_identity(Identity_t *iden) {
     }
     printf("\n");
 }
+*/
+
 
 void print_current_identity() {
+/*
     if(!is_faked)
         print_identity(&me);
     else
         print_identity(&fake);
+*/
+  setTextSize(5);
+  printf("Printing Name!");
+  printf(NAME);
+  printf("%c", GROUP);
+
+  if(!is_faked) {
+    switch (GROUP){
+      case '0':
+        printf("Color has been set to Attendee\n");
+        setTextColor(RGB(0xeb, 0xa4, 0x12), RGB(0xff, 0xff, 0xff));
+        fillScreen(RGB(0xff, 0xff,0xff));
+        break;
+      case '1':
+         printf("Color has been set to Speaker\n");
+         setTextColor(RGB(0x00, 0xfd, 0x00), RGB(0x00, 0x00, 0x00));
+         fillScreen(RGB(0x00, 0x00, 0x00));
+         break;
+      case '2':
+         printf("Color has been set to Staff\n");
+         setTextColor(RGB(0xed, 0x30, 0x34), RGB(0xff, 0xff, 0xff));
+         fillScreen(RGB(0xff,0xff,0xff));
+         break;
+      case '3':
+         printf("Color has been set to Staff\n");
+         setTextColor(RGB(0x44, 0xc7, 0xf4), RGB(0xff, 0xff, 0xff));
+         fillScreen(RGB(0xff,0xff,0xff));
+         break;
+    }
+  }
+
+//  for(uint8_t i = 0; i < 9; i++)
+//    disableScrollingText(i);
+
+  setTextSize(3);
+  displayScrollingText(0, -1, NAME);
+
 }
+
 
 //till
 
@@ -291,12 +333,12 @@ void check_solution(Identity_t *iden){
 
 //
 void print_identities() {
-    print_identity(&me);
-    print_identity(&fake);
-
+//    print_identity(&me);
+//    print_identity(&fake);
+    print_current_identity();
 }
 
-void read_identities() {
+/*void read_identities() {
     badge_eeprom_readPageN(310, me.first_name, 30);
     badge_eeprom_readPageN(311, me.last_name, 30);
     badge_eeprom_readPageN(312, &me.group, 1);
@@ -355,7 +397,8 @@ void save_identities() {
     badge_eeprom_writePageN(324, fake.id, 4);
 
 }
-
+*/
+/*
 void provision(uint8_t c) {
     switch (c) {
         case '\r':
@@ -363,7 +406,7 @@ void provision(uint8_t c) {
         break;
         case '#':
             delimiter_count++;
-            /* fall through */
+
         default:
             if (input_counter < PROVISIONBUFFERLENGTH) {
                 provisionbuffer[input_counter] = c;
@@ -376,7 +419,7 @@ void provision(uint8_t c) {
         break;
     }
 }
-
+*/
 int uart_rx_callback(uint8_t c) {
 
     /*
@@ -417,7 +460,7 @@ int uart_rx_callback(uint8_t c) {
                 //print_message_storage();
             break;
             case 'i':
-                print_identity(&fake);
+                //print_current_identity(&fake);
                 printf("\n\n\n\n\n\n\n\n");
             break;
             case 'r':
@@ -592,22 +635,16 @@ PROCESS_THREAD(display_pin_process, ev, data)
     PROCESS_BEGIN();
     printf("*** PROCESS_THREAD PIN started ***\n");
     static struct etimer timer;
-    static uint8_t button_pressed = 0x00;
+    static uint8_t button_pressed = 0;
     etimer_set(&timer, CLOCK_SECOND/3);
+    print_identities();
     while(1) {
         if(ti_lib_gpio_pin_read(BOARD_KEY_BACKDOOR)) {
+            print_identities();
             printf("Backdoor key pressed on=%u\n", button_pressed);
-            if (button_pressed) {
-                button_pressed = 0x00;
-                //pwm_start(120);
-            } else {
-                button_pressed = 0xFF;
-                //pwm_start(0);
-            }
-            setTextColor(RGB(0xff, 0xff, 0xff), RGB(0xff, 0, 0));
-        }
-        PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
-        etimer_reset(&timer);
+       }
+       PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
+       etimer_reset(&timer);
     }
     PROCESS_END();
 }
@@ -641,9 +678,10 @@ PROCESS_THREAD(receive_messages_process, ev, data)
 
   myrf_init_queue(&q, message);
   begin();
+  led(120);
   lcdInit();
   printf("initial gentry Status %i\n", gentry->status);
-  uint8_t* cmd; 
+  uint8_t* cmd;
   uint8_t info_type = 0;
   uint8_t slot = 0;
   uint8_t day = 0;

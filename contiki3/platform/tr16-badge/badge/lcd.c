@@ -724,7 +724,6 @@ void displayScrollingText(uint8_t idx, int16_t y, const char* str) {
         // add offset on text start
         if(currentScrollingTextPosition[idx] < currentScrollingText[idx]) {
             displayText(0, currentScrollingTextLine[idx], currentScrollingText[idx]);
-            //fillRect(0, y, ((text_size&0x7F)*FONT_WIDTH), ((text_size&0x7F)*FONT_HEIGHT), text_bg);
         } else {
             displayText(0, currentScrollingTextLine[idx], currentScrollingTextPosition[idx]);
         }

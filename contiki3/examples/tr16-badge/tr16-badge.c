@@ -255,30 +255,30 @@ void print_current_identity() {
     switch (GROUP){
       case '0':
         printf("Color has been set to Attendee\n");
-        setTextColor(RGB(0xeb, 0xa4, 0x12), RGB(0xff, 0xff, 0xff));
-        fillScreen(RGB(0xff, 0xff,0xff));
+        setTextColor(RGB(0xff, 0xff, 0xff), RGB(0xeb, 0xa4, 0x12));
+//        fillScreen(text_bg);
         break;
       case '1':
          printf("Color has been set to Speaker\n");
          setTextColor(RGB(0x00, 0xfd, 0x00), RGB(0x00, 0x00, 0x00));
-         fillScreen(RGB(0x00, 0x00, 0x00));
+//         fillScreen(RGB(0x00, 0x00, 0x00));
          break;
       case '2':
          printf("Color has been set to Staff\n");
-         setTextColor(RGB(0xed, 0x30, 0x34), RGB(0xff, 0xff, 0xff));
-         fillScreen(RGB(0xff,0xff,0xff));
+         setTextColor(RGB(0x00, 0x00, 0x00), RGB(0xed, 0x30, 0x34));
+//         fillScreen(RGB(0xff,0xff,0xff));
          break;
       case '3':
-         printf("Color has been set to Staff\n");
-         setTextColor(RGB(0x44, 0xc7, 0xf4), RGB(0xff, 0xff, 0xff));
-         fillScreen(RGB(0xff,0xff,0xff));
+         printf("Color has been set to Student\n");
+         setTextColor(RGB(0xff, 0xff, 0xff), RGB(0x44, 0xc7, 0xf4));
+//         fillScreen(RGB(0xff,0xff,0xff));
          break;
     }
   }
 
-//  for(uint8_t i = 0; i < 9; i++)
-//    disableScrollingText(i);
-
+  for(uint8_t i = 0; i < 9; i++)
+    disableScrollingText(i);
+  fillScreen(text_bg);
   setTextSize(3);
   displayScrollingText(0, -1, NAME);
 

@@ -3,3 +3,23 @@ all: $(CONTIKI_PROJECT)
 
 CONTIKI = ../..
 include $(CONTIKI)/Makefile.include
+
+ifdef GROUP
+	CFLAGS+="-DGROUP='${GROUP}'"
+endif
+
+ifdef NAME
+	CFLAGS+="-D NAME=\"${NAME}\""
+endif
+
+ifdef FNAME
+	CFLAGS+="-DFNAME=\"${FNAME}\""
+endif FNAME
+
+ifdef TOKEN
+	CFLAGS+="-DTOKEN=\"${TOKEN}\""
+endif
+
+ifdef ID
+	CFLAGS+="-DID=${ID}"
+endif

@@ -4,7 +4,7 @@
 #define ID     (123456)
 #define NAME   "MyCoolName"
 #define FNAME  "ImNotIm"
-#define GROUP  (0xFF)
+#define GROUP  ('2')
 #define TOKEN  "XXXX-YYYY-XXXX-YYYYY-XXXX"
 #define SAFE   "YES"  // hard coded safe status :-)
 

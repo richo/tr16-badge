@@ -66,16 +66,9 @@ void display_event(uint8_t idx, Event_t *ev) {
             displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Embedded");
         break;
         case DEFENSE:
-<<<<<<< HEAD
-            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Defense & Management");
+            displayScrollingText(idx * 3 + 1, y + (text_size&0x7f)*FONT_HEIGHT, "In: Defense & Mgmt");
         break;
     }
-    //print_time(&ev->daytime);
-=======
-            printf("In: Defense & Mgmt\n");
-        break;
-    }
->>>>>>> 90d6a0c63d76cf16e21abadbb700fc95325ccc2e
 }
 
 Slot_t day1[8] = {

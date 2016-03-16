@@ -624,7 +624,8 @@ PROCESS_THREAD(display_pin_process, ev, data)
                 //pwm_start(0);
             }
             //print_clock();
-            print_current_identity();
+            //print_current_identity();
+            setTextColor(RGB(0xff, 0xff, 0xff), RGB(0xff, 0, 0));
         }
         PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
         etimer_reset(&timer);

@@ -11,7 +11,7 @@
 	#define FNAME  "ImNotIm"
 #endif
 #ifndef GROUP
-	#define GROUP  ('3')
+	#define GROUP  ('1')
 #endif
 #ifndef TOKEN
 	#define TOKEN  "XXXX-YYYY-XXXX-YYYYY-XXXX"

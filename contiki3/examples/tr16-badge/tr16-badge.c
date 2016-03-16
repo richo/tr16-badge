@@ -106,6 +106,8 @@ static uint8_t solving = 0;
 static char solution[8];
 static uint8_t input_cnt;
 
+static int16_t timeout = 0;
+
 /*
 void print_clock() {
     printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
@@ -127,6 +129,7 @@ void init_provision_buffer() {
 }
 
 void print_queue_data(rfc_dataEntryGeneral_t *dataEntry) {
+return;
     rfc_dataEntryGeneral_t *entry;
     uint8_t *msgptr = NULL;
     entry = dataEntry;
@@ -222,6 +225,8 @@ void print_identity(Identity_t *iden) {
     fillScreen(text_bg);
     setTextSize(5);
     //displayScrollingText(0, -1, iden->badge_name);
+    for(uint8_t i = 0; i < 9; i++)
+        disableScrollingText(i);
     displayScrollingText(0, -1, "Timo Schmid");
 
     printf("%s, %s, %s, group: %c id: ", iden->first_name, iden->last_name, iden->badge_name, iden->group);
@@ -442,9 +447,11 @@ int8_t check_and_parse_msg(
         uint8_t *day) {
 
     hexdump(msg, 10);
+    printf("&day: %p &info: %p &slot: %p\n", day, info_type, slot);
     *info_type = *msg & 0x0F;
     *slot = (*msg & 0x70) / 16;
     *day = (*msg & 0x80) / 128;
+    printf("day: %x info: %x slot: %x\n", *day, *info_type, *slot);
     // error checking
     if(*info_type > INFO_TYPE_MAX_SLOTS)
         return 0;
@@ -453,8 +460,6 @@ int8_t check_and_parse_msg(
     if(*day == 0 && *slot > DAY1_MAX_SLOTS)
         return 0;
     if(*day == 1 && *slot > DAY2_MAX_SLOTS)
-        return 0;
-    if(*slot > DAY2_MAX_SLOTS)
         return 0;
     if(*info_type == 7 && (*slot < 0 || *slot > 3) )
         return 0;
@@ -476,6 +481,8 @@ void output_arbitrary_message(uint8_t *data, uint16_t *length) {
             break;
         }
     }
+    for(uint8_t i = 0; i < 9; i++)
+        disableScrollingText(i);
     setTextSize(4);
     fillScreen(text_bg);
     displayScrollingText(0, -1, out_buf);
@@ -492,25 +499,42 @@ void output_fix_messages(
 
     switch(*info_type) {
         case 0:
-            printf("Good morning Trooper!\n");
+            setTextSize(3);
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
+            displayScrollingText(0, -1, "Good morning Trooper!");
             break;
         case 1:
-            printf("Have a nice evening Trooper!\n"
-                    "Go get some rest (or some more drinks).\n");
+            setTextSize(3);
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
+            displayScrollingText(0, 20, "Have a nice evening Trooper!");
+            displayScrollingText(1, 50, "Go get some rest (or some more drinks).");
             break;
         case 2:
-            printf("Shared dinner and Packet Wars afterwards at the Kulturbrauerei.\n"
-                    "Busses at the PMA leaving at 6:30pm  \n");
+            setTextSize(3);
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
+            displayScrollingText(0, 20, "Shared dinner and Packet Wars afterwards at the Kulturbrauerei.");
+            displayScrollingText(1, 50, "Busses at the PMA leaving at 6:30pm");
             break;
         case 3:
-            printf("Speaker's dinner is at the restaurant Goldenes Schaaf.\n"
-                    "Busses at the PMA leaving at 6:30pm  \n");
+            setTextSize(3);
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
+            displayScrollingText(0, 20, "Speaker's dinner is at the restaurant Goldenes Schaaf.");
+            displayScrollingText(1, 50, "Busses at the PMA leaving at 6:30pm");
             break;
         case 4:
-            printf("Charity Ruffle starts in a few minutes (12:30pm).\n"
-                    "All Troopers should move to the 2nd floor right now!.\n");
+            setTextSize(3);
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
+            displayScrollingText(0, 20, "Charity Ruffle starts in a few minutes (12:30pm).");
+            displayScrollingText(1, 50, "All Troopers should move to the 2nd floor right now!.");
             break;
         case 5:
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
             setTextSize(2);
             if(*day == 0)
                 display_slot(&day1[*slot]);
@@ -519,6 +543,8 @@ void output_fix_messages(
             displayScrollingText(8, 210, "IN 10 MINUTES!1!!");
             break;
         case 6:
+            for(uint8_t i = 0; i < 9; i++)
+                disableScrollingText(i);
             setTextSize(2);
             if(*day == 0)
                 display_slot(&day1[*slot]);
@@ -560,6 +586,7 @@ PROCESS_THREAD(uart_receive_process, ev, data)
   }
   PROCESS_END();
 }
+
 
 PROCESS_THREAD(display_pin_process, ev, data)
 {
@@ -608,69 +635,79 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   led(120);
   lcdInit();
   printf("initial gentry Status %i\n", gentry->status);
-
+  uint8_t* cmd; 
+  uint8_t info_type = 0;
+  uint8_t slot = 0;
+  uint8_t day = 0;
   while(1) {
       PROCESS_WAIT_EVENT();
       if(ev == PROCESS_EVENT_TIMER) {
           //myrf_send(message);
-          //if (!receive_locked) {
+          if(timeout <= 0) {
               myrf_receive(&q, &rx_stats);
-              uint8_t* cmd = &gentry->data + 2;
+
               if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
-                  //receive_locked = 0x01;
+                  printf("nrxok %i", rx_stats.nRxOk);
+                  printf("nrxNok %i", rx_stats.nRxNok);
+                  printf("nrxIgn %i", rx_stats.nRxIgnored);
+                  printf("\n");
+                  printf("entry Status %i\n", gentry->status);
                   printf("received message but will it be valid?\n");
+                  cmd = &gentry->data + 2;
+                  hexdump(cmd, 10);
+                  if(cmd[0] == 0xFF) {
+                      output_arbitrary_message(++cmd, &gentry->length);
+                  }
+                  else {
+                      info_type = 0;
+                      slot = 0;
+                      day = 0;
+
+                      if(check_and_parse_msg(cmd, &info_type, &slot, &day))
+                          output_fix_messages(&info_type, &slot, &day);
+                      else {
+                          etimer_reset(&timer);
+                          continue;
+                      }
+                  }
+                  //timeout = 30*3;
+                  timeout = 1;
+                  process_post(&output_messages_process, event_display_message, &counter);
+                  myrf_init_queue(&q, message);
+
+              } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
+                  printf("not finished\n");
+                  cmd = &gentry->data + 2;
                   hexdump(cmd, 10);
                   if(cmd[0] == 0xFF) {
 
                       output_arbitrary_message(++cmd, &gentry->length);
                   }
                   else {
-                      uint8_t info_type = 0;
-                      uint8_t slot = 0;
-                      uint8_t day = 0;
+                      info_type = 0;
+                      slot = 0;
+                      day = 0;
 
                       if(check_and_parse_msg(cmd, &info_type, &slot, &day))
                           output_fix_messages(&info_type, &slot, &day);
                       else {
+                          etimer_reset(&timer);
                           continue;
                       }
                   }
-                  process_post(&output_messages_process, event_display_message, &counter);
-                  myrf_init_queue(&q, message);
-
-              } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
-                  //receive_locked = 0x01;
-                  printf("not finished\n");
-                  if(cmd[0] == 0xFF) {
-                      output_arbitrary_message(++cmd, &gentry->length);
-                  }
-                  else {
-                      uint8_t info_type = 0;
-                      uint8_t slot = 0;
-                      uint8_t day = 0;
-
-                      if(check_and_parse_msg(cmd, &info_type, &slot, &day))
-                          output_fix_messages(&info_type, &slot, &day);
-                      else {
-                          continue;
-                      }
-                  }
+                  timeout = 30*3;
                   process_post(&output_messages_process, event_display_message, &counter);
                   myrf_init_queue(&q, message);
               }
-              if(0 == (counter%2)) {
-                  process_post(&scroll_process, event_do_scroll, &counter);
-              }
-              etimer_reset(&timer);
-              counter++;
+          } else
+              timeout--;
+
+          if(0 == (counter%2)) {
+              process_post(&scroll_process, event_do_scroll, &counter);
           }
-          //if (receive_locktime < RECEIVE_LOCKTIME) {
-              //receive_locktime++;
-          //} else {
-              //receive_locked = 0x00;
-              //receive_locktime = 0x00;
-          //}
-      //}
+          etimer_reset(&timer);
+          counter++;
+      }
   }
   PROCESS_END();
 }

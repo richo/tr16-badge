@@ -79,7 +79,7 @@ static process_event_t event_display_message, event_received_message, event_do_s
 
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
-static uint8_t is_faked = 1;
+static uint8_t is_faked = 0;
 static uint8_t solution_str[17] = "i_met_my_trooper";
 
 //static uint8_t receive_timed_out = 0;

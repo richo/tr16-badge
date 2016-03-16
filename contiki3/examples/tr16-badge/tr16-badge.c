@@ -204,14 +204,14 @@ void print_help() {
     printf("'p' for your Message Buffer\n");
     if (is_faked) {
         printf("'r' for resolving the naming trouble\n");
-        printf("Details about the game:\n");
-        printf("Looks like you want (or was forced to) solve this challenge.\n");
-        printf("In order to get a token and reset your old name on the badge\n");
-        printf("You have to find the person whos name you see on your badge!\n");
-        printf("If you found her/him, take him to the soldering station with you\n");
-        printf("If the names match Troopers will help you to get you a 'Challenge Token'!\n");
+        printf("\n\tDetails about the game:\n");
+        printf("\tLooks like you want (or was forced to) solve this challenge.\n");
+        printf("\tIn order to get a token and reset your old name on the badge\n");
+        printf("\tYou have to find the person whos name you see on your badge!\n");
+        printf("\tIf you found her/him, take him to the soldering station with you\n");
+        printf("\tIf the names match Troopers will help you to get you a 'Challenge Token'!\n\n");
     } 
-    printf("'h' for ... I think you already know\n");
+    printf("\n'h' for ... I think you already know\n");
 }
 
 void test_set_ident(Identity_t *iden) {
@@ -298,7 +298,6 @@ void game_solved() {
 }
 
 void check_solution() {
-    //hexdump(iden, 8);
 
     for (uint8_t i = 0;i<16;i++){
         if (solution_str[i] != solution[i]) {
@@ -307,11 +306,10 @@ void check_solution() {
             return;
         }
     }
-    printf("Original name will be resetted in two minutes. \n");
-    printf("Trooper has two minutes to note the Token!. \n");
+    printf("\n\nSOLVED. Original name will be resetted. \n");
+    printf("Trooper deserves the Token!. \n");
     solving = 0;
     is_faked = 0;
-    // TODO brian, show token for few minutes
 }
 
 //
@@ -470,7 +468,6 @@ int8_t check_and_parse_msg(
         uint8_t *slot,
         uint8_t *day) {
 
-    hexdump(msg, 10);
     printf("&day: %p &info: %p &slot: %p\n", day, info_type, slot);
     *info_type = *msg & 0x0F;
     *slot = (*msg & 0x70) / 16;
@@ -684,7 +681,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                   printf("entry Status %i\n", gentry->status);
                   printf("received message but will it be valid?\n");
                   cmd = &gentry->data + 2;
-                  hexdump(cmd, 10);
                   if(cmd[0] == 0xFF) {
                       output_arbitrary_message(++cmd, &gentry->length);
                   }
@@ -708,7 +704,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
                   printf("not finished\n");
                   cmd = &gentry->data + 2;
-                  hexdump(cmd, 10);
                   if(cmd[0] == 0xFF) {
                       output_arbitrary_message(++cmd, &gentry->length);
                   }

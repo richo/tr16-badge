@@ -520,6 +520,7 @@ void output_fix_messages(
 
     switch(*info_type) {
         case 0:
+            fillScreen(text_bg);
             setTextSize(3);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
@@ -527,6 +528,7 @@ void output_fix_messages(
             break;
         case 1:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             displayScrollingText(0, 20, "Have a nice evening Trooper!");
@@ -534,6 +536,7 @@ void output_fix_messages(
             break;
         case 2:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             displayScrollingText(0, 20, "Shared dinner and Packet Wars afterwards at the Kulturbrauerei.");
@@ -541,6 +544,7 @@ void output_fix_messages(
             break;
         case 3:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             displayScrollingText(0, 20, "Speaker's dinner is at the restaurant Goldenes Schaaf.");
@@ -548,6 +552,7 @@ void output_fix_messages(
             break;
         case 4:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             displayScrollingText(0, 20, "Charity Ruffle starts in a few minutes (12:30pm).");
@@ -557,6 +562,7 @@ void output_fix_messages(
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             setTextSize(2);
+            fillScreen(text_bg);
             if(*day == 0)
                 display_slot(&day1[*slot]);
             else
@@ -567,6 +573,7 @@ void output_fix_messages(
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             setTextSize(2);
+            fillScreen(text_bg);
             if(*day == 0)
                 display_slot(&day1[*slot]);
             else

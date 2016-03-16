@@ -20,7 +20,6 @@ typedef struct {
     uint8_t name[95];
     //uint8_t speakers[65];
     track_t track;
-    DayTime_t daytime;
 } Event_t;
 
 typedef struct {
@@ -31,7 +30,6 @@ typedef struct {
 
 void print_event(Event_t *ev);
 void print_slot(Slot_t *slot);
-void print_time(DayTime_t *time);
 
 extern Slot_t day1[8];
 extern Slot_t day2[6];

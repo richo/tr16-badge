@@ -38,7 +38,7 @@ void print_slot(Slot_t *slot) {
 }
 
 void display_slot(Slot_t *slot) {
-    fillScreen(0xffff);
+    fillScreen(text_bg);
     if (slot->track1.name != NULL) {
         display_event(0, &slot->track1);
     }

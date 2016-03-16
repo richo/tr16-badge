@@ -248,7 +248,7 @@ void test_set_ident(Identity_t *iden) {
 void print_identity(Identity_t *iden) {
     test_set_ident(iden);
     // White background
-    fillScreen(RGB(0xff, 0xff, 0xff));
+    fillScreen(text_bg);
     setTextSize(5);
     //displayScrollingText(0, -1, iden->badge_name);
     displayScrollingText(0, -1, "Timo Schmid");
@@ -507,7 +507,7 @@ void output_arbitrary_message(uint8_t *data, uint16_t *length) {
         }
     }
     setTextSize(4);
-    fillScreen(0xffff);
+    fillScreen(text_bg);
     displayScrollingText(0, -1, out_buf);
     //printf("%s\n", out_buf);
 }

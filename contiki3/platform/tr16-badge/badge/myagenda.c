@@ -52,7 +52,7 @@ void display_event(Event_t *ev) {
             printf("In: Embedded\n");
         break;
         case DEFENSE:
-            printf("In: Defense & Management\n");
+            printf("In: Defense & Mgmt\n");
         break;
     }
 }

@@ -88,7 +88,6 @@ static uint8_t receive_timeout_counter = 0;
 
 static uint8_t provisionbuffer[PROVISIONBUFFERLENGTH];
 static uint8_t user_input[4]; // id that user types in
-//static uint8_t delimiter = '#';
 static uint8_t delimiter_count = 0x00;
 uint32_t clock = 0x0;
 uint16_t wait = 0x0;
@@ -241,12 +240,13 @@ void test_set_ident(Identity_t *iden) {
     //set id
     uint32_t i = 0;
     for(i=0;i<4;i++){
-        iden->id[i] = i+10;
+        iden->id[i] = i+20;
     }
     //end set
 }
 
 void print_identity(Identity_t *iden) {
+    test_set_ident(iden);
     // White background
     fillScreen(RGB(0xff, 0xff, 0xff));
     setTextSize(5);
@@ -280,6 +280,37 @@ void solve_game(){
 
 void check_solution(Identity_t *iden){
     hexdump(iden, 8);
+    uint8_t check_against[4];
+    for (uint8_t i = 0;i<4;i++) {
+        check_against[i] = iden->id[i];
+    }
+
+    printf("%x", iden->id[0]>>4);
+
+    char solution_str[8];
+    sprintf(&solution_str[0], "%o", iden->id[0]);
+    sprintf(&solution_str[1], "%x", iden->id[0]);
+    sprintf(&solution_str[2], "%o", iden->id[1]);
+    sprintf(&solution_str[3], "%x", iden->id[1]);
+    sprintf(&solution_str[4], "%o", iden->id[2]);
+    sprintf(&solution_str[5], "%x", iden->id[2]);
+    sprintf(&solution_str[6], "%o", iden->id[3]);
+    sprintf(&solution_str[7], "%x", iden->id[3]);
+
+    for (uint8_t i = 0;i<8;i++){
+        if (solution_str[i] != solution[i]) {
+            solving = 0;
+            //return;
+        }
+    }
+    printf("Buddy found");
+    sprintf(&solution_str[0], "%x", iden->id[0]>>4);
+    printf("\n\n\n\n");
+    hexdump(solution, 8);
+    hexdump(iden->id, 8);
+    hexdump(solution_str, 8);
+    printf("\n\n\n\n");
+    solving = 0;
 
 }
 
@@ -542,13 +573,12 @@ void output_fix_messages(
 /*---------------------------------------------------------------------------*/
 PROCESS(output_messages_process, "Output Messages process");
 PROCESS(receive_messages_process, "Send Messages process");
-PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 PROCESS(display_pin_process, "Display PIN process");
 PROCESS(clock_process, "Clock process");
 PROCESS(scroll_process, "Text Scroll process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process, &scroll_process);
+AUTOSTART_PROCESSES(&clock_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process, &scroll_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -708,21 +738,6 @@ PROCESS_THREAD(receive_messages_process, ev, data)
           etimer_reset(&timer);
           counter++;
       }
-  }
-  PROCESS_END();
-}
-
-PROCESS_THREAD(system_resources_process, ev, data)
-{
-  PROCESS_BEGIN();
-  printf("*** PROCESS_THREAD system_resources_process started ***\n");
-  self_test();
-
-  while(1) {
-      PROCESS_WAIT_EVENT_UNTIL(ev == event_display_system_resources);
-      /* printf("Provision Buffer: ");
-      hexdump(provisionbuffer, PROVISIONBUFFERLENGTH);
-      */
   }
   PROCESS_END();
 }

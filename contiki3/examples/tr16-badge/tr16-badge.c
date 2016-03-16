@@ -65,6 +65,7 @@
 #include "myagenda.h"
 #include "tr16-badge.h"
 #include "eeprom.h"
+#include "lcd.h"
 
 void print_stored_message(uint8_t index);
 void print_queue_data(rfc_dataEntryGeneral_t *dataEntry);
@@ -72,7 +73,7 @@ void print_queue_data(rfc_dataEntryGeneral_t *dataEntry);
 static Identity_t me;
 static Identity_t fake;
 
-static process_event_t event_display_message, event_display_system_resources, event_received_message;
+static process_event_t event_display_message, event_display_system_resources, event_received_message, event_do_scroll;
 
 static uint16_t input_counter = 0;
 static uint8_t is_provisioned = 0;
@@ -104,7 +105,7 @@ static char solution[8];
 static uint8_t input_cnt;
 
 void print_clock() {
-   printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
+    printf("time running: %2lu:%2lu:%2lu\n", (clock/3600), ((clock/60)%60), clock%60);
 }
 
 void store_message(uint8_t index) {
@@ -127,8 +128,8 @@ void init_provision_buffer() {
 }
 
 void print_message_storage() {
-    printf("Received Messages: 0x%02x\n", storage_filling_level); 
-    printf("All Stored Messages:\n"); 
+    printf("Received Messages: 0x%02x\n", storage_filling_level);
+    printf("All Stored Messages:\n");
     for (uint8_t i = 0; i < storage_filling_level % STORAGESIZE; i++) {
         print_stored_message(i);
     }
@@ -144,7 +145,7 @@ void print_queue_data(rfc_dataEntryGeneral_t *dataEntry) {
     rfc_dataEntryGeneral_t *entry;
     uint8_t *msgptr = NULL;
     entry = dataEntry;
-    printf("Message buffer\n"); 
+    printf("Message buffer\n");
     hexdump(&entry->data, PACKETLENGTH);
     printf("\n");
     msgptr = &entry->data;
@@ -245,7 +246,20 @@ void test_set_ident(Identity_t *iden) {
     //end set
 }
 
+void print_current_identity() {
+    if(!is_faked)
+        print_identity(&me);
+    else
+        print_identity(&fake);
+}
+
 void print_identity(Identity_t *iden) {
+    // White background
+    fillScreen(RGB(0xff, 0xff, 0xff));
+    setTextSize(5);
+    //displayScrollingText(-1, iden->badge_name);
+    displayScrollingText(-1, "Timo Schmid");
+
     printf("%s, %s, %s, group: %c id: ", iden->first_name, iden->last_name, iden->badge_name, iden->group);
     for (uint8_t i = 0; i < 4; i++) {
         printf("%02x", iden->id[i]);
@@ -532,8 +546,9 @@ PROCESS(system_resources_process, "System Resources process");
 PROCESS(uart_receive_process, "UART Receive process");
 PROCESS(display_pin_process, "Display PIN process");
 PROCESS(clock_process, "Clock process");
+PROCESS(scroll_process, "Text Scroll process");
 /*---------------------------------------------------------------------------*/
-AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process);
+AUTOSTART_PROCESSES(&clock_process, &system_resources_process, &output_messages_process, &receive_messages_process, &uart_receive_process, &display_pin_process, &scroll_process);
 /*---------------------------------------------------------------------------*/
 
 PROCESS_THREAD(uart_receive_process, ev, data)
@@ -573,15 +588,27 @@ PROCESS_THREAD(display_pin_process, ev, data)
             printf("Backdoor key pressed on=%u\n", button_pressed);
             if (button_pressed) {
                 button_pressed = 0x00;
-                pwm_start(120);
+                //pwm_start(120);
             } else {
                 button_pressed = 0xFF;
-                pwm_start(0);
+                //pwm_start(0);
             }
-            print_clock();
+            //print_clock();
+            print_current_identity();
         }
         PROCESS_WAIT_EVENT_UNTIL(etimer_expired(&timer));
         etimer_reset(&timer);
+    }
+    PROCESS_END();
+}
+
+PROCESS_THREAD(scroll_process, ev, data)
+{
+    PROCESS_BEGIN();
+    printf("*** PROCESS_THREAD Scroll started ***\n");
+    while(1) {
+        PROCESS_WAIT_EVENT_UNTIL(ev == event_do_scroll);
+        displayScrollingText(-2, NULL);
     }
     PROCESS_END();
 }
@@ -611,6 +638,8 @@ PROCESS_THREAD(receive_messages_process, ev, data)
   */
 
   myrf_init_queue(&q, message);
+  begin();
+  lcdInit();
   printf("initial gentry Status %i\n", gentry->status);
 
   while(1) {
@@ -672,6 +701,9 @@ PROCESS_THREAD(receive_messages_process, ev, data)
               //process_post(&system_resources_process, event_display_system_resources, &counter);
           }
           */
+          if(0 == (counter%2)) {
+              process_post(&scroll_process, event_do_scroll, &counter);
+          }
           etimer_reset(&timer);
           counter++;
       }
@@ -709,4 +741,3 @@ PROCESS_THREAD(output_messages_process, ev, data)
   }
   PROCESS_END();
 }
-

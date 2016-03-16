@@ -19,7 +19,6 @@ def send_data(data):
         d.RFxmit(data)
         sleep(0.5)
 
-
 days = {
         "day1" : 0x00, 
         "day2" : 0x80, 
@@ -36,6 +35,20 @@ events = {
         "talks_5min" : 0x06, # TODO
         "wacky_messages" : 0x07 
         }
+
+def send_shit():
+    # invalid commands with variations
+    for i in range(0x08, 0x1F, 0x01):
+        for j in range(0x00, 0x100, 0x10)
+            msg = i | j
+            print("Sendig shit: " + hex(msg))
+            send_data(chr(msg))
+    # invalid day
+    # TODO more testcases
+
+
+
+
 
 print("WARNING: day2 only goes from 0 - 5 slots (too lazy to make proper loops)")
 print('---------------')

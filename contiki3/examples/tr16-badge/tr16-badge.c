@@ -67,6 +67,8 @@
 #include "eeprom.h"
 #include "lcd.h"
 
+#include "badgeName.h"
+
 void print_stored_message(uint8_t index);
 void print_queue_data(rfc_dataEntryGeneral_t *dataEntry);
 

@@ -204,14 +204,14 @@ void print_help() {
     printf("'p' for your Message Buffer\n");
     if (is_faked) {
         printf("'r' for resolving the naming trouble\n");
-        printf("Details about the game:\n");
-        printf("Looks like you want (or was forced to) solve this challenge.\n");
-        printf("In order to get a token and reset your old name on the badge\n");
-        printf("You have to find the person whos name you see on your badge!\n");
-        printf("If you found her/him, take him to the soldering station with you\n");
-        printf("If the names match Troopers will help you to get you a 'Challenge Token'!\n");
+        printf("\n\tDetails about the game:\n");
+        printf("\tLooks like you want (or was forced to) solve this challenge.\n");
+        printf("\tIn order to get a token and reset your old name on the badge\n");
+        printf("\tYou have to find the person whos name you see on your badge!\n");
+        printf("\tIf you found her/him, take him to the soldering station with you\n");
+        printf("\tIf the names match Troopers will help you to get you a 'Challenge Token'!\n\n");
     } 
-    printf("'h' for ... I think you already know\n");
+    printf("\n'h' for ... I think you already know\n");
 }
 
 void test_set_ident(Identity_t *iden) {
@@ -325,7 +325,6 @@ void game_solved() {
 }
 
 void check_solution() {
-    //hexdump(iden, 8);
 
     for (uint8_t i = 0;i<16;i++){
         if (solution_str[i] != solution[i]) {
@@ -334,11 +333,11 @@ void check_solution() {
             return;
         }
     }
-    printf("Original name will be resetted in two minutes. \n");
-    printf("Trooper has two minutes to note the Token!. \n");
+    printf("\n\nSOLVED. Original name will be resetted. \n");
+    printf("Trooper deserves the Token!. \n");
     solving = 0;
     is_faked = 0;
-    // TODO brian, show token for few minutes
+    print_current_identity();
 }
 
 //
@@ -497,7 +496,6 @@ int8_t check_and_parse_msg(
         uint8_t *slot,
         uint8_t *day) {
 
-    hexdump(msg, 10);
     printf("&day: %p &info: %p &slot: %p\n", day, info_type, slot);
     *info_type = *msg & 0x0F;
     *slot = (*msg & 0x70) / 16;
@@ -550,6 +548,7 @@ void output_fix_messages(
 
     switch(*info_type) {
         case 0:
+            fillScreen(text_bg);
             setTextSize(3);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
@@ -557,36 +556,41 @@ void output_fix_messages(
             break;
         case 1:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
-            displayScrollingText(0, 20, "Have a nice evening Trooper!");
-            displayScrollingText(1, 50, "Go get some rest (or some more drinks).");
+            displayScrollingText(0, 50, "Have a nice evening Trooper!");
+            displayScrollingText(1, 100, "Go get some rest (or some more drinks).");
             break;
         case 2:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
-            displayScrollingText(0, 20, "Shared dinner and Packet Wars afterwards at the Kulturbrauerei.");
-            displayScrollingText(1, 50, "Busses at the PMA leaving at 6:30pm");
+            displayScrollingText(0, 50, "Shared dinner and Packet Wars afterwards at the Kulturbrauerei.");
+            displayScrollingText(1, 100, "Busses at the PMA leaving at 6:30pm");
             break;
         case 3:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
-            displayScrollingText(0, 20, "Speaker's dinner is at the restaurant Goldenes Schaaf.");
-            displayScrollingText(1, 50, "Busses at the PMA leaving at 6:30pm");
+            displayScrollingText(0, 50, "Speaker's dinner is at the restaurant Goldenes Schaaf.");
+            displayScrollingText(1, 100, "Busses at the PMA leaving at 6:30pm");
             break;
         case 4:
             setTextSize(3);
+            fillScreen(text_bg);
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
-            displayScrollingText(0, 20, "Charity Ruffle starts in a few minutes (12:30pm).");
-            displayScrollingText(1, 50, "All Troopers should move to the 2nd floor right now!.");
+            displayScrollingText(0, 50, "Charity Ruffle starts in a few minutes (12:30pm).");
+            displayScrollingText(1, 100, "All Troopers should move to the 2nd floor right now!.");
             break;
         case 5:
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             setTextSize(2);
+            fillScreen(text_bg);
             if(*day == 0)
                 display_slot(&day1[*slot]);
             else
@@ -597,6 +601,7 @@ void output_fix_messages(
             for(uint8_t i = 0; i < 9; i++)
                 disableScrollingText(i);
             setTextSize(2);
+            fillScreen(text_bg);
             if(*day == 0)
                 display_slot(&day1[*slot]);
             else
@@ -612,6 +617,7 @@ void output_fix_messages(
                 /* ACTIVATE GAME */
                 printf("Ooh oh, now you have to find the guy whos name you see on the badge.\n");
                 is_faked = 1;
+                print_current_identity();
                 /* ACTIVATE GAME */
             break;
         default:
@@ -701,6 +707,10 @@ PROCESS_THREAD(receive_messages_process, ev, data)
       if(ev == PROCESS_EVENT_TIMER) {
           //myrf_send(message);
           if(timeout <= 0) {
+              if(timeout == 0) {
+                print_current_identity();
+                timeout--;
+              }
               myrf_receive(&q, &rx_stats);
 
               if (DATA_ENTRY_STATUS_FINISHED == gentry->status) {
@@ -711,7 +721,7 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                   printf("entry Status %i\n", gentry->status);
                   printf("received message but will it be valid?\n");
                   cmd = &gentry->data + 2;
-                  hexdump(cmd, 10);
+                  hexdump(cmd, 30);
                   if(cmd[0] == 0xFF) {
                       output_arbitrary_message(++cmd, &gentry->length);
                   }
@@ -724,18 +734,20 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                           output_fix_messages(&info_type, &slot, &day);
                       else {
                           etimer_reset(&timer);
+                          timeout = DEF_TIMEOUT;
+                          process_post(&output_messages_process, event_display_message, &counter);
+                          myrf_init_queue(&q, message);
                           continue;
                       }
                   }
-                  //timeout = 30*3;
-                  timeout = 1;
+                  timeout = DEF_TIMEOUT;
                   process_post(&output_messages_process, event_display_message, &counter);
                   myrf_init_queue(&q, message);
 
               } else if (!(DATA_ENTRY_STATUS_PENDING == gentry->status)) {
                   printf("not finished\n");
                   cmd = &gentry->data + 2;
-                  hexdump(cmd, 10);
+                  hexdump(cmd, 30);
                   if(cmd[0] == 0xFF) {
                       output_arbitrary_message(++cmd, &gentry->length);
                   }
@@ -748,10 +760,13 @@ PROCESS_THREAD(receive_messages_process, ev, data)
                           output_fix_messages(&info_type, &slot, &day);
                       else {
                           etimer_reset(&timer);
+                          timeout = DEF_TIMEOUT;
+                          process_post(&output_messages_process, event_display_message, &counter);
+                          myrf_init_queue(&q, message);
                           continue;
                       }
                   }
-                  timeout = 30*3;
+                  timeout = DEF_TIMEOUT;
                   process_post(&output_messages_process, event_display_message, &counter);
                   myrf_init_queue(&q, message);
               }

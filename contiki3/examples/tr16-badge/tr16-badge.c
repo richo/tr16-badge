@@ -300,7 +300,7 @@ void game_solved() {
 void check_solution() {
     //hexdump(iden, 8);
 
-    for (uint8_t i = 0;i<17;i++){
+    for (uint8_t i = 0;i<16;i++){
         if (solution_str[i] != solution[i]) {
             printf("Wrong answer! :-(\n");
             solving = 0;
@@ -418,9 +418,11 @@ int uart_rx_callback(uint8_t c) {
                 solving = 0;
             break;
             default:
-                if (input_cnt<17){
+                if (input_cnt<16){
                     solution[input_cnt] = c;
                     input_cnt++;
+                    if(input_cnt >= 16) 
+                        check_solution();
                     //printf("Current solution %s\n", solution);
                 } else {
                     check_solution();

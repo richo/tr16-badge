@@ -210,7 +210,7 @@ void print_help() {
         printf("\tYou have to find the person whos name you see on your badge!\n");
         printf("\tIf you found her/him, take him to the soldering station with you\n");
         printf("\tIf the names match Troopers will help you to get you a 'Challenge Token'!\n\n");
-    } 
+    }
     printf("\n'h' for ... I think you already know\n");
 }
 
@@ -269,9 +269,16 @@ void print_current_identity() {
          setTextColor(RGB(0xff, 0xff, 0xff), RGB(0x44, 0xc7, 0xf4));
 //         fillScreen(RGB(0xff,0xff,0xff));
          break;
+      case '4':
+         // ff69b4
+         printf("Color has been set to rich\x94 butts\n");
+         setTextColor(RGB(235, 29, 206), RGB(0x00, 0x00, 0x00));
+//         fillScreen(RGB(0x00, 0x00, 0x00));
+         break;
     }
     fillScreen(text_bg);
     displayScrollingText(0, -1, NAME);
+    drawPixel(5, 5, 0x3333);
   } else {
 
     switch (GROUP){
@@ -321,7 +328,7 @@ void solve_game(){
 void game_solved() {
     input_cnt = 0;
     solving = 0;
-    // TODO show token und reset username 
+    // TODO show token und reset username
 }
 
 void check_solution() {
@@ -447,7 +454,7 @@ int uart_rx_callback(uint8_t c) {
                 if (input_cnt<16){
                     solution[input_cnt] = c;
                     input_cnt++;
-                    if(input_cnt >= 16) 
+                    if(input_cnt >= 16)
                         check_solution();
                     //printf("Current solution %s\n", solution);
                 } else {
